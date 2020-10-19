@@ -45,46 +45,6 @@ if (isset($POST['username']) && isset($POST['password'])) {
         ];
         goto rendering;
     }
-    if ($contributor !== false) {
-        //auth via database
-        $role = 'contributor';
-    } else {    
-        //auth via LDAP
-        $container = new Container();
-        $container->add('session', new Session());
-        $container->add('adapter', function () use ($ldap_connector) {
-            $ldap = new Ldap(
-                $ldap_connector['ldap_uri'],
-                null,
-                [
-                    'basedn' => $ldap_connector['ldap_base_dn'],
-                    'binddn' => $ldap_connector['ldap_bind_dn'],
-                    'bindpw' => $ldap_connector['ldap_bind_pass'],
-                    'filter' => $ldap_connector['ldap_filter'].'=%s'
-                ],
-                [
-                    LDAP_OPT_PROTOCOL_VERSION => 3,
-                    LDAP_OPT_REFERRALS => true
-                ],
-                [
-                    'cn',
-                    'sn',
-                    'givenName',
-                    'mail',
-                    'description',
-                    $ldap_connector['ldap_filter']
-                ],
-                $ldap_connector['ldap_port']
-            );
-
-            $ldap->setEscapeChars('\&!|=<>,+"\';()');
-            return $ldap;
-        });
-        $SESSION = $container->get('session');
-        $adapter = $container->get('adapter');
-        $auth = new Auth($adapter, $SESSION);
-        $role = 'user';
-    }
     try {
         $auth->login($credentials);
     } catch (\Vespula\Auth\Exception $e) {
