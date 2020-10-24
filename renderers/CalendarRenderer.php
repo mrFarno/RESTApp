@@ -10,7 +10,7 @@ class CalendarRenderer extends BaseRenderer
     private $month;
     private $week;
     private $display;
-    private static $TODAY;
+    private $TODAY;
 
     public function __construct() {
         parent::__construct();   
@@ -39,7 +39,12 @@ class CalendarRenderer extends BaseRenderer
                 break;
         }
         $this->output .= $title;
-        $this->output .= '<button type="button" onclick="calendar_settings('.$this->TODAY.', '.$this->month->getMonth().', '.$this->month->getYear().', \''.$target_display.'\')">'.$message.'</button>';
+        if ($this->month->getMonth() !== intval(date('m'))) {
+            $day = 1;
+        } else {
+            $day = $this->TODAY;
+        }
+        $this->output .= '<button type="button" onclick="calendar_settings('.$day.', '.$this->month->getMonth().', '.$this->month->getYear().', \''.$target_display.'\')">'.$message.'</button>';
         $this->output .= $previous;
         $this->output .= $next;
 
