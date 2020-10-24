@@ -10,30 +10,24 @@ class LoginRenderer extends BaseRenderer
      */
     public function login_form($token, $from = 'home') {
         $this->output .=' <div class="d-flex justify-content-center">
-        <div id="formLogin"  class="w-100">
+        <div id="formLogin"  class="w-100 d-flex justify-content-center">
             <form action="?page=login" method="post" id="form_login">
+            <h1>Bienvenu sur RESTApp</h1>
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-6">
-                        Login 
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6">
-                        <input type="text" class="form-control width100" name="username" autofocus>
+                    <div class="mx-sm-3 mb-2">
+                        <input type="text" placeholder="Adresse mail" class="form-control width100" name="username" autofocus>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-6">
-                        Mot de passe
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-6">
-                        <input type="password" class="form-control width100" name="password">
+                    <div class="mx-sm-3 mb-2">
+                        <input type="password" placeholder="Mot de passe" class="form-control width100" name="password">
                     </div>
                 </div>
                 <input type="hidden" name="from" value="'.$from.'">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                    <div class="">
                         <input type="hidden" name="token" value="'.$token.'">
-                        <button type="submit" class="btn btn-outline-success width100">
-                            <i class="fas fa-sign-in-alt"></i> Connexion
+                        <button type="submit" class="btn btn-outline-success width100">Connexion
                                 </button>
                             </div>
                         </div>

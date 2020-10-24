@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 app\Autoloader::register();
 
 use app\Config;
-use app\DAO\ContributorDAO;
+use app\DAO\UserDAO;
 use app\Session;
 use Vespula\Auth\Auth;
 use League\Container\Container;
@@ -36,22 +36,11 @@ $smtp_connector = [
     'smtp_certs' => $config->get('smtp_certs'),
 ];
 
-//LDAP connector
-$ldap_connector = [
-    'ldap_uri' =>$config->get('ldap_uri'),
-    'ldap_base_dn' =>$config->get('ldap_base_dn'),
-    'ldap_bind_dn' =>$config->get('ldap_bind_dn'),
-    'ldap_bind_pass' =>$config->get('ldap_bind_pass'),
-    'ldap_filter' =>$config->get('ldap_filter'),
-    'ldap_port' =>$config->get('ldap_port'),
-];
-
-
 $container = new Container();
 $container->add('session', new Session());
 
 $container->add('adapter', function () use ($db_connector) {
-    return new ContributorDAO($db_connector);
+    return new UserDAO($db_connector);
 });
 
 try {
@@ -64,4 +53,4 @@ try {
     ];
 }
 
-$contributor_dao = new ContributorDAO($db_connector);
+$user_dao = new UserDAO($db_connector);

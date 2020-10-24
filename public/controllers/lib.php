@@ -24,8 +24,8 @@ function send_mail($user, $subject, $body, $smtp_connector) {
 		}
 		//$mail->SMTPDebug  = 4;
 	    $mail->Port       = $smtp_connector['smtp_port'];                                   
-	    $mail->setFrom($smtp_connector['smtp_user'], 'Administration Openflow');
-	    $mail->addAddress($user->getMail(), $user->getLabel());    
+	    $mail->setFrom($smtp_connector['smtp_user'], 'Administration RESTApp');
+	    $mail->addAddress($user->getEmail());    
 	    $mail->isHTML(true);                                 
 	    $mail->Subject = $subject;
 		$mail->Body = $body;
@@ -74,7 +74,7 @@ function can_access($page, $USER) {
 	}
 	$can_access = [];
 	$files = array_diff(scandir(__DIR__), array('..', '.', 'back-office'));
-	if ($USER->getRole() === 'Admin') {
+	if ($USER->getRole() === 'manager') {
 		$files = array_merge($files, array_diff(scandir(__DIR__.'/back-office'), array('..', '.')));
 	}
 	foreach ($files as $file) {

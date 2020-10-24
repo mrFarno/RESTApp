@@ -28,7 +28,7 @@ if(isset($GET['page'])) {
     // If is not connected
     if ($auth->isAnon() || $SESSION->getUserdata() === null) {
         // Page that can be visited without authentication
-        $can_access = ['home', 'login', 'success', 'error', 'reset', 'logout'];
+        $can_access = ['home', 'login', 'success', 'error', 'reset', 'logout', 'calendar'];
         // Redirect to login
         if (!in_array($page, $can_access)) {
             $from = $page;

@@ -1,17 +1,41 @@
+html, 
+body {
+    height: 90%;
+}
+
+html {
+    height: 90%;
+  }
+  body {
+    min-height: 90%;
+    background-color: antiquewhite;
+  }
 .app-container {
-    margin: 3vh;
+    /* margin: 3vh; */
     border: solid;
     border-color: #dee2e6;
     background: #f5f5f5;
     border-width: 1px;
     border-radius: 5px;
     padding: 3vh; 
+    height: auto;
+    position: absolute;
+    top: 3vh;
+    right: 3vh;
+    bottom: 3vh;
+    left: 3vh;
 }
 
 .fnt_aw-btn {
     border: none !important;
     background: transparent !important;
 }
+
+#formLogin {
+    text-align: center;
+}
+
+
 
 .delete-btn {
     color: crimson;
@@ -49,8 +73,10 @@
 
 .agenda-table {
     width: 100%;
-    height: calc(100vh - 128px);
+    height: 80vh !important;
+    /* min-height: 100%; */
     table-layout:fixed;
+    
 }
 
 .agenda-table td {

@@ -1,6 +1,6 @@
 <?php
 
-use app\DAO\ContributorDAO;
+use app\DAO\UserDAO;
 use League\Container\Container;
 use Vespula\Auth\Adapter\Ldap;
 use Vespula\Auth\Auth;
@@ -38,7 +38,7 @@ if (isset($POST['username']) && isset($POST['password'])) {
         'password' => $POST['password'],
     ];
     try {
-        $contributor = $contributor_dao->find('c_login', $credentials['username']);
+        $user_dao->find('u_email', $credentials['username']);
     } catch (\PDOException $e) {
         $ERROR = [
             'message' => 'Veuillez transmettre l\'erreur suivante à un administrateur : '.$e->getMessage()
@@ -70,8 +70,8 @@ if($auth->isValid()){
 }
 
 //reset password
-if (isset($POST['reset']) && trim($POST['reset']) !== '') {
-    $user = $contributor_dao->find('c_mail', $POST['reset']);
+if (isset($POST['reset']) && trim($POST['reset']) !== '') {  
+    $user = $user_dao->find('u_email', $POST['reset']);
     if ($user === false) {
         echo json_encode([
             'error',
@@ -81,7 +81,7 @@ if (isset($POST['reset']) && trim($POST['reset']) !== '') {
     }
     $token = generate_token();
     $user->setToken($token);
-    $contributor_dao->persist($user);
+    $user_dao->persist($user);
     try{
         $content = '<p>Ce mail a été envoyé automatiquement par OpenFlow pour vous permettre de réinitialiser votre mot de passe.
                     Merci de ne pas y répondre</p>
@@ -96,7 +96,7 @@ if (isset($POST['reset']) && trim($POST['reset']) !== '') {
     }
     echo json_encode([
             'success',
-            'Un email a été envoyé à '.$user->getMail()
+            'Un email a été envoyé à '.$user->getEmail()
         ]);
         die();
 }

@@ -11,16 +11,22 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 
 //Ajax call to change calendar display
 if (isset($POST['display']) && in_array($POST['display'], ['monthly', 'weekly'])) {
+    $display = $POST['display'];
     $renderer->setDate($POST['day'] ?? null, 
                         $POST['month'] ?? null, 
                         $POST['year'] ?? null) 
-                ->$POST['display']() //call to monthly() or weekly()
+                ->options($display)
+                ->$display() //call to monthly() or weekly()
                 ->render();
     die();
 }
 
 $renderer->header()
-            ->open_body()
+            ->open_body([
+                'div' => [
+                    'class' => 'app-container'
+                ],
+            ])
             ->options()
             ->monthly()
             ->close_body()

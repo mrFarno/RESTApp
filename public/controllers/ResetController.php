@@ -16,7 +16,7 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 $ERROR['message'] = true;
 
 if (isset($GET['token'])) {
-    $user = $contributor_dao->find('c_token', $GET['token']);
+    $user = $user_dao->find('u_token', $GET['token']);
     if ($user === false) {
         $ERROR['message'] = 'Token invalide';
     }
@@ -30,7 +30,7 @@ if (isset($POST['password'])) {
         $password = password_hash($POST['password'], PASSWORD_DEFAULT);
         $user->setPassword($password)
                 ->setToken(null);
-        $contributor_dao->persist($user);
+        $user_dao->persist($user);
         $credentials = [
             'username' => $user->getLogin(),
             'password' => $POST['password']
