@@ -38,7 +38,7 @@ if(isset($GET['page'])) {
         $USER = $SESSION->getUserData();
         // Check rights       
         if (!can_access($GET['page'], $USER)) {
-            error_redirect('401', $from);
+            error_redirect('401', $from, $USER);
         }
     }
 } else {
@@ -48,6 +48,6 @@ if(isset($GET['page'])) {
 $renderer = renderers\Provider::get_renderer($page);
 $controller = ucfirst($page).'Controller.php';   
 if (!file_exists(__DIR__.'/controllers/'.$controller)) {
-    $controller = '/back-office/'.$controller;
+    $controller = 'manager/'.$controller;
 }
 require __DIR__.'/controllers/'.$controller;

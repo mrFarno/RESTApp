@@ -13,12 +13,12 @@ class LoginRenderer extends BaseRenderer
         <div id="formLogin"  class="w-100 d-flex justify-content-center">
             <form action="?page=login" method="post" id="form_login">
             <h1>Bienvenu sur RESTApp</h1>
-                <div class="row">
+                <div class="mx-sm-3 mb-2">
                     <div class="mx-sm-3 mb-2">
                         <input type="text" placeholder="Adresse mail" class="form-control width100" name="username" autofocus>
                     </div>
                 </div>
-                <div class="row">
+                <div class="mx-sm-3 mb-2">
                     <div class="mx-sm-3 mb-2">
                         <input type="password" placeholder="Mot de passe" class="form-control width100" name="password">
                     </div>

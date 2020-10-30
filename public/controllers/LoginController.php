@@ -104,7 +104,8 @@ if (isset($POST['reset']) && trim($POST['reset']) !== '') {
 rendering :
 $renderer->header('Connexion')
             ->open_body([
-                'div' => [
+                [
+                    'tag' => 'div',
                     'class' => 'app-container'
                 ],
             ])

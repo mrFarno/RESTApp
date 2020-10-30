@@ -23,7 +23,8 @@ if (isset($POST['display']) && in_array($POST['display'], ['monthly', 'weekly'])
 
 $renderer->header()
             ->open_body([
-                'div' => [
+                [
+                    'tag' => 'div',
                     'class' => 'app-container'
                 ],
             ])

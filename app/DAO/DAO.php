@@ -10,8 +10,8 @@ abstract class DAO extends \PDO
     private $db_name;
     private $type;
     private $pdo;
-    private $table;
-    private $prefix;
+    protected $table;
+    protected $prefix;
 
     public function __construct(array $connector){
         $this->db_name= $connector['db_name'] ;
@@ -36,6 +36,61 @@ abstract class DAO extends \PDO
                 ]);
         }
         return $this->pdo;
+    }
+    /**
+     * Generic persist function
+     * Override when entities in BO
+     * @param datas : Object if entity in BO, array else
+     */
+    public function persist($datas) {
+        if (isset($datas[$this->prefix.'_id'])) {
+            $update = true;
+            $request = 'UPDATE '.$this->table.'SET ';
+            foreach ($datas as $key => $value) {
+                if ($key !== $this->prefix.'_id') {
+                    $request .= $key.'= :'.$key;
+                }
+            }
+            $request .= 'WHERE '.$this->prefix.'_id = :'.$this->prefix.'_id;';
+        } else {
+            $update = false;
+            $request = 'INSERT INTO '.$this->table.' (';
+            foreach ($datas as $key => $value) {
+                if ($key !== $this->prefix.'_id') {
+                    $request .= $key.',';
+                }
+            }
+            $request = substr($request, 0, -1);
+            $request .= ') VALUES (';
+            foreach ($datas as $key => $value) {
+                if ($key !== $this->prefix.'_id') {
+                    $request .= ':'.$key.',';
+                }
+            }
+            $request = substr($request, 0, -1);
+            $request .= ');';
+        }
+        $binds = [];
+        foreach ($datas as $key => $value) {
+            $binds[':'.$key] = $value;
+        }
+        if ($update === true) {
+            $binds[':'.$this->prefix.'_id'] = $datas[$this->prefix.'_id'];
+        }
+
+        $stmt = $this->getPDO()->prepare($request);
+        $stmt->execute($binds);
+
+        return true;
+    }
+
+    /**
+     * General all function for entities not in BO
+     * @return array
+     */
+    public function all() {
+        $request = 'SELECT * FROM '.$this->table.';';
+        return $this->getPDO()->query($request)->fetchAll();
     }
 
     /**

@@ -8,8 +8,8 @@ use Vespula\Auth\Adapter\AdapterInterface;
 class UserDAO extends DAO implements AdapterInterface
 {
 
-    private $table = 'users';
-    private $prefix = 'u';
+    protected $table = 'users';
+    protected $prefix = 'u';
 
     /**
      * Specific User find function
@@ -29,7 +29,7 @@ class UserDAO extends DAO implements AdapterInterface
         $result = $stmt->fetchAll();
         $data = [];
         foreach ($result as $row) {
-            $data[] = new User($row);
+            $data[$row['u_id']] = new User($row);
         }
         switch (count($data)) {
             case 0 : 
@@ -42,18 +42,18 @@ class UserDAO extends DAO implements AdapterInterface
                 if ($force_array === true) {
                     return $data;
                 }
-                return $data[0];
+                return reset($data);
                 break; 
             default : return $data;
         }
     }
 
     /**
-     * @param Contributor $contributor User to add/update
+     * @param $user User to add/update
      * Check if mail already exist. If true update else insert
      * @return true
      */
-    public function persist(User $user) {
+    public function persist($user) {
         if ($this->find('u_email', $user->getEmail()) !== false) {
             $update = true;
             $request = 'UPDATE users SET
@@ -67,7 +67,7 @@ class UserDAO extends DAO implements AdapterInterface
         } else {
             $update = false;
             $request = 'INSERT INTO users (u_firstname, u_lastname, u_password, u_email, u_token, u_role) VALUES (
-                            :firstame,
+                            :firstname,
                             :lastname,
                             :password,
                             :email,
@@ -88,6 +88,9 @@ class UserDAO extends DAO implements AdapterInterface
             $binds[':id'] = $user->getId();
         }
         $stmt->execute($binds);
+        if ($update === false) {
+            $user->setId($this->getPDO()->lastInsertId());
+        }
         return true;
     }
 

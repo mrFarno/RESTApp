@@ -43,26 +43,6 @@ class User
     }
 
     /**
-     * Get the value of login
-     */ 
-    public function getLogin()
-    {
-        return $this->u_login;
-    }
-
-    /**
-     * Set the value of login
-     *
-     * @return  self
-     */ 
-    public function setLogin($login)
-    {
-        $this->u_login = $login;
-
-        return $this;
-    }
-
-    /**
      * Get the value of password
      */ 
     public function getPassword()

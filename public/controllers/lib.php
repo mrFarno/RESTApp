@@ -54,7 +54,8 @@ function check_passwords($password, $confirm) {
     return true;
 }
 
-function error_redirect($error_code, $from) {
+function error_redirect($error_code, $from, $user = null) {
+	$USER = $user;
 	$from = $from;
 	$error_code = $error_code;
 	$renderer = renderers\Provider::get_renderer('error');
@@ -64,7 +65,7 @@ function error_redirect($error_code, $from) {
 
 function page_exist($page) {
 	$files = array_diff(scandir(__DIR__), array('..', '.'));
-	$files = array_merge($files, array_diff(scandir(__DIR__.'/back-office'), array('..', '.')));
+	$files = array_merge($files, array_diff(scandir(__DIR__.'/manager'), array('..', '.')));
 	return in_array(ucfirst($page).'Controller.php', $files);
 }
 
@@ -73,9 +74,9 @@ function can_access($page, $USER) {
 		return true;
 	}
 	$can_access = [];
-	$files = array_diff(scandir(__DIR__), array('..', '.', 'back-office'));
+	$files = array_diff(scandir(__DIR__), array('..', '.', 'manager'));
 	if ($USER->getRole() === 'manager') {
-		$files = array_merge($files, array_diff(scandir(__DIR__.'/back-office'), array('..', '.')));
+		$files = array_merge($files, array_diff(scandir(__DIR__.'/manager'), array('..', '.')));
 	}
 	foreach ($files as $file) {
 		if ($file !== 'lib.php') {

@@ -91,10 +91,12 @@ $contributors = $user_dao->find('u_role', 'employee', true);
 
 $renderer->header('Administration : Gestion des comptes')
             ->open_body([
-                'div' => [
+                [
+                    'tag' => 'div',
                     'class' => 'app-container'
                 ],
-                'form' => [
+                [
+                    'tag' => 'form',
                     'action' => 'index.php?page=accounts',
                     'method' => 'POST'
                 ],

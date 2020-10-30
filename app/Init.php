@@ -7,6 +7,10 @@ app\Autoloader::register();
 
 use app\Config;
 use app\DAO\UserDAO;
+use app\DAO\RestaurantDAO;
+use app\DAO\MealTypeDAO;
+use app\DAO\RestaurantTypeDAO;
+use app\DAO\EmployementDAO;
 use app\Session;
 use Vespula\Auth\Auth;
 use League\Container\Container;
@@ -54,3 +58,7 @@ try {
 }
 
 $user_dao = new UserDAO($db_connector);
+$restaurant_dao = new RestaurantDAO($db_connector);
+$meal_types_dao = new MealTypeDAO($db_connector);
+$restaurant_types_dao = new RestaurantTypeDAO($db_connector);
+$employement_dao = new EmployementDAO($db_connector);

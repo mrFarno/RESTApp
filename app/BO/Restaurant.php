@@ -1,7 +1,7 @@
 <?php
 
 namespace app\BO;
-use User;
+use app\BO\User;
 
 class Restaurant 
 {
@@ -11,7 +11,7 @@ class Restaurant
     private $r_adress_town;
     private $r_adress_street;
     private $r_adress_country;
-    private $r_meals;
+    private $meals;
     private $r_type_id;
     private $manager;
     private $equipments;
@@ -23,6 +23,18 @@ class Restaurant
                 $this->$key = $value;
             }
         }        
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->r_id = $id;
+
+        return $this;
     }
 
     /**
@@ -138,7 +150,7 @@ class Restaurant
      */ 
     public function getMeals()
     {
-        return $this->r_meals;
+        return $this->meals;
     }
 
     /**
@@ -146,9 +158,9 @@ class Restaurant
      *
      * @return  self
      */ 
-    public function setMeals($meals)
+    public function setMeals(array $meals)
     {
-        $this->r_meals = $meals;
+        $this->meals = $meals;
 
         return $this;
     }

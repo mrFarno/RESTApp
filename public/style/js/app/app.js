@@ -82,3 +82,13 @@ function get_user_infos(id) {
     })
 }
 
+function valid_form() {
+    input1 = document.getElementById('u_firstname')
+    input2 = document.getElementById('u_lastname')
+    input3 = document.getElementById('u_email')
+
+    input1.required = false
+    input2.required = false
+    input3.required = false
+}
+

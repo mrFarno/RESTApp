@@ -2,7 +2,8 @@
 
 $renderer->header('Erreur')
             ->open_body([
-                'div' => [
+                [
+                    'tag' => 'div',
                     'class' => 'app-container content-center'
                 ]             
             ])

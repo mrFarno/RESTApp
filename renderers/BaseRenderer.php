@@ -115,18 +115,20 @@ abstract class BaseRenderer
 
     /**
      * Open body with optional params
-     * @param array $tags : Optionnal tags - [Tag name] => array([attribute] => [value])
+     * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)
      * @return self
      */
     public function open_body(array $tags = []) {
         $this->output .='<body>';
-        foreach ($tags as $tag => $attributes) {
-            $this->output .= '<'.$tag;
+        foreach ($tags as $attributes) {
+            $this->output .= '<'.$attributes['tag'];
             foreach ($attributes as $key => $value) {
-                $this->output .= ' '.$key.'="'.$value.'"';
+                if ($key !== 'tag') {
+                    $this->output .= ' '.$key.'="'.$value.'"';
+                }
             }
             $this->output .= '>';
-            $this->opened_tags[] = $tag;
+            $this->opened_tags[] = $attributes['tag'];
         }
 
         return $this;

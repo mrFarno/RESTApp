@@ -49,6 +49,15 @@ html {
     display: inline !important;
 }
 
+.rest-form-container {
+    width: fit-content !important;
+    text-align: center;
+}
+
+.rest-form-container h1 {
+    text-align: center !important;
+}
+
 .content-center {
     display: grid !important;
     justify-items: center !important;

@@ -45,7 +45,8 @@ $from = 'reset';
 // Rendering
 $renderer->header('Réinitialiser mot de passe')
             ->open_body([
-                'div' => [
+                [
+                    'tag' => 'div',
                     'class' => 'app-container'
                 ]
             ])
