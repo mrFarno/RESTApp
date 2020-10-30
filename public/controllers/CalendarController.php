@@ -25,7 +25,6 @@ $renderer->header()
             ->open_body([
                 [
                     'tag' => 'div',
-                    'class' => 'app-container'
                 ],
             ])
             ->options()

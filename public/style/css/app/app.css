@@ -120,3 +120,16 @@ html {
 .current-day {
     color: red;
 }
+
+.table-box {
+    max-height: 25vh;
+    overflow-y: scroll;
+    /* hide scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* hide scrollbar */
+.table-box::-webkit-scrollbar {
+    display: none;
+  }

@@ -84,4 +84,14 @@ class TeamRenderer extends BaseRenderer
         return $this;
     }
 
+    public function home() {
+        $this->output .='<br><div class="row justify-content-center">
+        <button type="button" class="btn btn-outline-success width100">
+        <a href="?page=home">Terminer</a>
+        </button>
+        </div>';
+
+        return $this;
+    }
+
 }

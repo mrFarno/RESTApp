@@ -70,7 +70,7 @@ $renderer->header()
             ->open_body([
                 [
                     'tag' => 'div',
-                    'class' => 'app-container content-center' 
+                    'class' => 'content-center' 
                 ],
                 [
                     'tag' => 'form',
@@ -80,6 +80,7 @@ $renderer->header()
             ])
             ->team_form($employees)
             ->employees_list($r_employees)
+            ->home()
             ->close_body()
             ->footer()
             ->render();

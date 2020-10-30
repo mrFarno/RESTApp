@@ -106,7 +106,6 @@ $renderer->header('Connexion')
             ->open_body([
                 [
                     'tag' => 'div',
-                    'class' => 'app-container'
                 ],
             ])
             ->previous_page($from)
