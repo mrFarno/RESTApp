@@ -61,11 +61,18 @@ abstract class BaseRenderer
             <li class="nav-item '.$this->active('restaurants').'">
               <a class="nav-link" href="?page=restaurants&edit">Mon restaurant</a>
             </li>
-            <li class="nav-item '.$this->active('team').'">
-              <a class="nav-link" href="?page=team">Mon équipe</a>
-            </li>
+
+            <li class="nav-item dropdown '.$this->active('team').$this->active('affectations').'">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Mon équipe
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="?page=team">Gestion de l\'équipe</a>
+              <a class="dropdown-item" href="?page=affectations">Affectations</a>
+            </div>
+          </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Disabled</a>
+              <a class="nav-link" href="#">Lien useless</a>
             </li>
           </ul>
           <form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">

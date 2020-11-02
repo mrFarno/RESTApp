@@ -80,7 +80,7 @@ class TeamRenderer extends BaseRenderer
                     </button>
                 </td>
             </tr>';
-            }
+        }
 
         $this->output .= '</table>
             </div>';

@@ -2,11 +2,13 @@
 
 namespace renderers;
 
+use app\BO\User;
+
 class ResetRenderer extends BaseRenderer
 {
 
     /**
-     * @param Contributor $user User
+     * @param User $user User
      * @return self
      */
     public function reset_form($user){
