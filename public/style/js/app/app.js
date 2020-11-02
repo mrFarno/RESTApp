@@ -97,3 +97,29 @@ function update_current_rest() {
     form.submit()
 }
 
+function modal_init(u_id) {
+    u_input = document.getElementById('u_id')
+    u_input.value = u_id
+    firstname = document.getElementById('firstname-'+u_id).innerHTML
+    lastname = document.getElementById('lastname-'+u_id).innerHTML
+
+    span1 = document.getElementById('u_firstname')
+    span1.innerHTML = firstname
+    span2 = document.getElementById('u_lastname')
+    span2.innerHTML = lastname
+}
+
+function display_dates(mt_id) {
+    start = document.getElementById('start-mt-'+mt_id)
+    end = document.getElementById('end-mt-'+mt_id)
+
+    if (start.hidden === true) {
+        start.hidden = false
+        end.hidden = false
+    } else {
+        start.hidden = true
+        end.hidden = true
+    }
+
+}
+
