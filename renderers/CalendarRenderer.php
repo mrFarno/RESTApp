@@ -17,6 +17,7 @@ class CalendarRenderer extends BaseRenderer
         $this->setDate();
         $this->display = 'monthly';
         $this->TODAY = intval(date('Y'));
+        $this->from = 'home';
     }
 
     public function options($display = 'monthly') {
@@ -26,16 +27,16 @@ class CalendarRenderer extends BaseRenderer
                 $title = '<h1>'.$this->month->toString().'</h1>';
                 $target_display = 'weekly';
                 $message = 'Afficher par semaines';
-                $previous = '<button type="button" onclick="calendar_settings('.$this->TODAY.', '.$this->month->previousMonth()->getMonth().', '.$this->month->previousMonth()->getYear().', \'monthly\')"><</button>';
-                $next = '<button type="button" onclick="calendar_settings('.$this->TODAY.', '.$this->month->nextMonth()->getMonth().', '.$this->month->nextMonth()->getYear().', \'monthly\')">></button>';
+                $previous = '<button class="btn btn-light" type="button" onclick="calendar_settings('.$this->TODAY.', '.$this->month->previousMonth()->getMonth().', '.$this->month->previousMonth()->getYear().', \'monthly\')"><</button>';
+                $next = '<button class="btn btn-light" type="button" onclick="calendar_settings('.$this->TODAY.', '.$this->month->nextMonth()->getMonth().', '.$this->month->nextMonth()->getYear().', \'monthly\')">></button>';
                 break;
             
             default:
                 $title = '<h1>'.$this->week->toString().'</h1>';
                 $target_display = 'monthly';
                 $message = 'Afficher par mois';
-                $previous = '<button type="button" onclick="calendar_settings('.$this->week->previousWeek()->getDay().', '.$this->week->previousWeek()->getMonth().', '.$this->week->previousWeek()->getYear().', \'weekly\')"><</button>';
-                $next = '<button type="button" onclick="calendar_settings('.$this->week->nextWeek()->getDay().', '.$this->week->nextWeek()->getMonth().', '.$this->week->nextWeek()->getYear().', \'weekly\')">></button>';
+                $previous = '<button class="btn btn-light" type="button" onclick="calendar_settings('.$this->week->previousWeek()->getDay().', '.$this->week->previousWeek()->getMonth().', '.$this->week->previousWeek()->getYear().', \'weekly\')"><</button>';
+                $next = '<button class="btn btn-light" type="button" onclick="calendar_settings('.$this->week->nextWeek()->getDay().', '.$this->week->nextWeek()->getMonth().', '.$this->week->nextWeek()->getYear().', \'weekly\')">></button>';
                 break;
         }
         $this->output .= $title;
@@ -44,7 +45,7 @@ class CalendarRenderer extends BaseRenderer
         } else {
             $day = $this->TODAY;
         }
-        $this->output .= '<button type="button" onclick="calendar_settings('.$day.', '.$this->month->getMonth().', '.$this->month->getYear().', \''.$target_display.'\')">'.$message.'</button>';
+        $this->output .= '<button class="btn btn-light" type="button" onclick="calendar_settings('.$day.', '.$this->month->getMonth().', '.$this->month->getYear().', \''.$target_display.'\')">'.$message.'</button>';
         $this->output .= $previous;
         $this->output .= $next;
 

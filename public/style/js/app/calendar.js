@@ -5,7 +5,7 @@ function calendar_settings(day, month, year, display) {
         data : 'day='+day+'&month='+month+'&year='+year+'&display='+display,
         dataType : 'html',
         success: function(data) {
-            container = document.getElementsByClassName('app-container')[0]
+            container = document.getElementsByClassName('calendar-container')[0]
             container.innerHTML = data
         }
     })

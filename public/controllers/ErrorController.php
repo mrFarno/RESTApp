@@ -6,8 +6,9 @@ $renderer->header('Erreur')
                     'tag' => 'div',
                     'class' => 'app-container content-center'
                 ]             
-            ])
-            ->previous_page($from)
+                ], false)
+            ->set_referer($from)
+            ->previous_page()
             ->display_error($error_code)
             ->close_body($USER)
             ->footer()

@@ -107,8 +107,7 @@ $renderer->header('Connexion')
                 [
                     'tag' => 'div',
                 ],
-            ])
-            ->previous_page($from)
+            ], false)
             ->error($ERROR['message'])
             ->login_form($token, $from)
             ->close_body()

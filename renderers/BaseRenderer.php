@@ -9,6 +9,7 @@ abstract class BaseRenderer
     protected $opened_tags;
     protected $output;
     protected const STYLE_DIRECTORY = __DIR__.'/../public/style/';
+    protected $from;
 
     public function __construct()
     {
@@ -44,6 +45,42 @@ abstract class BaseRenderer
         $this->style('js/lib')
             ->style('js/app');
         $this->output .= '</footer>';
+
+        return $this;
+    }
+
+    private function navbar() {        
+        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #b2b2b2;">
+        <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item '.$this->active('restaurants').'">
+              <a class="nav-link" href="?page=restaurants&edit">Mon restaurant</a>
+            </li>
+            <li class="nav-item '.$this->active('team').'">
+              <a class="nav-link" href="?page=team">Mon équipe</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Disabled</a>
+            </li>
+          </ul>
+          <form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
+            <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
+            foreach ($_SESSION['restaurants'] as $id => $name) {
+                $selected = $_SESSION['current-rest'] == $id ? ' selected' : '';
+                $this->output .= '<option value="'.$id.'"'.$selected.'>'.$name.'</option>';
+            }
+            $this->output .= '</select>
+            <input type="hidden" name="from" value="'.$this->from.'">
+            </form>
+            <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>
+            <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
+            </div>
+        </nav>';
 
         return $this;
     }
@@ -102,10 +139,10 @@ abstract class BaseRenderer
      * @param string $from 
      * @return self
      */
-    public function previous_page($from) {
+    public function previous_page() {
         $this->output .= '<div class="d-flex flex-row w-100">
                                 <div class="homeIcon justify-content-start">
-                                    <a href="index.php?page='.$from.'">
+                                    <a href="index.php?page='.$this->from.'">
                                         <i class="fas fa-arrow-left leftArrow" style="margin:0;"></i>
                                     </a>
                                 </div>
@@ -116,10 +153,14 @@ abstract class BaseRenderer
     /**
      * Open body with optional params
      * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)
+     * @param bool $navbar : If page needs navbar, default true
      * @return self
      */
-    public function open_body(array $tags = []) {
+    public function open_body(array $tags = [], $navbar = true) {
         $this->output .='<body>';
+        if ($navbar === true) {
+            $this->navbar();
+        }
         foreach ($tags as $attributes) {
             $this->output .= '<'.$attributes['tag'];
             foreach ($attributes as $key => $value) {
@@ -150,6 +191,16 @@ abstract class BaseRenderer
         return $this;
     }
 
+    public function set_referer($from) {
+        $this->from = $from;
+
+        return $this;
+    }
+
+    public function get_referer() {
+        return $this->from;
+    }
+
     //--- ---
 
     /**
@@ -169,5 +220,9 @@ abstract class BaseRenderer
             return true;
         }
         return substr( $haystack, -$length ) === $needle;
+    }
+
+    private function active($page) {
+        return $this->from === $page ? 'active' : '';
     }
 }

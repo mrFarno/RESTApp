@@ -4,12 +4,16 @@ namespace renderers;
 
 class TeamRenderer extends BaseRenderer
 {
+    public function __construct() {
+        parent::__construct();
+        $this->from = 'team';
+    }
 
     public function team_form($employees) {
         $disabled = '';
         $this->output .= '
         <div class-"rest-form-container" style="width: fit-content;">
-        <h1 style="text-align: center;">Gestion de l\'équipe</h1><br>
+        <h1 style="text-align: center;">Gestion de l\'équipe</h1>
         <div class="team-ctnr">
             <h2 style="text-align: center;">Importer depuis la base de donnée</h2>
             <div class="form-inline w-100">

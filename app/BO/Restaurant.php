@@ -11,7 +11,7 @@ class Restaurant
     private $r_adress_town;
     private $r_adress_street;
     private $r_adress_country;
-    private $meals;
+    private $meals = [];
     private $r_type_id;
     private $manager;
     private $equipments;

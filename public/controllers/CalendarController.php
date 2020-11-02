@@ -25,8 +25,10 @@ $renderer->header()
             ->open_body([
                 [
                     'tag' => 'div',
+                    'class' => 'calendar-container'
                 ],
             ])
+            ->set_referer('home')
             ->options()
             ->monthly()
             ->close_body()

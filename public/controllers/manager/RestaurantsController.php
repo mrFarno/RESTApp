@@ -18,6 +18,8 @@ $args = [
     'r_adress_country' => FILTER_SANITIZE_STRING,
     'r_adress_zip' => FILTER_VALIDATE_INT,
     'r_type_id' => FILTER_VALIDATE_INT,
+    'current-rest' => FILTER_VALIDATE_INT,
+    'from' => FILTER_SANITIZE_STRING,
 ];
 
 foreach ($meal_types as $meal_type) {
@@ -28,7 +30,19 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 $form_action = '';
 $prefill = new Restaurant([]);
 $edit = false;
+
+if (isset($POST['current-rest'])) {
+    $_SESSION['current-rest'] = $POST['current-rest'];
+    $page = $POST['from'];
+    if ($page === 'restaurants') {
+        $page .= '&edit='.$_SESSION['current-rest'];
+    }
+    header('Location: ?page='.$page);
+    die();
+}
+
 if(isset($GET['edit'])) {
+    $GET['edit'] = $_SESSION['current-rest'];
     $edit = true;
     // if (!in_array($GET['edit'], $restaurant_dao->ids_by_manager($USER))) {
     //     error_redirect('401', $from);
@@ -71,6 +85,7 @@ if(isset($POST['r_name'])) {
     if ($edit === false) {
         header('Location: ?page=team&restid='.$restaurant->getId());
     }
+    header('Location: ?page=home');
 }
 $renderer->header()
             ->open_body([

@@ -6,6 +6,11 @@ class RestaurantsRenderer extends BaseRenderer
 {
     private $action = [];
 
+    public function __construct() {
+        parent::__construct();
+        $this->from = 'restaurants';
+    }
+
     public function restaurant_form($prefill, $restaurant_types, $meal_types) {
         $this->output .= '
         <div class-"rest-form-container" style="width: fit-content;">

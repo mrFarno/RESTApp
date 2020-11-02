@@ -7,9 +7,9 @@ $args = [
 ];
 $GET = filter_input_array(INPUT_GET, $args, false);
 
-if (!isset($from)) {
-    $from = 'home';
-}
+// if (!isset($from)) {
+//     $from = 'home';
+// }
 $USER = null;
 
 //rooting
@@ -28,7 +28,7 @@ if(isset($GET['page'])) {
     // If is not connected
     if ($auth->isAnon() || $SESSION->getUserdata() === null) {
         // Page that can be visited without authentication
-        $can_access = ['home', 'login', 'success', 'error', 'reset', 'logout', 'calendar'];
+        $can_access = ['login', 'success', 'error', 'reset', 'logout', 'calendar'];
         // Redirect to login
         if (!in_array($page, $can_access)) {
             $from = $page;
@@ -44,6 +44,19 @@ if(isset($GET['page'])) {
 } else {
     $page = 'home';
 }
+
+if ($USER !== null && $USER->getRole() === 'manager') {
+    $restaurants = $restaurant_dao->find('r_manager_id', $USER->getId());
+    $_SESSION['restaurants'] = [];
+    foreach ($restaurants as $restaurant) {
+        $_SESSION['restaurants'][$restaurant->getId()] = $restaurant->getName();
+    }
+    if (!isset($_SESSION['current-rest'])) {
+        $_SESSION['current-rest'] = reset($restaurants)->getId();
+    }
+}
+
+$page = $page === 'home' ? 'calendar' : $page;
 // Load renderer and controller
 $renderer = renderers\Provider::get_renderer($page);
 $controller = ucfirst($page).'Controller.php';   

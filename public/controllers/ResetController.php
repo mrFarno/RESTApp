@@ -47,7 +47,6 @@ $renderer->header('Réinitialiser mot de passe')
             ->open_body([
                 [
                     'tag' => 'div',
-                    'class' => 'app-container'
                 ]
             ])
             ->previous_page($from)

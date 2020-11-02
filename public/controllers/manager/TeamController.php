@@ -18,11 +18,13 @@ $args = [
 $GET = filter_input_array(INPUT_GET, $argsGet, false);
 $POST = filter_input_array(INPUT_POST, $args, false);
 
-if (isset($GET['restid'])) {
-    $restaurant = $restaurant_dao->find('r_id', $GET['restid']);
-} else {
-    error_redirect('400', 'home');
-}
+// if (isset($GET['restid'])) {
+//     $restaurant = $restaurant_dao->find('r_id', $GET['restid']);
+// } else {
+//     error_redirect('400', 'home');
+// }
+
+$restaurant = $restaurant_dao->find('r_id', $_SESSION['current-rest']);
 
 if (isset($POST['u_id'])) {
     $employement_dao->persist([

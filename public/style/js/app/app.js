@@ -92,3 +92,8 @@ function valid_form() {
     input3.required = false
 }
 
+function update_current_rest() {
+    form = document.getElementById('current-rest-form')
+    form.submit()
+}
+
