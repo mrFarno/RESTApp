@@ -11,7 +11,7 @@ $employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 $meals = [];
 
 foreach ($restaurant->getMeals() as $meal) {
-    $meals[$meal] = $meal_types_dao->find(['mt_id' => $meal])[0]['mt_name'];
+    $meals[$meal] = $meal_types_dao->find(['mt_id' => $meal])['mt_name'];
     $args['mt-'.$meal] = FILTER_SANITIZE_STRING;
     $args['af_timestart-'.$meal] = FILTER_SANITIZE_STRING;
     $args['af_timeend-'.$meal] = FILTER_SANITIZE_STRING;
@@ -24,8 +24,7 @@ if (isset($POST['findaf_uid'])) {
         'e_user_id' => $POST['findaf_uid'],
         'e_restaurant_id' => $_SESSION['current-rest']
     ]);
-
-    echo json_encode($affectation_dao->find(['af_employement_id' => $employement[0]['e_id']]));
+    echo json_encode($affectation_dao->find(['af_employement_id' => $employement['e_id']], true));
     die();
 }
 
@@ -43,13 +42,17 @@ if (isset($POST['u_id'])) {
                 'e_restaurant_id' => $_SESSION['current-rest']
             ]);
             $af_id = $affectation_dao->find([
-                'af_employement_id' => $employement[0]['e_id'],
+                'af_employement_id' => $employement['e_id'],
                 'af_meal_type' => $meal
-            ])[0]['af_id'];
-
+            ]);
+            if ($af_id !== false) {
+                $af_id = $af_id['af_id'];
+            } else {
+                $af_id = null;
+            }
             $affectation_dao->persist([
                 'af_id' => $af_id,
-                'af_employement_id' => $employement[0]['e_id'],
+                'af_employement_id' => $employement['e_id'],
                 'af_meal_type' => $meal,
                 'af_timestart' => $start,
                 'af_timeend' => $end,

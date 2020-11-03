@@ -93,13 +93,18 @@ html {
 }
 
 .agenda-table td {
-    padding: 10px;
+    /*padding: 10px;*/
     border: 1px solid #CCC;
     vertical-align: top;
     width: 14.29%;
     height: 20%;
     /* overflow: hidden;
     white-space: nowrap; */
+}
+
+.td-btn {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .agenda-table-6weeks td {
@@ -141,4 +146,37 @@ html {
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 1%;
+}
+
+#nav-checks {
+    position: absolute !important;
+    left: 10vh !important;
+    padding: 0;
+}
+
+#nav-checks>ul>li {
+    height: 12vh;
+}
+
+.nav-btn {
+    height: inherit;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color:darkgrey !important;
+}
+
+.home-btn {
+    position: absolute;
+    bottom: 3vh;
+}
+
+.btn-active {
+    color: black !important;
+}
+
+.next-btn {
+    position: absolute;
+    bottom: 15vh !important;
+    left: 48vw !important;
 }

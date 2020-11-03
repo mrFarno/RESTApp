@@ -62,15 +62,17 @@ class CalendarRenderer extends BaseRenderer
         for ($i = 0; $i < $this->month->getWeeks(); $i++) {
             $this->output .= '<tr>';
             foreach($this->month->days as $k => $day) {
-                $date = (clone $start)->modify("+" . ($k + $i * 7) . " days");               
+                $date = (clone $start)->modify("+" . ($k + $i * 7) . " days");
                 //if ($k != 5 && $k != 6) {
                     $class = $this->month->inMonth($date) ? '' : 'agenda-othermonth';
-                    $this->output .= '<td class="'.$class.'">';
+                    $this->output .= '<td class="'.$class.'">
+                    <button class="td-btn fnt_aw-btn" name="date" value="'.$date->format('Y-m-d').'">';
                     if ($i === 0) {
                         $this->output .= ' <div class="agenda-weekday">'.$day.'</div>';
                     }
                     $is_today = date('Y-m-d') === $date->format('Y-m-d') ? 'current-day' : '' ;
                     $this->output .= '<div class="agenda-day '.$is_today.'">'.$date->format('d').'</div>
+                    </button>
                     </td>';
                 //}
             }
@@ -95,8 +97,10 @@ class CalendarRenderer extends BaseRenderer
                 $class = $this->week->inMonth($date) ? '' : 'agenda-othermonth';
                 $is_today = date('Y-m-d') === $date->format('Y-m-d') ? 'current-day' : '' ;
                 $this->output .= '<td class="'.$class.'">
+                    <button class="td-btn fnt_aw-btn" name="date" value="'.$date->format('Y-m-d').'">
                 <div class="agenda-weekday">'.$day.'</div>
                 <div class="agenda-day '.$is_today.'">'.$date->format('d').'</div>
+                </button>
             </td>';
             //}
         }

@@ -113,16 +113,14 @@ function modal_init(u_id) {
         data : 'findaf_uid='+u_id,
         dataType : 'json',
         success: function(data) {
-
-            for (i = 0; i < data.length; i++) {
-                console.log(data[i])
+            for (var i in data) {
                 check = $('#mt-'+data[i].af_meal_type)
                 check.trigger('change')
                 start = document.getElementById('af_timestart-'+data[i].af_meal_type)
-                start.hidden = false
+                start.style.display = ''
                 start.value = data[i].af_timestart.split(' ')[0]
                 end = document.getElementById('af_timeend-'+data[i].af_meal_type)
-                end.hidden = false
+                end.style.display = ''
                 if (data[i].af_timeend !== null) {
                     end.value = data[i].af_timeend.split(' ')[0]
                 }
@@ -142,6 +140,20 @@ function display_dates(mt_id) {
         start.hidden = true
         end.hidden = true
     }
+}
 
+function load_form(form) {
+    $(".btn-active").removeClass("btn-active");
+    $("#"+form+"-btn").addClass('btn-active')
+    $.ajax({
+        url : 'index.php?page=meals',
+        type : 'POST',
+        data : 'form='+form,
+        dataType : 'html',
+        success: function(data) {
+            container = document.getElementById('form-container')
+            container.innerHTML = data
+        }
+    })
 }
 

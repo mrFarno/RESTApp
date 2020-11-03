@@ -75,8 +75,8 @@ abstract class DAO extends \PDO
         foreach ($datas as $key => $value) {
             $binds[':'.$key] = $value;
         }
-        if ($update === true) {
-            $binds[':'.$this->prefix.'_id'] = $datas[$this->prefix.'_id'];
+        if ($update !== true) {
+            unset($binds[':'.$this->prefix.'_id']);
         }
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute($binds);
@@ -115,7 +115,26 @@ abstract class DAO extends \PDO
         }
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute($binds);
-        return $stmt->fetchAll();
+        $result = $stmt->fetchAll();
+        $data = [];
+        foreach ($result as $row) {
+            $data[$row[$this->prefix.'_id']] = $row;
+        }
+        switch (count($data)) {
+            case 0 :
+                if ($force_array === true) {
+                    return [];
+                }
+                return false;
+                break;
+            case 1 :
+                if ($force_array === true) {
+                    return $data;
+                }
+                return reset($data);
+                break;
+            default : return $data;
+        }
     }
 
     /**

@@ -24,6 +24,11 @@ if (isset($POST['display']) && in_array($POST['display'], ['monthly', 'weekly'])
 $renderer->header()
             ->open_body([
                 [
+                    'tag' => 'form',
+                    'action' => 'index.php?page=management',
+                    'method' => 'POST'
+                ],
+                [
                     'tag' => 'div',
                     'class' => 'calendar-container'
                 ],

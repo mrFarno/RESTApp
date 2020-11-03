@@ -13,6 +13,23 @@ class Meal
     private $m_check_products;
     private $m_guests;
     private $m_type_id;
+    private $m_date;
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->m_date;
+    }
+
+    /**
+     * @param mixed $m_date
+     */
+    public function setDate($m_date)
+    {
+        $this->m_date = $m_date;
+    }
     private $comment;
 
     public function __construct($data)
