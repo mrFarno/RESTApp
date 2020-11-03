@@ -38,7 +38,7 @@ if (isset($POST['username']) && isset($POST['password'])) {
         'password' => $POST['password'],
     ];
     try {
-        $user_dao->find('u_email', $credentials['username']);
+        $user_dao->find(['u_email' => $credentials['username']]);
     } catch (\PDOException $e) {
         $ERROR = [
             'message' => 'Veuillez transmettre l\'erreur suivante à un administrateur : '.$e->getMessage()
@@ -71,7 +71,7 @@ if($auth->isValid()){
 
 //reset password
 if (isset($POST['reset']) && trim($POST['reset']) !== '') {  
-    $user = $user_dao->find('u_email', $POST['reset']);
+    $user = $user_dao->find(['u_email' => $POST['reset']]);
     if ($user === false) {
         echo json_encode([
             'error',

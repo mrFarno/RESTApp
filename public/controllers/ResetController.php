@@ -16,7 +16,7 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 $ERROR['message'] = true;
 
 if (isset($GET['token'])) {
-    $user = $user_dao->find('u_token', $GET['token']);
+    $user = $user_dao->find(['u_token' => $GET['token']]);
     if ($user === false) {
         $ERROR['message'] = 'Token invalide';
     }

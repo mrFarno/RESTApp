@@ -33,7 +33,7 @@ if (isset($POST['add'])) {
     ];
     $user = new User($datas);
     try {
-        if (!$user_dao->find('u_email', $user->getEmail())) {
+        if (!$user_dao->find(['u_email' => $user->getEmail()])) {
             $user_dao->persist($user);            
             $content = '<p>Ce mail a été envoyé automatiquement par RESTApp pour vous permettre de choisir votre mot de passe.
                     Merci de ne pas y répondre</p>
@@ -50,7 +50,7 @@ if (isset($POST['add'])) {
 
 if (isset($POST['delete'])) {
     $admins = $user_dao->find('u_role', 'Admin', true);
-    $to_delete = $user_dao->find('u_id', $POST['delete']);
+    $to_delete = $user_dao->find(['u_id' => $POST['delete']]);
     if ($to_delete->getRole() === 'Admin' && count($admins) === 1) {
         $ERROR['message'] = 'Impossible de supprimer le seul administrateur du site';
     } else {

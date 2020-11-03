@@ -53,7 +53,7 @@ if(isset($GET['edit'])) {
         'btn-del' => '<a href="?page=restaurants&delete='.$GET['edit'].'">Supprimer</a>'
     ];
     $form_action = '&edit='.$GET['edit'];
-    $prefill = $restaurant_dao->find('r_id', $GET['edit']);
+    $prefill = $restaurant_dao->find(['r_id' => $GET['edit']]);
 } else if (isset($GET['delete'])) {
     // if (!in_array($GET['edit'], $restaurant_dao->ids_by_manager($USER))) {
     //     error_redirect('401', $from);

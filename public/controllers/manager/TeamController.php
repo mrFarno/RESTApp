@@ -24,14 +24,14 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 //     error_redirect('400', 'home');
 // }
 
-$restaurant = $restaurant_dao->find('r_id', $_SESSION['current-rest']);
+$restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 
 if (isset($POST['u_id'])) {
     $employement_dao->persist([
         'e_restaurant_id' => $restaurant->getId(),
         'e_user_id' => $POST['u_id']
     ]);
-    $user = $user_dao->find('u_id', $POST['u_id']);
+    $user = $user_dao->find(['u_id' => $POST['u_id']]);
 }
 
 if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
@@ -58,7 +58,7 @@ if (isset($POST['delete'])) {
     $employement_dao->delete_by_user_restaurant($POST['delete'], $restaurant->getId());
 }
 
-$employees = $user_dao->find('u_role', 'employee', true);
+$employees = $user_dao->find(['u_role' => 'employee'], true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
 foreach ($employees as $key => $value) {

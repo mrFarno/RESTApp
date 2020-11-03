@@ -19,14 +19,8 @@ class UserDAO extends DAO implements AdapterInterface
      * 
      * @return mixed array of FormElementContent objects if several results, one FormElementContent object else
      */
-    public function find($filter, $value, $force_array = false){
-        $request = 'SELECT * FROM users
-                    WHERE '.$filter.' = :value;';
-        $stmt = $this->getPDO()->prepare($request);
-        $stmt->execute([
-            ':value' => $value
-        ]);
-        $result = $stmt->fetchAll();
+    public function find($params, $force_array = false){
+        $result = parent::find($params, $force_array);
         $data = [];
         foreach ($result as $row) {
             $data[$row['u_id']] = new User($row);
@@ -54,7 +48,7 @@ class UserDAO extends DAO implements AdapterInterface
      * @return true
      */
     public function persist($user) {
-        if ($this->find('u_email', $user->getEmail()) !== false) {
+        if ($this->find(['u_email' => $user->getEmail()]) !== false) {
             $update = true;
             $request = 'UPDATE users SET
                             u_firstname = :firstname,
@@ -112,7 +106,7 @@ class UserDAO extends DAO implements AdapterInterface
 
     public function lookupUserData($username)
     {
-        return $this->find('u_email', $username);
+        return $this->find(['u_email' => $username]);
     }
 
     public function getError()

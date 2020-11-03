@@ -22,7 +22,7 @@ class AffectationsRenderer extends BaseRenderer
             <th>Prénom</th>
             <th>Nom</th>
             <th>Adresse mail</th>
-            <th>Supprimer</th>';
+            <th>Affecter</th>';
 
             foreach ($employees as $employee) {
             $this->output .= '<tr>
@@ -65,11 +65,11 @@ class AffectationsRenderer extends BaseRenderer
                 </div>
                 <div id="start-mt-'.$id.'" class="col" hidden>
                     <span>Du </span>
-                    <input type="date" name="af_timestart-'.$id.'" value="'.date('Y-m-d').'">
+                    <input type="date" id="af_timestart-'.$id.'" name="af_timestart-'.$id.'" value="'.date('Y-m-d').'">
                 </div>
                 <div id="end-mt-'.$id.'" class="col" hidden>
                     <span> au </span>
-                    <input type="date" name="af_timeend-'.$id.'">
+                    <input type="date" name="af_timeend-'.$id.'" id="af_timeend-'.$id.'">
                 </div>
                 </div>';
         }

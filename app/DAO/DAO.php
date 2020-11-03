@@ -43,15 +43,16 @@ abstract class DAO extends \PDO
      * @param datas : Object if entity in BO, array else
      */
     public function persist($datas) {
-        if (isset($datas[$this->prefix.'_id'])) {
+        if (isset($datas[$this->prefix.'_id']) && $datas[$this->prefix.'_id'] !== null) {
             $update = true;
-            $request = 'UPDATE '.$this->table.'SET ';
+            $request = 'UPDATE '.$this->table.' SET ';
             foreach ($datas as $key => $value) {
                 if ($key !== $this->prefix.'_id') {
-                    $request .= $key.'= :'.$key;
+                    $request .= $key.'= :'.$key.', ';
                 }
             }
-            $request .= 'WHERE '.$this->prefix.'_id = :'.$this->prefix.'_id;';
+            $request = substr($request, 0, -2);
+            $request .= ' WHERE '.$this->prefix.'_id = :'.$this->prefix.'_id;';
         } else {
             $update = false;
             $request = 'INSERT INTO '.$this->table.' (';
@@ -77,7 +78,6 @@ abstract class DAO extends \PDO
         if ($update === true) {
             $binds[':'.$this->prefix.'_id'] = $datas[$this->prefix.'_id'];
         }
-
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute($binds);
 
@@ -95,20 +95,26 @@ abstract class DAO extends \PDO
 
     /**
      * General find function for entities not in BO
-     * @param string $filter Column to filter by
-     * @param string $value Targetet value
+     * @param array $params associative array filter => value
      * @param boolean $force_array TRUE if result can be array. Used in specific find functions for entities in BO, ignored here
-     * 
+     * TODO replace filter/value by associative array to filter by several cols
      * @return array
      */
-    public function find($filter, $value, $force_array = false){
-        $request = 'SELECT * FROM '.$this->table.'
-                    WHERE '.$filter.' = :value;';
-
+    public function find($params, $force_array = false){
+        $request = 'SELECT * FROM '.$this->table;
+        $i = 0;
+        $binds = [];
+        foreach ($params as $filter => $value) {
+            if ($i === 0) {
+                $request .= ' WHERE '.$filter.' = :value'.$i;
+            } else {
+                $request .= ' AND '.$filter.' = :value'.$i;
+            }
+            $binds[':value'.$i] = $value;
+            $i++;
+        }
         $stmt = $this->getPDO()->prepare($request);
-        $stmt->execute([
-            ':value' => $value
-        ]);
+        $stmt->execute($binds);
         return $stmt->fetchAll();
     }
 

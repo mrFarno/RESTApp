@@ -18,15 +18,22 @@ class RestaurantDAO extends DAO
      * 
      * @return mixed array of Restaurant objects if several results, one Restaurant object else
      */
-    public function find($filter, $value, $force_array = false){
+    public function find($params, $force_array = false){
         $request = 'SELECT * FROM restaurants
-                    INNER JOIN users ON restaurants.r_manager_id = users.u_id
-                    WHERE '.$filter.' = :value;';
-
+                    INNER JOIN users ON restaurants.r_manager_id = users.u_id';
+        $i = 0;
+        $binds = [];
+        foreach ($params as $filter => $value) {
+            if ($i === 0) {
+                $request .= ' WHERE '.$filter.' = :value'.$i;
+            } else {
+                $request .= ' AND '.$filter.' = :value'.$i;
+            }
+            $binds[':value'.$i] = $value;
+            $i++;
+        }
         $stmt = $this->getPDO()->prepare($request);
-        $stmt->execute([
-            ':value' => $value
-        ]);
+        $stmt->execute($binds);
         $result = $stmt->fetchAll();
         $data = [];
         foreach ($result as $row) {
@@ -66,7 +73,7 @@ class RestaurantDAO extends DAO
             $meals_string .= ':'.$id;
         }
         $meals_string = ltrim($meals_string, ':');
-        if ($this->find('r_id', $restaurant->getId()) !== false) {
+        if ($this->find(['r_id' => $restaurant->getId()]) !== false) {
             $update = true;
             $request = 'UPDATE restaurants SET
                             r_name = :name,
