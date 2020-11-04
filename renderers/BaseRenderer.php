@@ -82,6 +82,8 @@ abstract class BaseRenderer
                 $this->output .= '</select>
             <input type="hidden" name="from" value="'.$this->from.'">
             </form>';
+            } else {
+                $this->output .= 'Créer un restaurant :';
             }
             $this->output .= '<a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>
             <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>

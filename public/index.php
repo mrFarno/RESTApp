@@ -46,7 +46,7 @@ if(isset($GET['page'])) {
 }
 
 if ($USER !== null && $USER->getRole() === 'manager') {
-    $restaurants = $restaurant_dao->find(['r_manager_id' => $USER->getId()]);
+    $restaurants = $restaurant_dao->find(['r_manager_id' => $USER->getId()], true);
     $_SESSION['restaurants'] = [];
     if ($restaurants !== false) {
         foreach ($restaurants as $restaurant) {
