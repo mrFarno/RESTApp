@@ -56,7 +56,7 @@ if (isset($POST['username']) && isset($POST['password'])) {
 }
 
 if($auth->isValid()){
-    $from = $POST['from'] ?? $from;
+    $from = $POST['from'] ?? 'home';
     if (strpos($from,'login')) {
         $form = 'home';
     }

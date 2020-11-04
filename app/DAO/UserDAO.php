@@ -20,7 +20,7 @@ class UserDAO extends DAO implements AdapterInterface
      * @return mixed array of FormElementContent objects if several results, one FormElementContent object else
      */
     public function find($params, $force_array = false){
-        $result = parent::find($params, $force_array);
+        $result = parent::find($params, true);
         $data = [];
         foreach ($result as $row) {
             $data[$row['u_id']] = new User($row);

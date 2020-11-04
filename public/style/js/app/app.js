@@ -14,7 +14,7 @@ function reset_password() {
 }
 
 function add_autofocus() {
-    var modal = event.target.getAttribute("data-target")
+    var modal = EventTarget.getAttribute("data-target")
     $(modal).on('shown.bs.modal', function () {
         $(modal).find('input').first().trigger('focus')
     })
@@ -155,5 +155,19 @@ function load_form(form) {
             container.innerHTML = data
         }
     })
+}
+
+function update_stock() {
+    var inputs = $('.missing-input')
+    var missing = 0
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value > missing) {
+            missing = inputs[i].value
+        }
+    }
+    stocks = $('.kit-part-target')
+    for (let i = 0; i < stocks.length; i++) {
+        stocks[i].innerHTML = stocks[i].innerHTML - missing
+    }
 }
 

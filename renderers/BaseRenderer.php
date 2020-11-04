@@ -74,17 +74,19 @@ abstract class BaseRenderer
             <li class="nav-item">
               <a class="nav-link" href="#">Lien useless</a>
             </li>
-          </ul>
-          <form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
+          </ul>';
+            if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
+                $this->output .= '<form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
             <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
-            foreach ($_SESSION['restaurants'] as $id => $name) {
-                $selected = $_SESSION['current-rest'] == $id ? ' selected' : '';
-                $this->output .= '<option value="'.$id.'"'.$selected.'>'.$name.'</option>';
-            }
-            $this->output .= '</select>
+                foreach ($_SESSION['restaurants'] as $id => $name) {
+                    $selected = $_SESSION['current-rest'] == $id ? ' selected' : '';
+                    $this->output .= '<option value="'.$id.'"'.$selected.'>'.$name.'</option>';
+                }
+                $this->output .= '</select>
             <input type="hidden" name="from" value="'.$this->from.'">
-            </form>
-            <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>
+            </form>';
+            }
+            $this->output .= '<a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>
             <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
             </div>
         </nav>';

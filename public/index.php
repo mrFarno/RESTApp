@@ -28,7 +28,7 @@ if(isset($GET['page'])) {
     // If is not connected
     if ($auth->isAnon() || $SESSION->getUserdata() === null) {
         // Page that can be visited without authentication
-        $can_access = ['login', 'success', 'error', 'reset', 'logout', 'calendar'];
+        $can_access = ['login', 'success', 'error', 'reset', 'logout', 'calendar', 'signin'];
         // Redirect to login
         if (!in_array($page, $can_access)) {
             $from = $page;
@@ -48,11 +48,13 @@ if(isset($GET['page'])) {
 if ($USER !== null && $USER->getRole() === 'manager') {
     $restaurants = $restaurant_dao->find(['r_manager_id' => $USER->getId()]);
     $_SESSION['restaurants'] = [];
-    foreach ($restaurants as $restaurant) {
-        $_SESSION['restaurants'][$restaurant->getId()] = $restaurant->getName();
-    }
-    if (!isset($_SESSION['current-rest'])) {
-        $_SESSION['current-rest'] = reset($restaurants)->getId();
+    if ($restaurants !== false) {
+        foreach ($restaurants as $restaurant) {
+            $_SESSION['restaurants'][$restaurant->getId()] = $restaurant->getName();
+        }
+        if (!isset($_SESSION['current-rest'])) {
+            $_SESSION['current-rest'] = reset($restaurants)->getId();
+        }
     }
 }
 

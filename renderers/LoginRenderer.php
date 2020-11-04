@@ -33,6 +33,11 @@ class LoginRenderer extends BaseRenderer
                         </div>
                         <div class="row" id="passwordForm" style="margin-top:2rem;margin-bottom:0">
                         <div class="col-12">
+                            <a href="?page=signin">
+                                Créer un compte
+                            </a>
+                        </div>
+                        <div class="col-12">
                             <a data-toggle="collapse" href="#collapsePassword" role="button" aria-expanded="false" aria-controls="collapsePassword">
                                 Réinitialiser le mot de passe
                             </a>

@@ -81,47 +81,49 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function team_equipment_form($stock) {
-        $this->output .= '<br><br><h2 style="text-align: center;">Equipement des employés</h2><br>
-            <div class="">
+    public function team_equipment_form($equipments) {
+        $this->output .= '<br><br><h2 style="text-align: center;">Equipement des employés</h2><br>';
+        if (count($equipments) === 0) {
+            $this->output .= 'Pas d\'epi renseigné';
+        } else {
+            $this->output .= '<div class="">
             <table class="table table-hover">
             <th>Equipement</th>
             <th>Manque</th>
-            <th>Kits en réserve</th>
-            <tr>
-                <td>Chaussures</td>
-                <td><input type="number" value="0" min="0"></td>
-                <td>'.$stock.'</td>
-            </tr>
-            <tr>
-                <td>Blouse</td>
-                <td><input type="number" value="0" min="0"></td>
-                <td>'.$stock.'</td>
+            <th>En réserve</th>';
+            foreach ($equipments as $equipment) {
+                $class = $equipment['te_kit_part'] == 1 ? ' class="kit-part-target" ' : '';
+                $this->output .= '<tr>
+                <td>'.$equipment['te_name'].'</td>
+                <td><input class="missing-input" onchange="update_stock()" oninput="update_stock()" id="missing-'.$equipment['te_id'].'" type="number" value="0" min="0"></td>
+                <td'.$class.'>'.$equipment['te_stock'].'</td>                
             </tr>';
+            }
+        }
         $this->next_btn('equipment');
         return $this;
     }
 
     public function equipment_form() {
-        $this->output .= 'Matos';
+        $this->output .= '<br><br><h2 style="text-align: center;">Matériel</h2><br>WIP';
         $this->next_btn('cutlery');
         return $this;
     }
 
     public function cutlery_form() {
-        $this->output .= 'vaisselle';
+        $this->output .= '<br><br><h2 style="text-align: center;">Petit matériel</h2><br>WIP';
         $this->next_btn('products');
         return $this;
     }
 
     public function products_form() {
-        $this->output .= 'produits';
+        $this->output .= '<br><br><h2 style="text-align: center;">Marchandise</h2><br>WIP';
         $this->next_btn('guests');
         return $this;
     }
 
     public function guests_form() {
-        $this->output .= 'convives';
+        $this->output .= '<br><br><h2 style="text-align: center;">Convives</h2><br>WIP';
         return $this;
     }
 
