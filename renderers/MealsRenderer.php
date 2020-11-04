@@ -78,6 +78,7 @@ class MealsRenderer extends BaseRenderer
             </div>';
         }
         $this->next_btn('team_equipment');
+        $this->home();
         return $this;
     }
 
@@ -93,37 +94,45 @@ class MealsRenderer extends BaseRenderer
             <th>En réserve</th>';
             foreach ($equipments as $equipment) {
                 $class = $equipment['te_kit_part'] == 1 ? ' class="kit-part-target" ' : '';
+                $input = $equipment['te_kit_part'] == 1 ? '<input type="hidden" id="kit-nmbr" value="'.$equipment['te_stock'].'">' : '';
+                $max = $equipment['te_kit_part'] == 1 ? $equipment['te_stock'] : '';
                 $this->output .= '<tr>
                 <td>'.$equipment['te_name'].'</td>
-                <td><input class="missing-input" onchange="update_stock()" oninput="update_stock()" id="missing-'.$equipment['te_id'].'" type="number" value="0" min="0"></td>
-                <td'.$class.'>'.$equipment['te_stock'].'</td>                
+                <td><input class="missing-input" onchange="update_stock()" oninput="update_stock()" id="missing-'.$equipment['te_id'].'" type="number" value="0" min="0" max="'.$max.'"></td>
+                <td'.$class.'>'.$equipment['te_stock'].'</td>    
+                '.$input.'                           
             </tr>';
             }
         }
         $this->next_btn('equipment');
+        $this->home();
         return $this;
     }
 
     public function equipment_form() {
         $this->output .= '<br><br><h2 style="text-align: center;">Matériel</h2><br>WIP';
         $this->next_btn('cutlery');
+        $this->home();
         return $this;
     }
 
     public function cutlery_form() {
         $this->output .= '<br><br><h2 style="text-align: center;">Petit matériel</h2><br>WIP';
         $this->next_btn('products');
+        $this->home();
         return $this;
     }
 
     public function products_form() {
         $this->output .= '<br><br><h2 style="text-align: center;">Marchandise</h2><br>WIP';
         $this->next_btn('guests');
+        $this->home();
         return $this;
     }
 
     public function guests_form() {
         $this->output .= '<br><br><h2 style="text-align: center;">Convives</h2><br>WIP';
+        $this->home();
         return $this;
     }
 
@@ -134,12 +143,37 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function home() {
-        $this->output .='<div class="row justify-content-center home-btn">
-        <button type="button" class="btn btn-outline-success width100">
-        <a href="?page=home">Terminer</a>
-        </button>
-        </div>';
+        $this->output .='<button style="    position: absolute;
+            bottom: 3vh;
+            right: 5vw !important;" type="button" title="Commentaire" class="fnt_aw-btn comment-btn fa-2x" data-toggle="modal" data-target="#comment_modal"><i class="far fa-comment-alt"></i></button>
+                <div class="row justify-content-center">
+                <button type="button" class="btn btn-outline-success width100 home-btn">
+                <a href="?page=home">Terminer</a>
+                </button>
+                </div>';
 
+        return $this;
+    }
+
+    public function comment_modal() {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="comment_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel">Commentaire</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">                
+                        <textarea class="form-control" rows="5"></textarea>       
+                    </div>
+                    <div class="row justify-content-center">
+                    <button type="button" class="btn btn-outline-success width100">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>';
         return $this;
     }
 

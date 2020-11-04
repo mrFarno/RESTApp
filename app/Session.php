@@ -118,4 +118,10 @@ class Session  extends \Vespula\Auth\Session\Session
     {
         return !empty($this->store['lang']) ? $this->store['lang'] : null;
     }
+
+    public function reset()
+    {
+        parent::reset();
+        session_unset();
+    }
 }

@@ -8,7 +8,7 @@ $argsGet = [
 $GET = filter_input_array(INPUT_GET, $argsGet, false);
 $POST = filter_input_array(INPUT_POST, $args, false);
 
-$day = $POST['date'] ?? $GET['date'];
+$day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $renderer->header()
     ->open_body()

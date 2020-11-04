@@ -169,6 +169,7 @@ html {
 .home-btn {
     position: absolute;
     bottom: 3vh;
+    left: 40vw !important;
 }
 
 .btn-active {
@@ -179,4 +180,14 @@ html {
     position: absolute;
     bottom: 15vh !important;
     left: 48vw !important;
+}
+
+.comment-btn {
+    position: absolute;
+    bottom: 3vh;
+    right: 5vw !important;
+}
+
+.comment{
+
 }

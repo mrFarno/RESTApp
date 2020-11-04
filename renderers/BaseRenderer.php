@@ -71,9 +71,6 @@ abstract class BaseRenderer
               <a class="dropdown-item" href="?page=affectations">Affectations</a>
             </div>
           </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Lien useless</a>
-            </li>
           </ul>';
             if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
                 $this->output .= '<form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">

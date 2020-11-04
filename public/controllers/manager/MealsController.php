@@ -9,7 +9,7 @@ $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
 ];
 
-$day = $POST['date'] ?? $GET['date'] ?? null;
+$day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 $employees = $affectation_dao->find_users($restaurant->getId(), 2, $day, true);
@@ -58,9 +58,9 @@ if (isset($POST['validform'])) {
                 }
             }
             if ($count_presents === count($employees)) {
-                //TODO check ok
+                $meal->setCheck_team(1);
             } else {
-                //TODO check not ok
+                $meal->setCheck_team(0);
             }
             break;
         case 'team_equipment' :
@@ -69,6 +69,7 @@ if (isset($POST['validform'])) {
         default:
             break;
     }
+    $meal_dao->persist($meal);
     die();
 }
 
@@ -86,9 +87,9 @@ $renderer->set_day($day)
         ]
     ])
     ->dropdown($meal_types)
+    ->comment_modal()
     ->checks_navigation()
     ->team_form($employees)
-//    ->home()
     ->close_body()
     ->footer()
     ->render();

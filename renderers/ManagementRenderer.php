@@ -18,7 +18,7 @@ class ManagementRenderer extends BaseRenderer
                 <a href="?page=meals&date='.$day.'">Repas</a>
                 <a href="#">PND</a>
                 <a href="#">Stocks</a>
-                <a href="#">Matériel</a>        
+                <a href="?page=equipment">Matériel</a>        
             </div>
         </div>';
         return $this;

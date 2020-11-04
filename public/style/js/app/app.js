@@ -165,9 +165,10 @@ function update_stock() {
             missing = inputs[i].value
         }
     }
-    stocks = $('.kit-part-target')
+    var stocks = $('.kit-part-target')
+    var input = document.getElementById('kit-nmbr')
     for (let i = 0; i < stocks.length; i++) {
-        stocks[i].innerHTML = stocks[i].innerHTML - missing
+        stocks[i].innerHTML = input.value - missing
     }
 }
 
