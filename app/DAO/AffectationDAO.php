@@ -16,19 +16,18 @@ class AffectationDAO extends DAO
                     INNER JOIN employements ON af_employement_id = e_id
                     INNER JOIN users ON e_user_id = u_id
                     WHERE e_restaurant_id = :r_id
-                    AND af_meal_type = :mt_id';
+                    AND af_meal_type = :mt_id
+                    AND (af_timestart < :date AND (af_timeend IS NULL OR af_timeend > :date))';
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute([
             ':r_id' => $r_id,
-            ':mt_id' => $mt_id
+            ':mt_id' => $mt_id,
+            ':date' => $date.' 12:00:00'
         ]);
         $result = $stmt->fetchAll();
         $data = [];
         foreach ($result as $row) {
-            $current = strtotime($date.' 12:00:00');
-            if ($current > strtotime($row['af_timestart']) && ($row['af_timeend'] === null || $current < strtotime($row['af_timeend']))) {
-                $data[$row['u_id']] = new User($row);
-            }
+            $data[$row['u_id']] = new User($row);
         }
         switch (count($data)) {
             case 0 :
@@ -46,4 +45,5 @@ class AffectationDAO extends DAO
             default : return $data;
         }
     }
+
 }

@@ -97,6 +97,14 @@ function update_current_rest() {
     form.submit()
 }
 
+function update_current_meal() {
+    hidden = document.getElementById('current-meal')
+    hidden.value = event.target.value
+
+    form = document.getElementById('meal-form')
+    form.submit()
+}
+
 function modal_init(u_id) {
     u_input = document.getElementById('u_id')
     u_input.value = u_id
@@ -143,6 +151,8 @@ function display_dates(mt_id) {
 }
 
 function load_form(form) {
+    comment_hidden = document.getElementById('check-step')
+    comment_hidden.value = form
     $(".btn-active").removeClass("btn-active");
     $("#"+form+"-btn").addClass('btn-active')
     $.ajax({
@@ -157,18 +167,103 @@ function load_form(form) {
     })
 }
 
-function update_stock() {
-    var inputs = $('.missing-input')
-    var missing = 0
+function post_form(form) {
+    data = {}
+    data['validform'] = form
+    var inputs = document.querySelectorAll('#form-container input')
     for (let i = 0; i < inputs.length; i++) {
-        if (inputs[i].value > missing) {
-            missing = inputs[i].value
+        data[inputs[i].name] = inputs[i].value
+    }
+    $.ajax({
+        url : 'index.php?page=meals',
+        type : 'POST',
+        data : data,
+    })
+}
+
+function update_stock(kit_part) {
+    if (kit_part == 1) {
+        var inputs = $('.missing-input')
+        var missing = 0
+        for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].value > missing) {
+                missing = inputs[i].value
+            }
         }
+        var stocks = $('.kit-part-target')
+        var input = document.getElementById('kit-nmbr')
+        for (let i = 0; i < stocks.length; i++) {
+            stocks[i].innerHTML = input.value - missing
+        }
+    } else {
+        id = event.target.id.replace('missing-', '')
+        stock = document.getElementById('stock-'+id)
+        missing = event.target.value
+        remain = document.getElementById(id+'-stock')
+        console.log(remain)
+        stock.innerHTML = remain.value-missing
     }
-    var stocks = $('.kit-part-target')
-    var input = document.getElementById('kit-nmbr')
-    for (let i = 0; i < stocks.length; i++) {
-        stocks[i].innerHTML = input.value - missing
+}
+
+function show_absence_button(id) {
+    btn = document.getElementById('absence-'+id)
+    if (btn.hidden === true) {
+        btn.hidden = false
+    } else {
+        btn.hidden = true
     }
+}
+
+function submit_absences_form() {
+    form = document.getElementById('absences-form')
+    form.submit()
+}
+
+function update_user_id() {
+    id = event.target.id.replace('absence-', '')
+    hidden = document.getElementById('ab_user_id')
+    hidden.value = id
+}
+
+function save_comment() {
+    data = {}
+    step = document.getElementById('check-step')
+    comment = document.getElementById('comment-content')
+    meal = document.getElementById('meal_id')
+    data = {
+        'meal' : meal.value,
+        'step' : step.value,
+        'content' : comment.value,
+    }
+    $.ajax({
+        url : 'index.php?page=comments',
+        type : 'POST',
+        data : data,
+        dataType : 'json',
+        success: function(data) {
+            show_toast(data[0], data[1])
+        }
+    })
+}
+
+function init_comment_modal() {
+    data = {}
+    step = document.getElementById('check-step')
+    meal = document.getElementById('meal_id')
+    data = {
+        'prefill' : meal.value,
+        'step' : step.value,
+    }
+    $.ajax({
+        url : 'index.php?page=comments',
+        type : 'POST',
+        data : data,
+        dataType : 'text',
+        success: function(data) {
+            comment = document.getElementById('comment-content')
+            comment.value = data
+            comment.focus()
+        }
+    })
 }
 

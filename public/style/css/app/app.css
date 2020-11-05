@@ -155,7 +155,7 @@ html {
 }
 
 #nav-checks>ul>li {
-    height: 12vh;
+    height: 10vh !important;
 }
 
 .nav-btn {
@@ -188,6 +188,20 @@ html {
     right: 5vw !important;
 }
 
-.comment{
+.comment-title {
+    font-size: large;
+    text-align: center !important;
+    font-style: italic !important;
+}
 
+.comment-content {
+    text-align: justify !important;
+    width: 45vw !important;
+}
+
+#form-container {
+    max-height: 45vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
 }

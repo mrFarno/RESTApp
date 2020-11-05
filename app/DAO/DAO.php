@@ -2,6 +2,8 @@
 
 namespace app\DAO;
 
+use PDO;
+
 abstract class DAO extends \PDO
 {
     private $host;
@@ -148,6 +150,45 @@ abstract class DAO extends \PDO
         $stmt->execute([
             ':id' => $id
         ]);
+        return true;
+    }
+
+    /**
+     * Used for custom select requests
+     * @param $request
+     * @param false $force_array
+     * @return array|false|mixed
+     */
+    public function select($request, $force_array = false) {
+        $result = $this->getPDO()->query($request)->fetchAll();
+        $data = [];
+        foreach ($result as $row) {
+            $data[$row[$this->prefix.'_id']] = $row;
+        }
+        switch (count($data)) {
+            case 0 :
+                if ($force_array === true) {
+                    return [];
+                }
+                return false;
+                break;
+            case 1 :
+                if ($force_array === true) {
+                    return $data;
+                }
+                return reset($data);
+                break;
+            default : return $data;
+        }
+    }
+
+    /**
+     * Used for custom update requests
+     * @param $request
+     */
+    public function update($request) {
+        $this->getPDO()->exec($request);
+
         return true;
     }
 

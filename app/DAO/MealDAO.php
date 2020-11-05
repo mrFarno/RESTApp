@@ -18,7 +18,7 @@ class MealDAO extends DAO
      */
     public function find($params, $force_array = false)
     {
-        $result = parent::find($params, $force_array);
+        $result = parent::find($params, true);
         $data = [];
         foreach ($result as $row) {
             $data[$row['m_id']] = new Meal($row);
