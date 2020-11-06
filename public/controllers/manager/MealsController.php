@@ -13,6 +13,7 @@ $argsGet = [
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
+// TODO $employees : employés non absents et remplaçants absencedao
 $employees = $affectation_dao->find_users($restaurant->getId(), 2, $day, true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
