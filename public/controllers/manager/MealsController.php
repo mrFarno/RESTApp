@@ -60,13 +60,12 @@ if (isset($POST['validform'])) {
                 if (!isset($POST[$employee->getId().'-present'])) {
                     $affectationid = $affectation_dao->select('SELECT * FROM affectations
                     INNER JOIN employements ON af_employement_id = e_id
-                    WHERE e_restaurant_id = '.$restaurant->getId().'
+                    WHERE e_restaurant_id = '.$restaurant->getId().'                    
                     AND af_meal_type = '.$type_id.'
                     AND e_user_id = '.$employee->getId().'
                     AND (af_timestart < "'.$day.' 12:00:00"'.' AND (af_timeend IS NULL OR af_timeend > "'.$day.' 12:00:00"'.'));')['af_id'];
                     $ab_id = $absence_dao->find([
                         'ab_affectation_id' => $affectationid,
-                        'ab_substitute_id' => $substitute->getId()
                     ]);
                     if ($ab_id === false) {
                         $absence_dao->persist([
@@ -99,6 +98,61 @@ if (isset($POST['validform'])) {
                 $team_equipment_dao->update('UPDATE team_equipments SET te_stock = te_stock - '.$used_kits.' WHERE te_kit_part = 1;');
             }
             break;
+        case 'equipment' :
+            $equipments = $equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true);
+            foreach ($equipments as $equipment) {
+                $args['eq_'.$equipment['eq_id'].'_ok'] = FILTER_SANITIZE_STRING;
+            }
+            $POST = filter_input_array(INPUT_POST, $args, false);
+            foreach ($equipments as $equipment) {
+                $equipment_dao->persist([
+                    'eq_id' => $equipment['eq_id'],
+                    'eq_failed' => isset($POST['eq_'.$equipment['eq_id'].'_ok']) ? '0' : '1'
+                ]);
+            }
+            break;
+        case 'cutlery' :
+            $equipments = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
+            foreach ($equipments as $equipment) {
+                $args['missing-'.$equipment['se_id']] = FILTER_VALIDATE_INT;
+            }
+            $POST = filter_input_array(INPUT_POST, $args, false);
+            foreach ($equipments as $equipment) {
+                $small_equipment_dao->persist([
+                    'se_id' => $equipment['se_id'],
+                    'se_stock' => intval($equipment['se_stock']) - $POST['missing-'.$equipment['se_id']],
+                ]);
+            }
+            break;
+        case 'products' :
+            $args['p_name'] = FILTER_SANITIZE_STRING;
+            $args['p_provider'] = FILTER_SANITIZE_STRING;
+            $args['p_aspect'] = FILTER_SANITIZE_STRING;
+            $args['p_temperature'] = FILTER_VALIDATE_INT;
+            $args['p_sent_back'] = FILTER_SANITIZE_STRING;
+            $POST = filter_input_array(INPUT_POST, $args, false);
+
+            if ($POST['p_name'] !== '') {
+                $product_dao->persist([
+                    'p_meal_id' => $meal->getId(),
+                    'p_name' => $POST['p_name'],
+                    'p_provider' => $POST['p_provider'],
+                    'p_aspect' => $POST['p_aspect'],
+                    'p_temperature' => $POST['p_temperature'],
+                    'p_sent_back' => isset($POST['p_sent_back']) ? 1 : 0,
+                ]);
+            }
+
+            break;
+        case 'guests' :
+            $args['expected'] = FILTER_VALIDATE_INT;
+            $args['absences'] = FILTER_VALIDATE_INT;
+            $args['real'] = FILTER_VALIDATE_INT;
+            $POST = filter_input_array(INPUT_POST, $args, false);
+            $meal->setExpectedGuests($POST['expected'])
+                    ->setAbsencesGuests($POST['absences'])
+                    ->setRealGuests($POST['real']);
+            break;
         default:
             break;
     }
@@ -116,6 +170,15 @@ if (isset($POST['form'])) {
             break;
         case 'equipment' :
             $params = $equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true);
+            break;
+        case 'cutlery' :
+            $params = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
+            break;
+        case 'products' :
+            $params = $product_dao->find(['p_meal_id' => $meal->getId()]);
+            break;
+        case 'guests' :
+            $params = $meal;
             break;
         case 'comment' :
             $params = $comment_dao->find(['mc_meal_id' => $meal->getId()]);
@@ -138,12 +201,6 @@ $renderer->set_day($day)
         [
             'tag' => 'div',
             'class' => 'content-center'
-        ],
-        [
-            'tag' => 'form',
-            'action' => 'index.php?page=meals',
-            'method' => 'POST',
-            'id' => 'meal-form'
         ]
     ])
     ->dropdown($meal_types)

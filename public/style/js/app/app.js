@@ -170,9 +170,11 @@ function load_form(form) {
 function post_form(form) {
     data = {}
     data['validform'] = form
-    var inputs = document.querySelectorAll('#form-container input')
-    for (let i = 0; i < inputs.length; i++) {
-        data[inputs[i].name] = inputs[i].value
+    // console.log(inputs)
+    form = document.getElementById('step-form')
+    formdata = new FormData(form)
+    for (var [key, value] of formdata.entries()) {
+        data[key] = value
     }
     $.ajax({
         url : 'index.php?page=meals',
@@ -207,10 +209,14 @@ function update_stock(kit_part) {
 
 function show_absence_button(id) {
     btn = document.getElementById('absence-'+id)
+    check = document.getElementById(id+'-present')
+    console.log(check)
     if (btn.hidden === true) {
         btn.hidden = false
+        check.checked = false;
     } else {
         btn.hidden = true
+        check.checked = true;
     }
 }
 

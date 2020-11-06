@@ -6,14 +6,27 @@ use Comment;
 class Meal 
 {
     private $m_id;
+    private $m_restaurant_id;
     private $m_check_team;
     private $m_check_team_equipment;
     private $m_check_equipment;
     private $m_check_cutlery;
     private $m_check_products;
-    private $m_guests;
+    private $m_expected_guests;
+    private $m_absences_guests;
+    private $m_real_guests;
     private $m_type_id;
     private $m_date;
+
+    /**
+     * @param mixed $m_id
+     */
+    public function setId($m_id)
+    {
+        $this->m_id = $m_id;
+
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -39,6 +52,24 @@ class Meal
                 $this->$key = $value;
             }
         }        
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRestaurantId()
+    {
+        return $this->m_restaurant_id;
+    }
+
+    /**
+     * @param mixed $m_restaurant_id
+     */
+    public function setRestaurantId($m_restaurant_id)
+    {
+        $this->m_restaurant_id = $m_restaurant_id;
+
+        return $this;
     }
 
 
@@ -151,26 +182,6 @@ class Meal
     }
 
     /**
-     * Get the value of guests
-     */ 
-    public function getGuests()
-    {
-        return $this->m_guests;
-    }
-
-    /**
-     * Set the value of guests
-     *
-     * @return  self
-     */ 
-    public function setGuests($guests)
-    {
-        $this->m_guests = $guests;
-
-        return $this;
-    }
-
-    /**
      * Get the value of type_id
      */ 
     public function getType()
@@ -206,6 +217,60 @@ class Meal
     public function setComment(Comment $comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpectedGuests()
+    {
+        return $this->m_expected_guests;
+    }
+
+    /**
+     * @param mixed $m_expected_guests
+     */
+    public function setExpectedGuests($m_expected_guests)
+    {
+        $this->m_expected_guests = $m_expected_guests;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbsencesGuests()
+    {
+        return $this->m_absences_guests;
+    }
+
+    /**
+     * @param mixed $m_absences_guests
+     */
+    public function setAbsencesGuests($m_absences_guests)
+    {
+        $this->m_absences_guests = $m_absences_guests;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRealGuests()
+    {
+        return $this->m_real_guests;
+    }
+
+    /**
+     * @param mixed $m_real_guests
+     */
+    public function setRealGuests($m_real_guests)
+    {
+        $this->m_real_guests = $m_real_guests;
 
         return $this;
     }

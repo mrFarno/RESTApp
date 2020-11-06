@@ -4,6 +4,8 @@
 namespace renderers;
 
 
+use app\BO\Meal;
+
 class MealsRenderer extends BaseRenderer
 {
 
@@ -15,7 +17,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function dropdown($meals) {
-        $this->output .= '<div style="padding: 10px;">
+        $this->output .= '<form id="meal-form" action="?page=meals" method="POST"><div style="padding: 10px;">        
         <select onchange="update_current_meal()" class="form-control" name="m_type_id">';
         foreach ($meals as $id => $name) {
             $selected = $this->current_meal === $id ? ' selected ' : '';
@@ -23,12 +25,13 @@ class MealsRenderer extends BaseRenderer
         }
         $this->output .= '</select>
         </div>
-        <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'"><br><br>';
+        <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
+        </form><br><br>';
         return $this;
     }
 
     public function checks_navigation() {
-        $this->output .= '<nav class="navbar bg-light" id="nav-checks">
+        $this->output .= '<nav class="navbar bg-light" id="nav-checks" style="bottom: 15vh">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="load_form(\'team\')">Equipe</button>
@@ -53,7 +56,10 @@ class MealsRenderer extends BaseRenderer
               </li>            
             </ul>
         </nav>
+        <form method="POST" action="?page=meals" id="step-form">
+        <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
         <div id="form-container">';
+        $this->opened_tags[] = 'form';
         $this->opened_tags[] = 'div';
         return $this;
     }
@@ -77,7 +83,7 @@ class MealsRenderer extends BaseRenderer
                 <td id="lastname-'.$employee->getId().'">'.$employee->getLastname().'</td>
                 <td>'.$employee->getEmail().'</td>
                 <td>
-                    <input type="checkbox" checked name="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
+                    <input type="checkbox" checked name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
                     <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" hidden id="absence-'.$employee->getId().'">Remplacer</button>
                 </td>
             </tr>';
@@ -120,20 +126,22 @@ class MealsRenderer extends BaseRenderer
     public function equipment_form($equipments) {
         $this->output .= '<h2 style="text-align: center;">Matériel</h2><br>';
         if (count($equipments) === 0) {
-            $this->output .= 'Pas d\'epi renseigné';
+            $this->output .= 'Pas d\'équipement renseigné';
         } else {
             $this->output .= '<div class="">
             <table class="table table-hover">
             <th>Equipement</th>
             <th>Bon état</th>';
             foreach ($equipments as $equipment) {
+                $checked = $equipment['eq_failed'] == 0 ? 'checked' : '';
+                $hidden = $equipment['eq_failed'] == 0 ? 'hidden' : '';
                 $this->output .= '<tr>
                     <td>
                         '.$equipment['eq_name'].'
                     </td>
                     <td>
-                        <input type="checkbox" checked onclick="show_infos_button('.$equipment['eq_id'].')">
-                        <button onclick="get_equipment_infos('.$equipment['eq_id'].')" type="button" data-toggle="modal" data-target="#equipment_modal" hidden id="failure-'.$equipment['eq_id'].'">Infos</button>
+                        <input type="checkbox" name="eq_'.$equipment['eq_id'].'_ok" '.$checked.' onclick="show_infos_button('.$equipment['eq_id'].')">
+                        <button onclick="get_equipment_infos('.$equipment['eq_id'].')" type="button" data-toggle="modal" data-target="#equipment_modal" '.$hidden.' id="failure-'.$equipment['eq_id'].'">Infos</button>
                     </td>
                 </tr>';
             }
@@ -143,22 +151,85 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function cutlery_form() {
-        $this->output .= '<h2 style="text-align: center;">Petit matériel</h2><br>WIP';
+    public function cutlery_form($equipments) {
+        $this->output .= '<h2 style="text-align: center;">Petit matériel</h2><br>';
+        if (count($equipments) === 0) {
+            $this->output .= 'Pas d\'epi renseigné';
+        } else {
+            $this->output .= '<div class="">
+            <table class="table table-hover">
+            <th>Equipement</th>
+            <th>Type</th>
+            <th>Manque</th>
+            <th>En réserve</th>';
+            foreach ($equipments as $equipment) {
+                $this->output .= '<tr>
+                <td>'.$equipment['se_name'].'</td>
+                <td>'.$equipment['se_type'].'</td>
+                <td><input class="missing-input" onchange="update_stock(0)" oninput="update_stock(0)" id="missing-'.$equipment['se_id'].'" name="missing-'.$equipment['se_id'].'" type="number" value="0" min="0" max="'.$equipment['se_stock'].'"></td>
+                <td id="stock-'.$equipment['se_id'].'">'.$equipment['se_stock'].'</td>    
+                <input type="hidden" id="'.$equipment['se_id'].'-stock" value="'.$equipment['se_stock'].'">                        
+            </tr>';
+            }
+        }
         $this->next_btn('cutlery','products');
         $this->home('cutlery');
         return $this;
     }
 
-    public function products_form() {
-        $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>WIP';
+    public function products_form($products) {
+        $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
+        if (count($products) === 0) {
+            $this->output .= 'Pas de produits renseignés';
+        } else {
+            $this->output .= '<div class="" style="    max-width: 50vw !important;
+    overflow: scroll !important;">
+            <table class="table table-hover" style="">
+                    <th>Nom/réference</th>
+                    <th>Fournisseur</th>
+                    <th>Aspect</th>
+                    <th>Température</th>
+                    <th>Renvoyé</th>
+                    <th>Photo</th>';
+            foreach ($products as $product) {
+                $sent = $product['p_sent_back'] == 1 ? 'Oui' : 'Non';
+                $this->output .= '<tr>
+                <td>'.$product['p_name'].'</td>
+                <td>'.$product['p_provider'].'</td>                     
+                <td>'.$product['p_aspect'].'</td>                     
+                <td>'.$product['p_temperature'].'</td>                     
+                <td>'.$sent.'</td>                                        
+            </tr>';
+            }
+            $this->output .= '<tr>
+                <td><input type="text" name="p_name"></td>
+                <td><input type="text" name="p_provider"></td>                     
+                <td><input type="text" name="p_aspect"></td>                     
+                <td><input type="number" name="p_temperature"></td>                     
+                <td><input type="checkbox" name="p_sent_back"></td>  
+                <td></td>
+                <td>
+                <button onclick="post_form(\'products\'); load_form(\'products\')" type="button" class="btn btn-outline-success width100">
+                    +
+                </button></td>
+            </tr>';
+        }
         $this->next_btn('products','guests');
         $this->home('products');
         return $this;
     }
 
-    public function guests_form() {
-        $this->output .= '<h2 style="text-align: center;">Convives</h2><br>WIP';
+    public function guests_form(Meal $meal) {
+        $this->output .= '<h2 style="text-align: center;">Convives</h2><br>
+        <table class="table table-hover">
+                            <th>Convives prévus</th>
+                            <th>Convives absents</th>
+                            <th>Convives servis</th>
+                            <tr>    
+                                <td><input type="number" min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>
+                                <td><input type="number" min="0" name="absences" value="'.$meal->getAbsencesGuests().'"></td>
+                                <td><input type="number" min="0" name="real" value="'.$meal->getRealGuests().'"></td>
+                            </tr>';
         $this->next_btn('guests','comment');
         $this->home('guests');
         return $this;
