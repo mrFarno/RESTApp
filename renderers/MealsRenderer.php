@@ -102,13 +102,12 @@ class MealsRenderer extends BaseRenderer
             <th>Manque</th>
             <th>En réserve</th>';
             foreach ($equipments as $equipment) {
-                $class = $equipment['te_kit_part'] == 1 ? ' class="kit-part-target" ' : '';
+                $class = $equipment['te_kit_part'] == 1 ? 'kit-part-target' : '';
                 $input = $equipment['te_kit_part'] == 1 ? '<input type="hidden" id="kit-nmbr" value="'.$equipment['te_stock'].'">' : '<input type="hidden" id="'.$equipment['te_id'].'-stock" value="'.$equipment['te_stock'].'">';
-                $max = $equipment['te_kit_part'] == 1 ? $equipment['te_stock'] : '';
                 $this->output .= '<tr>
                 <td>'.$equipment['te_name'].'</td>
-                <td><input class="missing-input" onchange="update_stock('.$equipment['te_kit_part'].')" oninput="update_stock('.$equipment['te_kit_part'].')" id="missing-'.$equipment['te_id'].'" name="missing-'.$equipment['te_id'].'" type="number" value="0" min="0" max="'.$max.'"></td>
-                <td'.$class.' id="stock-'.$equipment['te_id'].'">'.$equipment['te_stock'].'</td>    
+                <td><input class="missing-input '.$class.'" onchange="update_stock('.$equipment['te_kit_part'].')" oninput="update_stock('.$equipment['te_kit_part'].')" id="missing-'.$equipment['te_id'].'" name="missing-'.$equipment['te_id'].'" type="number" value="0" min="0" max="'.$equipment['te_stock'].'"></td>
+                <td class="'.$class.'" id="stock-'.$equipment['te_id'].'">'.$equipment['te_stock'].'</td>    
                 '.$input.'                           
             </tr>';
             }
@@ -118,8 +117,27 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function equipment_form() {
-        $this->output .= '<h2 style="text-align: center;">Matériel</h2><br>WIP';
+    public function equipment_form($equipments) {
+        $this->output .= '<h2 style="text-align: center;">Matériel</h2><br>';
+        if (count($equipments) === 0) {
+            $this->output .= 'Pas d\'epi renseigné';
+        } else {
+            $this->output .= '<div class="">
+            <table class="table table-hover">
+            <th>Equipement</th>
+            <th>Bon état</th>';
+            foreach ($equipments as $equipment) {
+                $this->output .= '<tr>
+                    <td>
+                        '.$equipment['eq_name'].'
+                    </td>
+                    <td>
+                        <input type="checkbox" checked onclick="show_infos_button('.$equipment['eq_id'].')">
+                        <button onclick="get_equipment_infos('.$equipment['eq_id'].')" type="button" data-toggle="modal" data-target="#equipment_modal" hidden id="failure-'.$equipment['eq_id'].'">Infos</button>
+                    </td>
+                </tr>';
+            }
+        }
         $this->next_btn('equipment', 'cutlery');
         $this->home('equipment');
         return $this;
@@ -262,6 +280,26 @@ class MealsRenderer extends BaseRenderer
                 </div>
                 </form>
             </div>
+            </div>
+        </div>';
+        return $this;
+    }
+
+    public function equipment_modal() {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="equipment_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel"><span id="eq_name-modal">Informations</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">  
+                        <div>Contact : <span id="eq_contact"></span></div>
+                        <div>Instructions : <span id="eq_instructions"></span></div>
+                    </div>
+                </div>
             </div>
         </div>';
         return $this;

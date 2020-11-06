@@ -114,6 +114,9 @@ if (isset($POST['form'])) {
         case 'team_equipment' :
             $params = $team_equipment_dao->find(['te_restaurant_id' => $restaurant->getId()], true);
             break;
+        case 'equipment' :
+            $params = $equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true);
+            break;
         case 'comment' :
             $params = $comment_dao->find(['mc_meal_id' => $meal->getId()]);
             break;
@@ -130,6 +133,7 @@ $renderer->set_day($day)
     ->header()
     ->comment_modal($meal->getId())
     ->absences_modal($r_employees, $day)
+    ->equipment_modal()
     ->open_body([
         [
             'tag' => 'div',

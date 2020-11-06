@@ -200,6 +200,7 @@ html {
 }
 
 #form-container {
+    margin-top: 10% !important;
     max-height: 45vh;
     overflow-y: scroll;
     -ms-overflow-style: none !important;  /* IE and Edge */

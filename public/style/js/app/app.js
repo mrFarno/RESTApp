@@ -183,22 +183,22 @@ function post_form(form) {
 
 function update_stock(kit_part) {
     if (kit_part == 1) {
-        var inputs = $('.missing-input')
+        var inputs = $('.missing-input.kit-part-target')
         var missing = 0
         for (let i = 0; i < inputs.length; i++) {
-            if (inputs[i].value > missing) {
-                missing = inputs[i].value
+            if (Number(inputs[i].value) > Number(missing)) {
+                missing = Number(inputs[i].value)
             }
         }
         var stocks = $('.kit-part-target')
         var input = document.getElementById('kit-nmbr')
         for (let i = 0; i < stocks.length; i++) {
-            stocks[i].innerHTML = input.value - missing
+            stocks[i].innerHTML = input.value - Number(missing)
         }
     } else {
         id = event.target.id.replace('missing-', '')
         stock = document.getElementById('stock-'+id)
-        missing = event.target.value
+        var missing = event.target.value
         remain = document.getElementById(id+'-stock')
         console.log(remain)
         stock.innerHTML = remain.value-missing
@@ -207,6 +207,15 @@ function update_stock(kit_part) {
 
 function show_absence_button(id) {
     btn = document.getElementById('absence-'+id)
+    if (btn.hidden === true) {
+        btn.hidden = false
+    } else {
+        btn.hidden = true
+    }
+}
+
+function show_infos_button(id) {
+    btn = document.getElementById('failure-'+id)
     if (btn.hidden === true) {
         btn.hidden = false
     } else {
@@ -263,6 +272,22 @@ function init_comment_modal() {
             comment = document.getElementById('comment-content')
             comment.value = data
             comment.focus()
+        }
+    })
+}
+
+function get_equipment_infos(eq_id) {
+    $.ajax({
+        url : 'index.php?page=equipment',
+        type : 'POST',
+        data : 'search='+eq_id,
+        dataType : 'json',
+        success: function(data) {
+            contact = document.getElementById('eq_contact')
+            instructions = document.getElementById('eq_instructions')
+
+            contact.innerText = data.eq_fail_contact
+            instructions.innerText = data.eq_fail_instructions
         }
     })
 }
