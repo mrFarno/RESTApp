@@ -10,16 +10,18 @@ $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
 ];
 
+
+$GET = filter_input_array(INPUT_GET, $argsGet, false);
+$POST = filter_input_array(INPUT_POST, $args, false);
+
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
+
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 // TODO $employees : employés non absents et remplaçants absencedao
 $employees = $affectation_dao->find_users($restaurant->getId(), 2, $day, true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
-
-$GET = filter_input_array(INPUT_GET, $argsGet, false);
-$POST = filter_input_array(INPUT_POST, $args, false);
 
 $meal_types = [];
 $meals = [];
@@ -194,7 +196,7 @@ if (isset($POST['form'])) {
 }
 
 $renderer->set_day($day)
-    ->header()
+    ->header('Repas')
     ->comment_modal($meal->getId())
     ->absences_modal($r_employees, $day)
     ->equipment_modal()
@@ -204,7 +206,8 @@ $renderer->set_day($day)
             'class' => 'content-center'
         ]
     ])
-    ->dropdown($meal_types)
+    ->previous_page('management&date='.$day)
+    ->dropdown($meal_types, $day)
     ->checks_navigation()
     ->team_form($employees)
     ->close_body()

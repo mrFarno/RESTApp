@@ -207,3 +207,19 @@ html {
     -ms-overflow-style: none !important;  /* IE and Edge */
     scrollbar-width: none !important;  /* Firefox */
 }
+
+.meal-date {
+    text-align: center !important;
+    font-style: italic;
+}
+
+.inventory-btn {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100%;
+    width: 10vw !important;
+}
+
+.nav-inventory {
+    margin: 0;
+}

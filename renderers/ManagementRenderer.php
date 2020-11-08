@@ -16,9 +16,8 @@ class ManagementRenderer extends BaseRenderer
         $this->output .= '<div class="col-12 col-sm-12 col-md-12 col-lg-12">
             <div class="row justify-content-between">
                 <a href="?page=meals&date='.$day.'">Repas</a>
-                <a href="#">PND</a>
-                <a href="#">Stocks</a>
-                <a href="?page=equipment">Matériel</a>        
+                <a href="#">Nettoyage et désinfection</a>
+                <a href="#">Production</a> 
             </div>
         </div>';
         return $this;

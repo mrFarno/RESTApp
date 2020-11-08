@@ -123,12 +123,16 @@ function modal_init(u_id) {
         success: function(data) {
             for (var i in data) {
                 check = $('#mt-'+data[i].af_meal_type)
-                check.trigger('change')
+                console.log(check)
+                check.prop('checked', true)
                 start = document.getElementById('af_timestart-'+data[i].af_meal_type)
-                start.style.display = ''
+                $('#start-mt-'+data[i].af_meal_type).removeAttr('hidden')
+                start.hidden = false
                 start.value = data[i].af_timestart.split(' ')[0]
                 end = document.getElementById('af_timeend-'+data[i].af_meal_type)
-                end.style.display = ''
+                $('#end-mt-'+data[i].af_meal_type).removeAttr('hidden')
+
+                end.hidden = false
                 if (data[i].af_timeend !== null) {
                     end.value = data[i].af_timeend.split(' ')[0]
                 }
@@ -150,13 +154,15 @@ function display_dates(mt_id) {
     }
 }
 
-function load_form(form) {
+function load_form(form, page) {
     comment_hidden = document.getElementById('check-step')
-    comment_hidden.value = form
+    if (comment_hidden !== null) {
+        comment_hidden.value = form
+    }
     $(".btn-active").removeClass("btn-active");
     $("#"+form+"-btn").addClass('btn-active')
     $.ajax({
-        url : 'index.php?page=meals',
+        url : 'index.php?page='+page,
         type : 'POST',
         data : 'form='+form,
         dataType : 'html',
@@ -167,7 +173,7 @@ function load_form(form) {
     })
 }
 
-function post_form(form) {
+function post_form(form, page) {
     data = {}
     data['validform'] = form
     // console.log(inputs)
@@ -177,7 +183,7 @@ function post_form(form) {
         data[key] = value
     }
     $.ajax({
-        url : 'index.php?page=meals',
+        url : 'index.php?page='+page,
         type : 'POST',
         data : data,
     })
@@ -296,5 +302,41 @@ function get_equipment_infos(eq_id) {
             instructions.innerText = data.eq_fail_instructions
         }
     })
+}
+
+function update_eq_stock(eq_id, table) {
+    stock = document.getElementById(eq_id+'-stock')
+    $.ajax({
+        url : 'index.php?page=equipment',
+        type : 'POST',
+        data : 'update='+eq_id+'&type='+table+'&stock='+stock.value,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function update_failed_eq(id) {
+    $.ajax({
+        url : 'index.php?page=equipment',
+        type : 'POST',
+        data : 'failed='+id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function delete_eq(id, table) {
+    if(confirm('Etes vous sur de vouloir supprimer cet équipement ?')) {
+        $.ajax({
+            url : 'index.php?page=equipment',
+            type : 'POST',
+            data : 'delete='+id+'&type='+table,
+            success: function() {
+                show_toast('success', 'Suppression réussie')
+            }
+        })
+    }
 }
 

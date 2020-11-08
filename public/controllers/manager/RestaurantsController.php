@@ -84,10 +84,12 @@ if(isset($POST['r_name'])) {
     $restaurant_dao->persist($restaurant);
     if ($edit === false) {
         header('Location: ?page=team&restid='.$restaurant->getId());
+        die();
     }
     header('Location: ?page=home');
+    die();
 }
-$renderer->header()
+$renderer->header('Gestion du restaurant')
             ->open_body([
                 [
                     'tag' => 'div',

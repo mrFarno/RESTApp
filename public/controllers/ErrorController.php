@@ -8,7 +8,7 @@ $renderer->header('Erreur')
                 ]             
                 ], false)
             ->set_referer($from)
-            ->previous_page()
+            ->previous_page('home')
             ->display_error($error_code)
             ->close_body($USER)
             ->footer()

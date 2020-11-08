@@ -16,9 +16,9 @@ class MealsRenderer extends BaseRenderer
         $this->from = 'meals';
     }
 
-    public function dropdown($meals) {
-        $this->output .= '<form id="meal-form" action="?page=meals" method="POST"><div style="padding: 10px;">        
-        <select onchange="update_current_meal()" class="form-control" name="m_type_id">';
+    public function dropdown($meals, $day) {
+        $this->output .= '<form id="meal-form" action="?page=meals" method="POST"><div style="padding: 10px;">                
+        <span class="meal-date">'.date("d/m/Y", strtotime($day)).'</span><select onchange="update_current_meal()" class="form-control" name="m_type_id">';
         foreach ($meals as $id => $name) {
             $selected = $this->current_meal === $id ? ' selected ' : '';
             $this->output .= '<option value="'.$id.'"'.$selected.'>'.$name.'</option>';
@@ -34,25 +34,25 @@ class MealsRenderer extends BaseRenderer
         $this->output .= '<nav class="navbar bg-light" id="nav-checks" style="bottom: 15vh">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="load_form(\'team\')">Equipe</button>
+                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="load_form(\'team\', \'meals\')">Equipe</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'team_equipment\')">EPI</button>
+                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'team_equipment\', \'meals\')">EPI</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'equipment\')">Matériel</button>
+                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'equipment\', \'meals\')">Matériel</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'cutlery\')">Petit matériel</button>
+                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'cutlery\', \'meals\')">Petit matériel</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'products\')">Marchandise</button>
+                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'products\', \'meals\')">Marchandise</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'guests\')">Convives</button>
+                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'guests\', \'meals\')">Convives</button>
               </li>    
               <li class="nav-item">
-                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'comment\')">Commentaires</button>
+                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'comment\', \'meals\')">Commentaires</button>
               </li>            
             </ul>
         </nav>
@@ -202,14 +202,14 @@ class MealsRenderer extends BaseRenderer
             </tr>';
             }
             $this->output .= '<tr>
-                <td><input type="text" name="p_name"></td>
+                <td><input type="text" name="p_name" required></td>
                 <td><input type="text" name="p_provider"></td>                     
                 <td><input type="text" name="p_aspect"></td>                     
                 <td><input type="number" name="p_temperature"></td>                     
                 <td><input type="checkbox" name="p_sent_back"></td>  
                 <td></td>
                 <td>
-                <button onclick="post_form(\'products\'); load_form(\'products\')" type="button" class="btn btn-outline-success width100">
+                <button onclick="post_form(\'products\', \'meals\'); load_form(\'products\', \'meals\')" type="button" class="btn btn-outline-success width100">
                     +
                 </button></td>
             </tr>';
@@ -255,12 +255,6 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function set_day($day) {
-        $this->from .= '&date='.$day;
-
-        return $this;
-    }
-
     public function home($valid, $comment_button = true) {
         if ($comment_button === true) {
             $this->output .= '<button style="    position: absolute;
@@ -268,7 +262,7 @@ class MealsRenderer extends BaseRenderer
             right: 5vw !important;" type="button" title="Commentaire" class="fnt_aw-btn comment-btn fa-2x" data-toggle="modal" data-target="#comment_modal" onclick="init_comment_modal()"><i class="far fa-comment-alt"></i></button>';
         }
         $this->output .='<div class="row justify-content-center">
-                <button onclick="post_form('.$valid.')" type="button" class="btn btn-outline-success width100 home-btn">
+                <button onclick="post_form(\''.$valid.'\', \'meals\')" type="button" class="btn btn-outline-success width100 home-btn">
                 <a href="?page=home">Terminer</a>
                 </button>
                 </div>';
@@ -378,10 +372,16 @@ class MealsRenderer extends BaseRenderer
 
     private function next_btn($valid, $load) {
         $this->output .='<div class="row justify-content-center next-btn">
-        <button type="button" onclick="post_form(\''.$valid.'\'); load_form(\''.$load.'\')" class="btn btn-outline-success width100">
+        <button type="button" onclick="post_form(\''.$valid.'\', \'meals\'); load_form(\''.$load.'\', \'meals\')" class="btn btn-outline-success width100">
             Suivant
         </button>
         </div>';
+
+        return $this;
+    }
+
+    public function set_day($day) {
+        $this->from .= '&date='.$day;
 
         return $this;
     }

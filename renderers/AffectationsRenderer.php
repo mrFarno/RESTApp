@@ -30,7 +30,7 @@ class AffectationsRenderer extends BaseRenderer
                 <td id="lastname-'.$employee->getId().'">'.$employee->getLastname().'</td>
                 <td>'.$employee->getEmail().'</td>
                 <td>
-                    <button onclick="modal_init('.$employee->getId().')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#user_modal">
+                    <button onclick="modal_init(\''.$employee->getId().'\')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#user_modal">
                     <i class="fas fa-user-edit"></i>
                     </button>
                 </td>

@@ -57,10 +57,16 @@ abstract class BaseRenderer
         </button>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item '.$this->active('restaurants').'">
-              <a class="nav-link" href="?page=restaurants&edit">Mon restaurant</a>
-            </li>
+          <ul class="navbar-nav mr-auto">         
+            <li class="nav-item dropdown '.$this->active('restaurants').$this->active('equipment').'">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Mon restaurant
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
+              <a class="dropdown-item" href="?page=equipment">Inventaire</a>
+            </div>
+          </li>
 
             <li class="nav-item dropdown '.$this->active('team').$this->active('affectations').'">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -147,10 +153,10 @@ abstract class BaseRenderer
      * @param string $from 
      * @return self
      */
-    public function previous_page() {
+    public function previous_page($from) {
         $this->output .= '<div class="d-flex flex-row w-100">
                                 <div class="homeIcon justify-content-start">
-                                    <a href="index.php?page='.$this->from.'">
+                                    <a href="index.php?page='.$from.'">
                                         <i class="fas fa-arrow-left leftArrow" style="margin:0;"></i>
                                     </a>
                                 </div>

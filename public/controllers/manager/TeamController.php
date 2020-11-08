@@ -68,7 +68,7 @@ foreach ($employees as $key => $value) {
 }
 
 rendering :
-$renderer->header()
+$renderer->header('Gestion de l\'équipe')
             ->open_body([
                 [
                     'tag' => 'div',

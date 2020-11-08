@@ -29,26 +29,26 @@ if (isset($POST['findaf_uid'])) {
 }
 
 if (isset($POST['u_id'])) {
+    $employement = $employement_dao->find([
+        'e_user_id' => $POST['u_id'],
+        'e_restaurant_id' => $_SESSION['current-rest']
+    ]);
     foreach ($restaurant->getMeals() as $meal) {
+        $af_id = $affectation_dao->find([
+            'af_employement_id' => $employement['e_id'],
+            'af_meal_type' => $meal
+        ]);
+        if ($af_id !== false) {
+            $af_id = $af_id['af_id'];
+        } else {
+            $af_id = null;
+        }
         if (isset($POST['mt-'.$meal])) {
             $start = date($POST['af_timestart-'.$meal]);
             if ($POST['af_timeend-'.$meal] !== '') {
                 $end = date($POST['af_timeend-'.$meal].' 23:59:59');
             } else {
                 $end = null;
-            }
-            $employement = $employement_dao->find([
-                'e_user_id' => $POST['u_id'], 
-                'e_restaurant_id' => $_SESSION['current-rest']
-            ]);
-            $af_id = $affectation_dao->find([
-                'af_employement_id' => $employement['e_id'],
-                'af_meal_type' => $meal
-            ]);
-            if ($af_id !== false) {
-                $af_id = $af_id['af_id'];
-            } else {
-                $af_id = null;
             }
             $affectation_dao->persist([
                 'af_id' => $af_id,
@@ -57,11 +57,15 @@ if (isset($POST['u_id'])) {
                 'af_timestart' => $start,
                 'af_timeend' => $end,
             ]);
+        } else {
+            if ($af_id !== null) {
+                $affectation_dao->delete($af_id);
+            }
         }
     }
 }
 
-$renderer->header()
+$renderer->header('Gestion des affectations')
             ->open_body([
                 [
                     'tag' => 'div',

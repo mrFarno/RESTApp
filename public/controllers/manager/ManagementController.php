@@ -10,8 +10,9 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
-$renderer->header()
+$renderer->header('Navigation')
     ->open_body()
+    ->previous_page('calendar')
     ->links($day)
     ->close_body()
     ->footer()
