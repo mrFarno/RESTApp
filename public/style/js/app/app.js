@@ -159,8 +159,14 @@ function load_form(form, page) {
     if (comment_hidden !== null) {
         comment_hidden.value = form
     }
+    current_meal = document.getElementById('current-meal')
+    date = document.getElementById('current-date')
+
     $(".btn-active").removeClass("btn-active");
     $("#"+form+"-btn").addClass('btn-active')
+    if (date !== null && current_meal !== null) {
+        form = form + '&date='+date.value+'&current-meal='+current_meal.value
+    }
     $.ajax({
         url : 'index.php?page='+page,
         type : 'POST',
@@ -176,6 +182,14 @@ function load_form(form, page) {
 function post_form(form, page) {
     data = {}
     data['validform'] = form
+    current_meal = document.getElementById('current-meal')
+    if (current_meal !== null) {
+        data['current-meal'] = current_meal[0].value
+    }
+    date = document.getElementById('current-date')
+    if (date !== null) {
+        data['date'] = date.value
+    }
     // console.log(inputs)
     form = document.getElementById('step-form')
     formdata = new FormData(form)

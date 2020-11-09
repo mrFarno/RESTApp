@@ -1,5 +1,7 @@
 <?php
 
+use app\BO\Meal;
+
 $args = [
     'date' => FILTER_SANITIZE_STRING,
     'form' => FILTER_SANITIZE_STRING,
@@ -18,9 +20,6 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
-// TODO $employees : employés non absents et remplaçants absencedao
-$employees = $affectation_dao->find_users($restaurant->getId(), 2, $day, true);
-$r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
 
 $meal_types = [];
@@ -45,12 +44,24 @@ if (isset($POST['current-meal'])) {
     $type_id = array_keys($meal_types)[0];
 }
 
+// TODO $employees : employés non absents et remplaçants absencedao
+$employees = $affectation_dao->find_users($restaurant->getId(), $type_id, $day, true);
+$r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
+
 $meal = $meal_dao->find([
     'm_restaurant_id' => $restaurant->getId(),
-//    'm_type_id' => $type_id,
-    'm_type_id' => 2,
+    'm_type_id' => $type_id,
     'm_date' => $day
 ]);
+
+if ($meal === false) {
+    $meal = new Meal([
+        'm_restaurant_id' => $restaurant->getId(),
+        'm_type_id' => $type_id,
+        'm_date' => $day
+    ]);
+    $meal_dao->persist($meal);
+}
 
 if (isset($POST['validform'])) {
     switch ($POST['validform']) {
@@ -178,7 +189,7 @@ if (isset($POST['form'])) {
             $params = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
             break;
         case 'products' :
-            $params = $product_dao->find(['p_meal_id' => $meal->getId()]);
+            $params = $product_dao->find(['p_meal_id' => $meal->getId()], true);
             break;
         case 'guests' :
             $params = $meal;

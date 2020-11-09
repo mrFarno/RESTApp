@@ -81,9 +81,9 @@ class MealDAO extends DAO
                             :check_equipment,
                             :check_cutlery,
                             :check_products,
-                            :expected_guests
-                            :absences_guests
-                            :real_guests
+                            :expected_guests,
+                            :absences_guests,
+                            :real_guests,
                             :date
                         );';
         }

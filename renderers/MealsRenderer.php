@@ -10,6 +10,7 @@ class MealsRenderer extends BaseRenderer
 {
 
     private $current_meal;
+    private $day;
 
     public function __construct() {
         parent::__construct();
@@ -26,6 +27,7 @@ class MealsRenderer extends BaseRenderer
         $this->output .= '</select>
         </div>
         <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
+        <input type="hidden" name="date" value="'.$this->day.'">
         </form><br><br>';
         return $this;
     }
@@ -58,6 +60,7 @@ class MealsRenderer extends BaseRenderer
         </nav>
         <form method="POST" action="?page=meals" id="step-form">
         <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
+        <input type="hidden" name="date" id="current-date" value="'.$this->day.'">
         <div id="form-container">';
         $this->opened_tags[] = 'form';
         $this->opened_tags[] = 'div';
@@ -179,41 +182,38 @@ class MealsRenderer extends BaseRenderer
 
     public function products_form($products) {
         $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
-        if (count($products) === 0) {
-            $this->output .= 'Pas de produits renseignés';
-        } else {
-            $this->output .= '<div class="" style="    max-width: 50vw !important;
-    overflow: scroll !important;">
-            <table class="table table-hover" style="">
-                    <th>Nom/réference</th>
-                    <th>Fournisseur</th>
-                    <th>Aspect</th>
-                    <th>Température</th>
-                    <th>Renvoyé</th>
-                    <th>Photo</th>';
-            foreach ($products as $product) {
-                $sent = $product['p_sent_back'] == 1 ? 'Oui' : 'Non';
-                $this->output .= '<tr>
-                <td>'.$product['p_name'].'</td>
-                <td>'.$product['p_provider'].'</td>                     
-                <td>'.$product['p_aspect'].'</td>                     
-                <td>'.$product['p_temperature'].'</td>                     
-                <td>'.$sent.'</td>                                        
-            </tr>';
-            }
+        $this->output .= '<div class="" style="    max-width: 50vw !important;
+overflow: scroll !important;">
+        <table class="table table-hover" style="">
+                <th>Nom/réference</th>
+                <th>Fournisseur</th>
+                <th>Aspect</th>
+                <th>Température</th>
+                <th>Renvoyé</th>
+                <th>Photo</th>';
+        foreach ($products as $product) {
+            $sent = $product['p_sent_back'] == 1 ? 'Oui' : 'Non';
             $this->output .= '<tr>
-                <td><input type="text" name="p_name" required></td>
-                <td><input type="text" name="p_provider"></td>                     
-                <td><input type="text" name="p_aspect"></td>                     
-                <td><input type="number" name="p_temperature"></td>                     
-                <td><input type="checkbox" name="p_sent_back"></td>  
-                <td></td>
-                <td>
-                <button onclick="post_form(\'products\', \'meals\'); load_form(\'products\', \'meals\')" type="button" class="btn btn-outline-success width100">
-                    +
-                </button></td>
-            </tr>';
+            <td>'.$product['p_name'].'</td>
+            <td>'.$product['p_provider'].'</td>                     
+            <td>'.$product['p_aspect'].'</td>                     
+            <td>'.$product['p_temperature'].'</td>                     
+            <td>'.$sent.'</td>                                        
+        </tr>';
         }
+        $this->output .= '<tr>
+            <td><input type="text" name="p_name" required></td>
+            <td><input type="text" name="p_provider"></td>                     
+            <td><input type="text" name="p_aspect"></td>                     
+            <td><input type="number" name="p_temperature"></td>                     
+            <td><input type="checkbox" name="p_sent_back"></td>  
+            <td></td>
+            <td>
+            <button onclick="post_form(\'products\', \'meals\'); load_form(\'products\', \'meals\')" type="button" class="btn btn-outline-success width100">
+                +
+            </button></td>
+        </tr>';
+
         $this->next_btn('products','guests');
         $this->home('products');
         return $this;
@@ -381,6 +381,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function set_day($day) {
+        $this->day = $day;
         $this->from .= '&date='.$day;
 
         return $this;
