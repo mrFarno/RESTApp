@@ -6,12 +6,12 @@ use PDO;
 
 abstract class DAO extends \PDO
 {
-    private $host;
-    private $user;
-    private $password;
-    private $db_name;
-    private $type;
-    private $pdo;
+    protected $host;
+    protected $user;
+    protected $password;
+    protected $db_name;
+    protected $type;
+    protected $pdo;
     protected $table;
     protected $prefix;
 
@@ -45,7 +45,9 @@ abstract class DAO extends \PDO
      * @param datas : Object if entity in BO, array else
      */
     public function persist($datas) {
-        if (isset($datas[$this->prefix.'_id']) && $datas[$this->prefix.'_id'] !== null) {
+        if (isset($datas[$this->prefix.'_id'])
+            && $datas[$this->prefix.'_id'] !== null
+            && $this->find([$this->prefix.'_id' => $datas[$this->prefix.'_id']]) !== false) {
             $update = true;
             $request = 'UPDATE '.$this->table.' SET ';
             foreach ($datas as $key => $value) {
@@ -59,16 +61,16 @@ abstract class DAO extends \PDO
             $update = false;
             $request = 'INSERT INTO '.$this->table.' (';
             foreach ($datas as $key => $value) {
-                if ($key !== $this->prefix.'_id') {
+//                if ($key !== $this->prefix.'_id') {
                     $request .= $key.',';
-                }
+//                }
             }
             $request = substr($request, 0, -1);
             $request .= ') VALUES (';
             foreach ($datas as $key => $value) {
-                if ($key !== $this->prefix.'_id') {
+//                if ($key !== $this->prefix.'_id') {
                     $request .= ':'.$key.',';
-                }
+//                }
             }
             $request = substr($request, 0, -1);
             $request .= ');';
@@ -77,13 +79,16 @@ abstract class DAO extends \PDO
         foreach ($datas as $key => $value) {
             $binds[':'.$key] = $value;
         }
-        if ($update !== true) {
-            unset($binds[':'.$this->prefix.'_id']);
-        }
+//        if ($update !== true) {
+//            unset($binds[':'.$this->prefix.'_id']);
+//        }
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute($binds);
 
-        return true;
+        if ($update === true) {
+            return $datas[$this->prefix.'_id'];
+        }
+        return $this->getPDO()->lastInsertId();
     }
 
     /**

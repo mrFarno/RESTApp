@@ -121,6 +121,11 @@ function modal_init(u_id) {
         data : 'findaf_uid='+u_id,
         dataType : 'json',
         success: function(data) {
+            for (let i = 1; i < 5; i++) {
+                $('#mt-'+i).prop('checked', false)
+                $('#start-mt-'+i).attr('hidden', true)
+                $('#end-mt-'+i).attr('hidden', true)
+            }
             for (var i in data) {
                 check = $('#mt-'+data[i].af_meal_type)
                 console.log(check)
@@ -184,7 +189,7 @@ function post_form(form, page) {
     data['validform'] = form
     current_meal = document.getElementById('current-meal')
     if (current_meal !== null) {
-        data['current-meal'] = current_meal[0].value
+        data['current-meal'] = current_meal.value
     }
     date = document.getElementById('current-date')
     if (date !== null) {

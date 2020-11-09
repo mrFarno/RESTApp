@@ -50,8 +50,8 @@ if(isset($POST['validform'])) {
 
             $equipment_dao->persist([
                 'eq_name' => $POST['eq_name'],
-                'eq_fail_contact' => $POST['eq_name'],
-                'eq_fail_instructions' => $POST['eq_name'],
+                'eq_fail_contact' => $POST['eq_fail_contact'],
+                'eq_fail_instructions' => $POST['eq_fail_instructions'],
                 'eq_restaurant_id' => $restaurant->getId()
             ]);
             break;

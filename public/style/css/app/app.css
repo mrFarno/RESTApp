@@ -223,3 +223,23 @@ html {
 .nav-inventory {
     margin: 0;
 }
+
+.equipment-list {
+    position: absolute;
+    left: 20vw;
+    top: 20vh;
+    max-height: 60vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}
+
+.space-list {
+    position: absolute;
+    right: 20vw;
+    top: 20vh;
+    max-height: 60vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}

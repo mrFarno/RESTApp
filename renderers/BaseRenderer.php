@@ -58,13 +58,14 @@ abstract class BaseRenderer
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">         
-            <li class="nav-item dropdown '.$this->active('restaurants').$this->active('equipment').'">
+            <li class="nav-item dropdown '.$this->active('restaurants').$this->active('equipment').$this->active('spaces').'">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Mon restaurant
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
               <a class="dropdown-item" href="?page=equipment">Inventaire</a>
+              <a class="dropdown-item" href="?page=spaces">Locaux</a>
             </div>
           </li>
 

@@ -2,13 +2,12 @@
 
 
 namespace app\DAO;
-use app\DAO\CleaningContextDAO;
 
 
-class EquipmentDAO extends DAO
+class SpaceDAO extends DAO
 {
-    protected $table = 'equipments';
-    protected $prefix = 'eq';
+    protected $table = 'spaces';
+    protected $prefix = 's';
 
     public function persist($datas)
     {
@@ -20,7 +19,7 @@ class EquipmentDAO extends DAO
             'db_type' => $this->type
         ]);
         $id = $cc_dao->persist(['cc_id' => null]);
-        $datas['eq_id'] = $id;
+        $datas['s_id'] = $id;
         return parent::persist($datas);
     }
 }
