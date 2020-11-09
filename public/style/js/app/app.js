@@ -205,6 +205,9 @@ function post_form(form, page) {
         url : 'index.php?page='+page,
         type : 'POST',
         data : data,
+        success: function() {
+            show_toast('success', 'Mise à jour enregistrée')
+        }
     })
 }
 
@@ -357,5 +360,59 @@ function delete_eq(id, table) {
             }
         })
     }
+}
+
+function init_cleaning_modal(id) {
+    hidden = document.getElementById('t_target_id')
+    hidden.value = id
+
+    select = document.getElementById('t_user_id')
+    ul = document.getElementById('responsibles')
+
+    ul.innerHTML = ''
+    select.innerHTML = ''
+
+    selected = document.createElement('option')
+    selected.selected = true
+    selected.disabled = true
+    selected.innerHTML='---Ajouter un responsable---'
+    select.appendChild(selected)
+
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 'search='+id,
+        dataType : 'json',
+        success: function(data) {
+            for (var key in data.employees) {
+                console.log(key, data.employees[key])
+                let option = document.createElement('option')
+                option.value = key
+                option.innerHTML = data.employees[key]
+                select.appendChild(option)
+            }
+            for (var keyy in data.responsibles) {
+                let li = document.createElement('li')
+                li.innerHTML = data.responsibles[keyy]
+                let input_del = document.createElement('input')
+                input_del.type='hidden'
+                input_del.name = 'delete'
+                input_del.value = keyy
+                li.appendChild(input_del)
+                let del = document.createElement('button')
+                del.type = 'button'
+                del.classList.add('fnt_aw-btn')
+                del.classList.add('delete-btn')
+                del.innerHTML = '<i class="fas fa-trash-alt"></i>'
+                li.appendChild(del)
+                li.addEventListener('click', function() {
+                    post_form('del_user_aff', 'cleaning')
+                })
+                ul.appendChild(li)
+            }
+            comment = document.getElementById('t_comment')
+            comment.value = data.comment
+        }
+    })
 }
 
