@@ -46,20 +46,20 @@ if (isset($POST['ab_user_id'])) {
         AND af_meal_type = '.$POST['ab_mealtype_id'].'
         AND e_user_id = '.$POST['ab_user_id'].'
         AND (af_timestart < "'.$date.' 12:00:00"'.' AND (af_timeend IS NULL OR af_timeend > "'.$date.' 12:00:00"'.'));')['af_id'];
-    $ab_id = $absence_dao->find([
-        'ab_affectation_id' => $affectationid,
-        'ab_substitute_id' => $substitute->getId()
+    $rp_id = $replacement_dao->find([
+        'rp_affectation_id' => $affectationid,
+        'rp_substitute_id' => $substitute->getId()
     ]);
-    if ($ab_id !== false) {
-        $ab_id = $ab_id['ab_id'];
+    if ($rp_id !== false) {
+        $rp_id = $rp_id['rp_id'];
     } else {
-        $ab_id = null;
+        $rp_id = null;
     }
-    $absence_dao->persist([
-        'ab_id' => $ab_id,
-        'ab_affectation_id' => $affectationid,
-        'ab_substitute_id' => $substitute->getId(),
-        'ab_comment' => $POST['ab_comment']
+    $replacement_dao->persist([
+        'rp_id' => $rp_id,
+        'rp_affectation_id' => $affectationid,
+        'rp_substitute_id' => $substitute->getId(),
+        'rp_comment' => $POST['ab_comment']
     ]);
 
     header('Location: ?page=meals&date='.$date.'&current-meal='.$POST['ab_mealtype_id']);

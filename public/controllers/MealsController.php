@@ -78,14 +78,18 @@ if (isset($POST['validform'])) {
                     AND af_meal_type = '.$type_id.'
                     AND e_user_id = '.$employee->getId().'
                     AND (af_timestart < "'.$day.' 12:00:00"'.' AND (af_timeend IS NULL OR af_timeend > "'.$day.' 12:00:00"'.'));')['af_id'];
-                    $ab_id = $absence_dao->find([
-                        'ab_affectation_id' => $affectationid,
+                    $rp_id = $replacement_dao->find([
+                        'rp_affectation_id' => $affectationid,
                     ]);
-                    if ($ab_id === false) {
-                        $absence_dao->persist([
-                            'ab_affectation_id' => $affectationid,
+                    if ($rp_id === false) {
+                        $replacement_dao->persist([
+                            'rp_affectation_id' => $affectationid,
                         ]);
                     }
+                    $employement = $employement_dao->find([
+                        'e_user_id' => $employee->getId(),
+                        'e_restaurant_id' => $restaurant->getId()
+                    ])['e_id'];
                 }
             }
             break;
