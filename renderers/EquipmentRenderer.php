@@ -98,7 +98,7 @@ class EquipmentRenderer extends BaseRenderer
             }
         }
         $this->output .= '<tr>
-            <td><input type="text" name="eq_name" required></td>
+            <td><input type="text" name="eq_name" required placeholder="Ex : Four, frigo"></td>
             <td><input type="text" name="eq_fail_contact" required></td>
             <td><textarea name="eq_fail_instructions" required></textarea></td>                                                     
             <td></td>  
