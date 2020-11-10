@@ -1,6 +1,6 @@
 <?php
 
-namespace renderers;
+namespace renderers\manager;
 
 class AffectationsRenderer extends BaseRenderer
 {

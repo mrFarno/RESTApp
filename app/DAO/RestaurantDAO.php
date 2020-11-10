@@ -130,4 +130,23 @@ class RestaurantDAO extends DAO
 
         return $stmt->fetchAll();
     }
+
+    public function restaurants_by_employee($user) {
+        $request = 'SELECT * FROM employements
+                    INNER JOIN restaurants ON e_restaurant_id = r_id
+                    WHERE e_user_id = :u_id;';
+        $stmt = $this->getPDO()->prepare($request);
+        $stmt->execute([
+            'u_id' => $user->getId()
+        ]);
+        $data = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $meals = explode(':', $row['r_meals']);
+            $restaurant = new Restaurant($row);
+            $restaurant->setManager($user)
+                ->setMeals($meals);
+            $data[$row['r_id']] = $restaurant;
+        }
+        return $data;
+    }
 }

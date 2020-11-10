@@ -1,6 +1,8 @@
 <?php
 
 namespace renderers;
+use App\Session;
+use League\Container\Container;
 use renderers\lib\Format;
 require __DIR__.'/lib/lib.php';
 
@@ -18,6 +20,67 @@ abstract class BaseRenderer
     }
 
     //--- HTML ---
+
+    protected function navbar($role) {
+        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #b2b2b2;">
+        <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">';
+        switch ($role) {
+            case 'manager':
+                $this->output .= '<li class="nav-item dropdown ' . $this->active('restaurants') . $this->active('equipment') . $this->active('spaces') . '">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Mon restaurant
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
+                      <a class="dropdown-item" href="?page=equipment">Inventaire</a>
+                      <a class="dropdown-item" href="?page=spaces">Locaux</a>
+                    </div>
+                  </li>
+        
+                    <li class="nav-item dropdown ' . $this->active('team') . $this->active('affectations') . '">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Mon équipe
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="?page=team">Gestion de l\'équipe</a>
+                      <a class="dropdown-item" href="?page=affectations">Affectations</a>
+                    </div>
+                  </li>
+                  </ul>';
+                break;
+            case 'employee':
+                $this->output .= '</ul>';
+                break;
+            default: break;
+        }
+        if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
+            $this->output .= '<form action="?page=calendar" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
+            <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
+            foreach ($_SESSION['restaurants'] as $id => $name) {
+                $selected = $_SESSION['current-rest'] == $id ? ' selected' : '';
+                $this->output .= '<option value="' . $id . '"' . $selected . '>' . $name . '</option>';
+            }
+            $this->output .= '</select>
+            <input type="hidden" name="from" value="' . $this->from . '">
+            </form>';
+        } else {
+            if ($role === 'manager') {
+                $this->output .= 'Créer un restaurant :
+                <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>';
+            }
+        }
+        $this->output .= '<a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
+            </div>
+        </nav>';
+
+        return $this;
+    }
 
     /**
      * Html header
@@ -45,57 +108,6 @@ abstract class BaseRenderer
         $this->style('js/lib')
             ->style('js/app');
         $this->output .= '</footer>';
-
-        return $this;
-    }
-
-    private function navbar() {        
-        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #b2b2b2;">
-        <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">         
-            <li class="nav-item dropdown '.$this->active('restaurants').$this->active('equipment').$this->active('spaces').'">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Mon restaurant
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
-              <a class="dropdown-item" href="?page=equipment">Inventaire</a>
-              <a class="dropdown-item" href="?page=spaces">Locaux</a>
-            </div>
-          </li>
-
-            <li class="nav-item dropdown '.$this->active('team').$this->active('affectations').'">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Mon équipe
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="?page=team">Gestion de l\'équipe</a>
-              <a class="dropdown-item" href="?page=affectations">Affectations</a>
-            </div>
-          </li>
-          </ul>';
-            if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
-                $this->output .= '<form action="?page=restaurants" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
-            <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
-                foreach ($_SESSION['restaurants'] as $id => $name) {
-                    $selected = $_SESSION['current-rest'] == $id ? ' selected' : '';
-                    $this->output .= '<option value="'.$id.'"'.$selected.'>'.$name.'</option>';
-                }
-                $this->output .= '</select>
-            <input type="hidden" name="from" value="'.$this->from.'">
-            </form>';
-            } else {
-                $this->output .= 'Créer un restaurant :';
-            }
-            $this->output .= '<a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>
-            <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
-            </div>
-        </nav>';
 
         return $this;
     }
@@ -168,13 +180,13 @@ abstract class BaseRenderer
     /**
      * Open body with optional params
      * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)
-     * @param bool $navbar : If page needs navbar, default true
+     * @param bool $role : User role, false if no navbar, default manager
      * @return self
      */
-    public function open_body(array $tags = [], $navbar = true) {
+    public function open_body(array $tags = [], $role = 'manager') {
         $this->output .='<body>';
-        if ($navbar === true) {
-            $this->navbar();
+        if ($role !== false) {
+            $this->navbar($role);
         }
         foreach ($tags as $attributes) {
             $this->output .= '<'.$attributes['tag'];
@@ -187,6 +199,11 @@ abstract class BaseRenderer
             $this->opened_tags[] = $attributes['tag'];
         }
 
+        return $this;
+    }
+
+    public function wip() {
+        $this->output .= '<h1 style="text-align: center; margin-top: 20%">Cette page est en construction</h1>';
         return $this;
     }
 
@@ -237,7 +254,7 @@ abstract class BaseRenderer
         return substr( $haystack, -$length ) === $needle;
     }
 
-    private function active($page) {
+    protected function active($page) {
         return $this->from === $page ? 'active' : '';
     }
 }

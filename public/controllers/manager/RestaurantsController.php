@@ -31,16 +31,6 @@ $form_action = '';
 $prefill = new Restaurant([]);
 $edit = false;
 
-if (isset($POST['current-rest'])) {
-    $_SESSION['current-rest'] = $POST['current-rest'];
-    $page = $POST['from'];
-    if ($page === 'restaurants') {
-        $page .= '&edit='.$_SESSION['current-rest'];
-    }
-    header('Location: ?page='.$page);
-    die();
-}
-
 if(isset($GET['edit'])) {
     $GET['edit'] = $_SESSION['current-rest'];
     $edit = true;

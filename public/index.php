@@ -56,13 +56,25 @@ if ($USER !== null && $USER->getRole() === 'manager') {
             $_SESSION['current-rest'] = reset($restaurants)->getId();
         }
     }
+} elseif ($USER !== null && $USER->getRole() === 'employee') {
+    $restaurants = $restaurant_dao->restaurants_by_employee($USER);
+    if ($restaurants !== []) {
+        foreach ($restaurants as $restaurant) {
+            $_SESSION['restaurants'][$restaurant->getId()] = $restaurant->getName();
+        }
+        if (!isset($_SESSION['current-rest'])) {
+            $_SESSION['current-rest'] = reset($restaurants)->getId();
+        }
+    }
 }
 
 $page = $page === 'home' ? 'calendar' : $page;
 // Load renderer and controller
-$renderer = renderers\Provider::get_renderer($page);
-$controller = ucfirst($page).'Controller.php';   
+$controller = ucfirst($page).'Controller.php';
+$page = ucfirst($page);
 if (!file_exists(__DIR__.'/controllers/'.$controller)) {
-    $controller = 'manager/'.$controller;
+    $controller = $USER->getRole().'/'.$controller;
+    $page = $USER->getRole().'\\'.$page;
 }
+$renderer = renderers\Provider::get_renderer($page);
 require __DIR__.'/controllers/'.$controller;

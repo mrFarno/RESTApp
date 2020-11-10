@@ -10,10 +10,10 @@ class Provider {
      * @return BaseRenderer Renderer corresponding to $page
      */
     static function get_renderer($page) {
-        $class = ucfirst($page).'Renderer';  
-        if (!file_exists(__DIR__.'/'.$class.'.php')) {
+        $class = $page.'Renderer';
+        if (!file_exists(__DIR__.'/'.str_replace('\\', '/',$class).'.php')) {
             $class = 'ErrorRenderer';
-        } 
+        }
         $renderer = 'renderers\\'.$class;
         return new $renderer();
     }

@@ -11,7 +11,7 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $renderer->header('Navigation')
-    ->open_body()
+    ->open_body([], $USER->getRole())
     ->previous_page('calendar')
     ->links($day)
     ->close_body()

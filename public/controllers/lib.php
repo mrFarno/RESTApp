@@ -66,6 +66,7 @@ function error_redirect($error_code, $from, $user = null) {
 function page_exist($page) {
 	$files = array_diff(scandir(__DIR__), array('..', '.'));
 	$files = array_merge($files, array_diff(scandir(__DIR__.'/manager'), array('..', '.')));
+	$files = array_merge($files, array_diff(scandir(__DIR__.'/employee'), array('..', '.')));
 	return in_array(ucfirst($page).'Controller.php', $files);
 }
 
@@ -75,9 +76,8 @@ function can_access($page, $USER) {
 	}
 	$can_access = [];
 	$files = array_diff(scandir(__DIR__), array('..', '.', 'manager'));
-	if ($USER->getRole() === 'manager') {
-		$files = array_merge($files, array_diff(scandir(__DIR__.'/manager'), array('..', '.')));
-	}
+	$files = array_merge($files, array_diff(scandir(__DIR__.'/'.$USER->getRole()), array('..', '.')));
+
 	foreach ($files as $file) {
 		if ($file !== 'lib.php') {
 			$file = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $file));

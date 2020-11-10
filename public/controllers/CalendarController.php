@@ -5,6 +5,8 @@ $args = [
     'month' => FILTER_VALIDATE_INT,
     'year' => FILTER_VALIDATE_INT,
     'display' => FILTER_SANITIZE_STRING,
+    'current-rest' => FILTER_VALIDATE_INT,
+    'from' => FILTER_SANITIZE_STRING,
 ];
 
 $POST = filter_input_array(INPUT_POST, $args, false);
@@ -21,6 +23,16 @@ if (isset($POST['display']) && in_array($POST['display'], ['monthly', 'weekly'])
     die();
 }
 
+if (isset($POST['current-rest'])) {
+    $_SESSION['current-rest'] = $POST['current-rest'];
+    $page = $POST['from'];
+    if ($page === 'restaurants') {
+        $page .= '&edit='.$_SESSION['current-rest'];
+    }
+    header('Location: ?page='.$page);
+    die();
+}
+
 $renderer->header()
             ->open_body([
                 [
@@ -32,7 +44,7 @@ $renderer->header()
                     'tag' => 'div',
                     'class' => 'calendar-container'
                 ],
-            ])
+            ], $USER->getRole())
             ->set_referer('home')
             ->options()
             ->monthly()

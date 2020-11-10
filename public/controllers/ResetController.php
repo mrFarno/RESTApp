@@ -32,7 +32,7 @@ if (isset($POST['password'])) {
                 ->setToken(null);
         $user_dao->persist($user);
         $credentials = [
-            'username' => $user->getLogin(),
+            'username' => $user->getEmail(),
             'password' => $POST['password']
         ];
         $auth->login($credentials);
