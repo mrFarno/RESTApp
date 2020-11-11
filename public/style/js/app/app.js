@@ -184,6 +184,11 @@ function load_form(form, page) {
     })
 }
 
+function post_current() {
+    step = document.getElementById('check-step')
+    post_form(step.value, 'meals')
+}
+
 function post_form(form, page) {
     data = {}
     data['validform'] = form
@@ -206,7 +211,7 @@ function post_form(form, page) {
         type : 'POST',
         data : data,
         success: function() {
-            show_toast('success', 'Mise à jour enregistrée')
+            // show_toast('success', 'Mise à jour enregistrée')
         }
     })
 }

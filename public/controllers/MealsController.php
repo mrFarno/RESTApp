@@ -45,8 +45,13 @@ if (isset($POST['current-meal'])) {
 }
 
 // TODO $employees : employés non absents et remplaçants absencedao
-$employees = $affectation_dao->find_users($restaurant->getId(), $type_id, $day, true);
+$employees = $meal_affectation_dao->find_users($restaurant->getId(), $type_id, $day, true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
+foreach ($r_employees as $e) {
+    if($user_dao->is_absent($e, $restaurant, $day)) {
+        unset($r_employees[$e->getId()]);
+    }
+}
 
 $meal = $meal_dao->find([
     'm_restaurant_id' => $restaurant->getId(),
@@ -72,20 +77,34 @@ if (isset($POST['validform'])) {
             $POST = filter_input_array(INPUT_POST, $args, false);
             foreach ($employees as $employee) {
                 if (!isset($POST[$employee->getId().'-present'])) {
-                    $affectationid = $affectation_dao->select('SELECT * FROM affectations
-                    INNER JOIN employements ON af_employement_id = e_id
-                    WHERE e_restaurant_id = '.$restaurant->getId().'                    
-                    AND af_meal_type = '.$type_id.'
-                    AND e_user_id = '.$employee->getId().'
-                    AND (af_timestart < "'.$day.' 12:00:00"'.' AND (af_timeend IS NULL OR af_timeend > "'.$day.' 12:00:00"'.'));')['af_id'];
-                    $ab_id = $absence_dao->find([
-                        'ab_affectation_id' => $affectationid,
+//                    $affectationid = $meal_affectation_dao->select('SELECT * FROM meal_affectations
+//                    INNER JOIN employements ON maf_employement_id = e_id
+//                    WHERE e_restaurant_id = '.$restaurant->getId().'
+//                    AND maf_meal_type = '.$type_id.'
+//                    AND e_user_id = '.$employee->getId().'
+//                    AND (maf_timestart < "'.$day.' 12:00:00"'.' AND (maf_timeend IS NULL OR maf_timeend > "'.$day.' 12:00:00"'.'));')['maf_id'];
+//                    $rp_id = $replacement_dao->find([
+//                        'rp_affectation_id' => $affectationid,
+//                    ]);
+//                    if ($rp_id === false) {
+//                        $replacement_dao->persist([
+//                            'rp_affectation_id' => $affectationid,
+//                        ]);
+//                    }
+                    $ab_employement = $employement_dao->find([
+                        'e_user_id' => $employee->getId(),
+                        'e_restaurant_id' => $restaurant->getId()
+                    ])['e_id'];
+                    $ab = $absence_dao->find([
+                        'ab_employement_id' => $ab_employement,
+                        'ab_date' => $day
                     ]);
-                    if ($ab_id === false) {
-                        $absence_dao->persist([
-                            'ab_affectation_id' => $affectationid,
-                        ]);
-                    }
+                    $ab = $ab !== false ? $ab['ab_id'] : null;
+                    $ab = $absence_dao->persist([
+                        'ab_id' => $ab,
+                        'ab_employement_id' => $ab_employement,
+                        'ab_date' => $day
+                    ]);
                 }
             }
             break;

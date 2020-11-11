@@ -36,31 +36,32 @@ class MealsRenderer extends BaseRenderer
         $this->output .= '<nav class="navbar bg-light" id="nav-checks" style="bottom: 15vh">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="load_form(\'team\', \'meals\')">Equipe</button>
+                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="post_current(); load_form(\'team\', \'meals\')">Equipe</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'team_equipment\', \'meals\')">EPI</button>
+                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'team_equipment\', \'meals\')">EPI</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'equipment\', \'meals\')">Matériel</button>
+                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'equipment\', \'meals\')">Matériel</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'cutlery\', \'meals\')">Petit matériel</button>
+                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'cutlery\', \'meals\')">Petit matériel</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'products\', \'meals\')">Marchandise</button>
+                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'products\', \'meals\')">Marchandise</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'guests\', \'meals\')">Convives</button>
+                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'guests\', \'meals\')">Convives</button>
               </li>    
               <li class="nav-item">
-                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="load_form(\'comment\', \'meals\')">Commentaires</button>
+                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'comment\', \'meals\')">Commentaires</button>
               </li>            
             </ul>
         </nav>
         <form method="POST" action="?page=meals" id="step-form">
         <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
         <input type="hidden" name="date" id="current-date" value="'.$this->day.'">
+        <input type="hidden" id="nav-step" value="\'team\'">
         <div id="form-container">';
         $this->opened_tags[] = 'form';
         $this->opened_tags[] = 'div';
@@ -81,13 +82,21 @@ class MealsRenderer extends BaseRenderer
             <th>Présent</th>';
 
             foreach ($employees as $employee) {
+                if ($employee->isAbsent()) {
+                    $checkbox = 'disabled';
+                    $hidden = '';
+                } else {
+                    $checkbox = 'checked';
+                    $hidden = 'hidden';
+                }
+
                 $this->output .= '<tr>
                 <td id="firstname-'.$employee->getId().'">'.$employee->getFirstname().'</td>
                 <td id="lastname-'.$employee->getId().'">'.$employee->getLastname().'</td>
                 <td>'.$employee->getEmail().'</td>
                 <td>
-                    <input type="checkbox" checked name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
-                    <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" hidden id="absence-'.$employee->getId().'">Remplacer</button>
+                    <input type="checkbox" '.$checkbox.' name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
+                    <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" '.$hidden.' id="absence-'.$employee->getId().'">Remplacer</button>
                 </td>
             </tr>';
             }

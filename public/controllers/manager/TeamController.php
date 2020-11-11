@@ -26,28 +26,31 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 
-if (isset($POST['u_id'])) {
-    $employement_dao->persist([
-        'e_restaurant_id' => $restaurant->getId(),
-        'e_user_id' => $POST['u_id']
-    ]);
-    $user = $user_dao->find(['u_id' => $POST['u_id']]);
-}
+//if (isset($POST['u_id'])) {
+//    $employement_dao->persist([
+//        'e_restaurant_id' => $restaurant->getId(),
+//        'e_user_id' => $POST['u_id']
+//    ]);
+//    $user = $user_dao->find(['u_id' => $POST['u_id']]);
+//}
 
 if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
     && (isset($POST['u_lastname']) && $POST['u_lastname'] !== '')
     && (isset($POST['u_email']) && $POST['u_email'] !== '')) {
 
-    $datas = [
-        'u_firstname' => $POST['u_firstname'],
-        'u_lastname' => $POST['u_lastname'],
-        'u_email' => $POST['u_email'],
-        'u_password' => generate_token(),
-        'u_token' => null,
-        'u_role' => 'employee'
-    ];
-    $user = new User($datas);
-    $user_dao->persist($user);
+    $user = $user_dao->find(['u_email' => $POST['u_email']]);
+    if ($user === false) {
+        $datas = [
+            'u_firstname' => $POST['u_firstname'],
+            'u_lastname' => $POST['u_lastname'],
+            'u_email' => $POST['u_email'],
+            'u_password' => generate_token(),
+            'u_token' => null,
+            'u_role' => 'employee'
+        ];
+        $user = new User($datas);
+        $user_dao->persist($user);
+    }
     $employement_dao->persist([
         'e_restaurant_id' => $restaurant->getId(),
         'e_user_id' => $user->getId()
@@ -58,13 +61,11 @@ if (isset($POST['delete'])) {
     $employement_dao->delete_by_user_restaurant($POST['delete'], $restaurant->getId());
 }
 
-$employees = $user_dao->find(['u_role' => 'employee'], true);
+//$employees = $user_dao->find(['u_role' => 'employee'], true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
-
-foreach ($employees as $key => $value) {
-    if (isset($r_employees[$key])) {
-        unset($employees[$key]);
-    }
+$restaurants = [];
+foreach ($r_employees as $employee) {
+    $restaurants[$employee->getId()] = $restaurant_dao->restaurants_by_employee($employee);
 }
 
 rendering :
@@ -80,8 +81,8 @@ $renderer->header('Gestion de l\'équipe')
                     'method' => 'POST'
                 ],             
             ])
-            ->team_form($employees)
-            ->employees_list($r_employees)
+            ->team_modal()
+            ->employees_list($r_employees, $restaurants)
             ->home()
             ->close_body()
             ->footer()

@@ -143,8 +143,7 @@ class RestaurantDAO extends DAO
         foreach ($stmt->fetchAll() as $row) {
             $meals = explode(':', $row['r_meals']);
             $restaurant = new Restaurant($row);
-            $restaurant->setManager($user)
-                ->setMeals($meals);
+            $restaurant->setMeals($meals);
             $data[$row['r_id']] = $restaurant;
         }
         return $data;
