@@ -11,7 +11,7 @@ class EmployementDAO extends DAO
     public function employees_by_restaurant($r_id) {
         $request = 'SELECT * FROM users
                     INNER JOIN employements ON e_user_id = u_id
-                    WHERE e_restaurant_id = :r_id;';
+                    WHERE e_restaurant_id = :r_id';
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute([
             ':r_id' => $r_id

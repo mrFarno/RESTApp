@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 app\Autoloader::register();
 
 use app\Config;
-use app\DAO\AffectationDAO;
+use app\DAO\MealAffectationDAO;
 use app\DAO\AbsenceDAO;
 use app\DAO\ReplacementDAO;
 use app\DAO\SpaceDAO;
@@ -74,7 +74,7 @@ $restaurant_dao = new RestaurantDAO($db_connector);
 $meal_types_dao = new MealTypeDAO($db_connector);
 $restaurant_types_dao = new RestaurantTypeDAO($db_connector);
 $employement_dao = new EmployementDAO($db_connector);
-$affectation_dao = new AffectationDAO($db_connector);
+$meal_affectation_dao = new MealAffectationDAO($db_connector);
 $meal_dao = new MealDAO($db_connector);
 $team_equipment_dao = new TeamEquipmentDAO($db_connector);
 $absence_dao = new AbsenceDAO($db_connector);

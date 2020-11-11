@@ -11,6 +11,7 @@ class User
     private $u_email;
     private $u_token;
     private $u_role;
+    private $absent = false;
 
     public function __construct($data)
     {
@@ -163,5 +164,15 @@ class User
         $this->u_email = $email;
 
         return $this;
+    }
+
+    public function setAbsent($absent) {
+        $this->absent = $absent;
+
+        return $this;
+    }
+
+    public function isAbsent() {
+        return $this->absent;
     }
 }

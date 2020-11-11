@@ -137,6 +137,14 @@ html {
     scrollbar-width: none;  /* Firefox */
 }
 
+/*.team-box {*/
+/*    max-height: 45vh !important;*/
+/*    overflow-y: scroll;*/
+/*    !* hide scrollbar *!*/
+/*    -ms-overflow-style: none;  !* IE and Edge *!*/
+/*    scrollbar-width: none;  !* Firefox *!*/
+/*}*/
+
 /* hide scrollbar */
 .table-box::-webkit-scrollbar {
     display: none;

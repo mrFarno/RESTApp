@@ -25,4 +25,17 @@ class EquipmentDAO extends DAO
         }
         return parent::persist($datas);
     }
+
+    public function delete($id)
+    {
+        $cc_dao = new CleaningContextDAO([
+            'db_host' => $this->host,
+            'db_user' => $this->user,
+            'db_pass' => $this->password,
+            'db_name' => $this->db_name,
+            'db_type' => $this->type
+        ]);
+        $cc_dao->delete($id);
+        parent::delete($id);
+    }
 }

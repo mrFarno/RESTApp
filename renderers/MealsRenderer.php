@@ -82,13 +82,21 @@ class MealsRenderer extends BaseRenderer
             <th>Présent</th>';
 
             foreach ($employees as $employee) {
+                if ($employee->isAbsent()) {
+                    $checkbox = 'disabled';
+                    $hidden = '';
+                } else {
+                    $checkbox = 'checked';
+                    $hidden = 'hidden';
+                }
+
                 $this->output .= '<tr>
                 <td id="firstname-'.$employee->getId().'">'.$employee->getFirstname().'</td>
                 <td id="lastname-'.$employee->getId().'">'.$employee->getLastname().'</td>
                 <td>'.$employee->getEmail().'</td>
                 <td>
-                    <input type="checkbox" checked name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
-                    <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" hidden id="absence-'.$employee->getId().'">Remplacer</button>
+                    <input type="checkbox" '.$checkbox.' name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
+                    <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" '.$hidden.' id="absence-'.$employee->getId().'">Remplacer</button>
                 </td>
             </tr>';
             }
