@@ -421,3 +421,17 @@ function init_cleaning_modal(id) {
     })
 }
 
+function init_products_modal(p_id) {
+    hidden = document.getElementById('p_id')
+    hidden.value = p_id
+    $.ajax({
+        url : 'index.php?page=products',
+        type : 'POST',
+        data : 'search='+p_id,
+        dataType : 'json',
+        success: function(data) {
+
+        }
+    })
+}
+
