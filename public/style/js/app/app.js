@@ -210,8 +210,14 @@ function post_form(form, page) {
         url : 'index.php?page='+page,
         type : 'POST',
         data : data,
-        success: function() {
+        dataType : 'json',
+        success: function(data) {
             // show_toast('success', 'Mise à jour enregistrée')
+            if(data.p_id !== undefined) {
+                hidden = document.getElementById('p_id')
+                hidden.value = data.p_id
+                init_products_modal(hidden.value)
+            }
         }
     })
 }
@@ -424,14 +430,57 @@ function init_cleaning_modal(id) {
 function init_products_modal(p_id) {
     hidden = document.getElementById('p_id')
     hidden.value = p_id
+    ctnr = document.getElementById('btn-ctnr')
+    ctnr.innerHTML = ''
     $.ajax({
         url : 'index.php?page=products',
         type : 'POST',
         data : 'search='+p_id,
         dataType : 'json',
         success: function(data) {
+            input = document.getElementById('product-current-input')
+            label = document.getElementById('label')
+            if (Array.isArray(data)) {
+                input.type = data[0]
+                input.name = data[2]
+                if(data[0] == 'checkbox' || data[0] == 'file') {
+                    btn = document.createElement('button');
+                    if (data[0] == 'checkbox') {
+                        btn.type = 'button'
+                        btn.addEventListener('click', function() {
+                            post_form('products', 'products')
+                            init_products_modal(p_id)
+                        })
+                    } else {
+                        btn.type = 'submit'
+                        form = document.getElementById('step-form')
+                        form.onsubmit = ''
+                    }
+                    btn.innerHTML = 'Ok'
+                    btn.classList.add('btn')
+                    btn.classList.add('btn-outline-success')
+                    btn.classList.add('width100')
 
+                    ctnr.appendChild(btn)
+                }
+                label.innerHTML = data[1]+' : '
+            } else {
+                input.style.display = 'none'
+                label.innerHTML = data
+            }
         }
     })
+}
+
+$('#products_modal').on('hide.bs.modal', function () {
+    window.location.reload(true)
+});
+
+function product_form(event) {
+    event.preventDefault()
+    post_form('products', 'products')
+    hidden = document.getElementById('p_id')
+    console.log(hidden.value)
+    init_products_modal(hidden.value)
 }
 

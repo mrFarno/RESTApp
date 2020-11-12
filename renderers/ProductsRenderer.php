@@ -11,7 +11,7 @@ class ProductsRenderer extends BaseRenderer
         $this->from = 'products';
     }
 
-    public function products_modal($restaurant, $day) {
+    public function products_modal($day) {
         $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="products_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
             <div  class="modal-dialog modal-lg" role="document" id="formManual">
                 <div class="modal-content" style="margin-top: 33%">
@@ -22,12 +22,15 @@ class ProductsRenderer extends BaseRenderer
                         </button>
                     </div>
                     <div class="modal-body">  
-                    <form method="POST" action="?page=products" enctype="multipart/form-data">
+                    <form method="POST" action="?page=products" enctype="multipart/form-data" onsubmit="product_form(event)" id="step-form">
                     <div class="justify-content-center">
-                        <label for="product-current-input">Nom : </label>
+                        <label for="product-current-input" id="label">Nom : </label>
                         <input id="product-current-input" name="p_name" type="text">  
                     </div>  
-                    <input type="hidden" name="p_id">                                     
+                    <div class="justify-content-center" id="btn-ctnr">                    
+                    </div>
+                    <input type="hidden" name="p_id" id="p_id">                                     
+                    <input type="hidden" name="date" id="current-date" value="'.$day.'">                                     
                     </form>                                       
                     </div>
                 </div>
@@ -50,14 +53,24 @@ overflow-y: scroll !important;">
                 <th>Photo</th>
                 <th>Suivi</th>';
         foreach ($products as $product) {
-            $sent = $product['p_sent_back'] == 1 ? 'Oui' : 'Non';
+            switch ($product['p_sent_back']) {
+                case '0':
+                    $sent = 'Non';
+                    break;
+                case '1':
+                    $sent = 'Oui';
+                    break;
+                default:
+                    $sent = '';
+                    break;
+            }
             $this->output .= '<tr>
-            <td>'.$product['p_name'].'</td>
-            <td>'.$product['p_provider'].'</td>                     
-            <td>'.$product['p_stock'].'</td>                     
-            <td>'.$product['p_aspect'].'</td>                     
-            <td>'.$product['p_temperature'].'</td>                     
-            <td>'.$sent.'</td>                                        
+            <td id="name-'.$product['p_id'].'">'.$product['p_name'].'</td>
+            <td id="provider-'.$product['p_id'].'">'.$product['p_provider'].'</td>                     
+            <td id="stock-'.$product['p_id'].'">'.$product['p_stock'].'</td>                     
+            <td id="aspect-'.$product['p_id'].'">'.$product['p_aspect'].'</td>                     
+            <td id="temperature-'.$product['p_id'].'">'.$product['p_temperature'].'</td>                     
+            <td id="sent_back-'.$product['p_id'].'">'.$sent.'</td>                                        
             <td></td>                                        
             <td>
                 <button type="button" onclick="init_products_modal(\''.$product['p_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#products_modal">
@@ -66,6 +79,9 @@ overflow-y: scroll !important;">
             </td>                                        
         </tr>';
         }
+        $this->output .= '<button class="btn btn-outline-success width100" type="button" onclick="init_products_modal(\'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#products_modal">
+                    +
+                </button>';
 //        $this->output .= '<tr>
 //            <td><input type="text" name="p_name" required></td>
 //            <td><input type="text" name="p_provider"></td>
