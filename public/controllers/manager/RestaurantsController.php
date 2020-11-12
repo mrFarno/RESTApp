@@ -73,6 +73,14 @@ if(isset($POST['r_name'])) {
     } 
     $restaurant_dao->persist($restaurant);
     if ($edit === false) {
+        $team_eqs = ['Blouses', 'Chaussures', 'Coiffes'];
+        foreach ($team_eqs as $team_eq) {
+            $team_equipment_dao->persist([
+                'te_name' => $team_eq,
+                'te_restaurant_id' => $restaurant->getId(),
+                'te_kit_part' => '1'
+            ]);
+        }
         header('Location: ?page=team&restid='.$restaurant->getId());
         die();
     }

@@ -77,8 +77,10 @@ class EquipmentRenderer extends BaseRenderer
         $this->output .= '<div class="" >
             <table class="table table-hover" style="">
                     <th>Nom</th>
+                    <th>Repère</th>
                     <th>Contact en cas de panne</th>
                     <th>Instructions en cas de panne</th>
+                    <th>Instructions de nettoyage</th>
                     <th>En panne</th>
                     <th></th>';
         if (count($equipments) !== 0) {
@@ -86,8 +88,10 @@ class EquipmentRenderer extends BaseRenderer
                 $checked = $equipment['eq_failed'] == 1 ? ' checked ' : '';
                 $this->output .= '<tr>
                 <td>'.$equipment['eq_name'].'</td>
+                <td>'.$equipment['eq_mark'].'</td>
                 <td>'.$equipment['eq_fail_contact'].'</td>                     
                 <td>'.$equipment['eq_fail_instructions'].'</td>                     
+                <td>'.$equipment['eq_cleaning_instructions'].'</td>                     
                 <td><input type="checkbox"'.$checked.' onclick="update_failed_eq(\''.$equipment['eq_id'].'\')"></td> 
                                 <td>
                     <button type="button" onclick="delete_eq(\''.$equipment['eq_id'].'\', \'equipment\'); load_form(\'equipment\', \'equipment\') " name="delete" class="fnt_aw-btn delete-btn">
@@ -99,8 +103,10 @@ class EquipmentRenderer extends BaseRenderer
         }
         $this->output .= '<tr>
             <td><input type="text" name="eq_name" required placeholder="Ex : Four, frigo"></td>
+            <td><input type="text" name="eq_mark" required></td>
             <td><input type="text" name="eq_fail_contact" required></td>
-            <td><textarea name="eq_fail_instructions" required></textarea></td>                                                     
+            <td><textarea name="eq_fail_instructions"></textarea></td>                                                     
+            <td><textarea name="eq_cleaning_instructions"></textarea></td>                                                     
             <td></td>  
             <td>
                 <button onclick="post_form(\'equipment\', \'equipment\'); load_form(\'equipment\', \'equipment\')" type="button" class="btn btn-outline-success width100">

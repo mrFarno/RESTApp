@@ -44,14 +44,18 @@ if(isset($POST['validform'])) {
             break;
         case 'equipment':
             $args['eq_name'] = FILTER_SANITIZE_STRING;
+            $args['eq_mark'] = FILTER_SANITIZE_STRING;
             $args['eq_fail_contact'] = FILTER_SANITIZE_STRING;
             $args['eq_fail_instructions'] = FILTER_SANITIZE_STRING;
+            $args['eq_cleaning_instructions'] = FILTER_SANITIZE_STRING;
             $POST = filter_input_array(INPUT_POST, $args, false);
 
             $equipment_dao->persist([
                 'eq_name' => $POST['eq_name'],
+                'eq_mark' => $POST['eq_mark'],
                 'eq_fail_contact' => $POST['eq_fail_contact'],
                 'eq_fail_instructions' => $POST['eq_fail_instructions'],
+                'eq_cleaning_instructions' => $POST['eq_cleaning_instructions'],
                 'eq_restaurant_id' => $restaurant->getId()
             ]);
             break;
