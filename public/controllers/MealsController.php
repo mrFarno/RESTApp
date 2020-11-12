@@ -158,24 +158,11 @@ if (isset($POST['validform'])) {
             }
             break;
         case 'products' :
-            $args['p_name'] = FILTER_SANITIZE_STRING;
-            $args['p_provider'] = FILTER_SANITIZE_STRING;
-            $args['p_aspect'] = FILTER_SANITIZE_STRING;
-            $args['p_temperature'] = FILTER_VALIDATE_INT;
-            $args['p_sent_back'] = FILTER_SANITIZE_STRING;
+            $args['m_check_products'] = FILTER_SANITIZE_STRING;
             $POST = filter_input_array(INPUT_POST, $args, false);
-
-            if ($POST['p_name'] !== '') {
-                $product_dao->persist([
-                    'p_meal_id' => $meal->getId(),
-                    'p_name' => $POST['p_name'],
-                    'p_provider' => $POST['p_provider'],
-                    'p_aspect' => $POST['p_aspect'],
-                    'p_temperature' => $POST['p_temperature'],
-                    'p_sent_back' => isset($POST['p_sent_back']) ? 1 : 0,
-                ]);
+            if (isset($POST['m_check_products'])) {
+                $meal->setCheck_products(1);
             }
-
             break;
         case 'guests' :
             $args['expected'] = FILTER_VALIDATE_INT;
@@ -208,7 +195,8 @@ if (isset($POST['form'])) {
             $params = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
             break;
         case 'products' :
-            $params = $product_dao->find(['p_meal_id' => $meal->getId()], true);
+//            $params = $product_dao->find(['p_meal_id' => $meal->getId()], true);
+            $params = $meal;
             break;
         case 'guests' :
             $params = $meal;

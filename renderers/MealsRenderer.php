@@ -189,39 +189,13 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function products_form($products) {
+    public function products_form(Meal $meal) {
+        $checked = $meal->getCheck_products() == 1 ? 'checked' : '';
         $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
-        $this->output .= '<div class="" style="    max-width: 50vw !important;
-overflow: scroll !important;">
-        <table class="table table-hover" style="">
-                <th>Nom/réference</th>
-                <th>Fournisseur</th>
-                <th>Aspect</th>
-                <th>Température</th>
-                <th>Renvoyé</th>
-                <th>Photo</th>';
-        foreach ($products as $product) {
-            $sent = $product['p_sent_back'] == 1 ? 'Oui' : 'Non';
-            $this->output .= '<tr>
-            <td>'.$product['p_name'].'</td>
-            <td>'.$product['p_provider'].'</td>                     
-            <td>'.$product['p_aspect'].'</td>                     
-            <td>'.$product['p_temperature'].'</td>                     
-            <td>'.$sent.'</td>                                        
-        </tr>';
-        }
-        $this->output .= '<tr>
-            <td><input type="text" name="p_name" required></td>
-            <td><input type="text" name="p_provider"></td>                     
-            <td><input type="text" name="p_aspect"></td>                     
-            <td><input type="number" name="p_temperature"></td>                     
-            <td><input type="checkbox" name="p_sent_back"></td>  
-            <td></td>
-            <td>
-            <button onclick="post_form(\'products\', \'meals\'); load_form(\'products\', \'meals\')" type="button" class="btn btn-outline-success width100">
-                +
-            </button></td>
-        </tr>';
+        $this->output .= '<div class="">
+        <label for="m_check_products">Toutes les marchandises ont bien été réceptionnées</label>
+        <input type="checkbox" '.$checked.' name="m_check_products" id="m_check_products">
+        </div>';
 
         $this->next_btn('products','guests');
         $this->home('products');
