@@ -88,7 +88,7 @@ class UserDAO extends DAO implements AdapterInterface
         return true;
     }
 
-    public function is_absent($user, $restaurant, $date) {
+    public function is_absent($user_id, $restaurant, $date) {
         $request = 'SELECT * FROM absences
                     INNER JOIN employements ON ab_employement_id = e_id
                     WHERE e_user_id = :u_id
@@ -96,7 +96,7 @@ class UserDAO extends DAO implements AdapterInterface
                     AND (ab_date = :date OR (ab_date <= :date AND ab_dateend IS NOT NULL)); ';
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute([
-            ':u_id' => $user->getId(),
+            ':u_id' => $user_id,
             ':r_id' => $restaurant->getId(),
             ':date' => $date
         ]);

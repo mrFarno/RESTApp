@@ -17,7 +17,7 @@ class ManagementRenderer extends BaseRenderer
             <div class="row justify-content-between">
                 <a href="?page=meals&date='.$day.'">Repas</a>
                 <a href="?page=cleaning&date='.$day.'">Nettoyage et désinfection</a>
-                <a href="#">Production</a> 
+                <a href="?page=production&date='.$day.'">Production</a> 
                 <a href="?page=products&date='.$day.'">Marchandise</a> 
             </div>
         </div>';

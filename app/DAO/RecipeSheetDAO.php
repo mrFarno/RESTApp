@@ -2,17 +2,16 @@
 
 
 namespace app\DAO;
-use app\DAO\TaskContextDAO;
 
 
-class EquipmentDAO extends DAO
+class RecipeSheetDAO extends DAO
 {
-    protected $table = 'equipments';
-    protected $prefix = 'eq';
+    protected $table = 'recipe_sheets';
+    protected $prefix = 'rs';
 
     public function persist($datas)
     {
-        if(!isset($datas['eq_id'])) {
+        if(!isset($datas['rs_id'])) {
             $tc_dao = new TaskContextDAO([
                 'db_host' => $this->host,
                 'db_user' => $this->user,
@@ -20,8 +19,8 @@ class EquipmentDAO extends DAO
                 'db_name' => $this->db_name,
                 'db_type' => $this->type
             ]);
-            $id = $tc_dao->persist(['tc_type' => 'cleaning']);
-            $datas['eq_id'] = $id;
+            $id = $tc_dao->persist(['tc_type' => 'production']);
+            $datas['rs_id'] = $id;
         }
         return parent::persist($datas);
     }

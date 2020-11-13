@@ -27,9 +27,9 @@ class TaskAffectationDAO extends DAO
 
     public function find_by_id_date($id, $date) {
         $request = 'SELECT * FROM task_affectations WHERE ta_task_id = :id
-                     AND ta_date = :date
+                     AND (ta_date = :date
                      OR (ta_date <= :date AND ta_dateend >= :date)
-                     OR (ta_date <= :date AND ta_dateend IS NULL);';
+                     OR (ta_date <= :date AND ta_dateend IS NULL));';
         $stmt = $this->getPDO()->prepare($request);
         $stmt->execute([
             ':id' => $id,

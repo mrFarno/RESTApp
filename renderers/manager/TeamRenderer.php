@@ -38,14 +38,13 @@ class TeamRenderer extends BaseRenderer
             <div  class="modal-dialog modal-lg" role="document" id="formManual">
                 <div class="modal-content" style="margin-top: 33%">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="manualModalLabel">Commentaire</h5>
+                        <h5 class="modal-title" id="manualModalLabel">Ajouter un employé</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">  
                     <div class="team-ctnr">
-                        <h2 style="text-align: center;">Ajouter un employé</h2>
                     <div class="form-group">
                         <input type="text" class="form-control" id="u_firstname" name="u_firstname" required placeholder="Prénom">
                     </div>

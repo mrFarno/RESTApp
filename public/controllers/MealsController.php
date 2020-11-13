@@ -48,7 +48,7 @@ if (isset($POST['current-meal'])) {
 $employees = $meal_affectation_dao->find_users($restaurant->getId(), $type_id, $day, true);
 $r_employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 foreach ($r_employees as $e) {
-    if($user_dao->is_absent($e, $restaurant, $day)) {
+    if($user_dao->is_absent($e->getId(), $restaurant, $day)) {
         unset($r_employees[$e->getId()]);
     }
 }

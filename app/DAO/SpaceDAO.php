@@ -12,14 +12,14 @@ class SpaceDAO extends DAO
     public function persist($datas)
     {
         if(!isset($datas['s_id'])) {
-            $cc_dao = new CleaningContextDAO([
+            $tc_dao = new TaskContextDAO([
                 'db_host' => $this->host,
                 'db_user' => $this->user,
                 'db_pass' => $this->password,
                 'db_name' => $this->db_name,
                 'db_type' => $this->type
             ]);
-            $id = $cc_dao->persist(['cc_id' => null]);
+            $id = $tc_dao->persist(['tc_type' => 'cleaning']);
             $datas['s_id'] = $id;
         }
         return parent::persist($datas);
@@ -27,14 +27,14 @@ class SpaceDAO extends DAO
 
     public function delete($id)
     {
-        $cc_dao = new CleaningContextDAO([
+        $tc_dao = new TaskContextDAO([
             'db_host' => $this->host,
             'db_user' => $this->user,
             'db_pass' => $this->password,
             'db_name' => $this->db_name,
             'db_type' => $this->type
         ]);
-        $cc_dao->delete($id);
+        $tc_dao->delete($id);
         parent::delete($id);
     }
 }

@@ -84,5 +84,61 @@ class AffectationsRenderer extends BaseRenderer
     </div>';
         return $this;
     }
+
+    public function modal_content($task, $employees, $responsibles, $type) {
+        $check = $task['t_done'] == 1 ? 'checked' : '';
+        $this->output .= '<input type="hidden" name="t_target_id" id="t_target_id" value="">
+                            <input type="hidden" name="delete" id="delete-hidden" value="">
+                        <div class="">
+                            <label for="t_user_id">Responsable : </label>
+                            <select id="t_user_id" name="t_user_id">
+                                <option selected disabled>---Sélectionner un employé---</option>';
+        foreach ($employees as $id => $employee) {
+            $this->output .= '<option value="'.$id.'">'.$employee.'</option>';
+        }
+        $this->output .= '</select>
+                        </div>';
+        switch ($type) {
+            case 'cleaning':
+                $days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+                for ($i = 0; $i < 7; $i++) {
+                    $this->output .= '<input type="checkbox" name="day-'.($i+1).'" id="day-'.($i+1).'">
+                <label for="day-'.($i+1).'">'.$days[$i].'</label>';
+                }
+                break;
+            case 'production':
+                $this->output .= 'Nombre de portions : <input name="ta_number" type="number">';
+                break;
+            default:
+                break;
+        }
+
+        $this->output .= '<button type="button" class="btn btn-outline-success width100" onclick="post_form(\'add_user\', \'affectations\');update_affectation_modal()">
+                              Ajouter le responsable
+                            </button><br>
+                        Commentaire : 
+                        <textarea id="t_comment" name="t_comment" class="form-control">'.$task['t_comment'].'</textarea>
+                        <div class="">
+                            <label for="t_done">A été fait : </label>
+                            <input type="checkbox" '.$check.' id="t_done" name="t_done">
+                        </div>
+                        <hr>
+                        <h5 style="text-align: center">Responsable(s) :</h5>
+                        <ul id="responsibles">';
+        foreach ($responsibles as $id => $responsible) {
+            $this->output .= '<li>'.$responsible.'                            
+                            <button type="button" class="fnt_aw-btn" onclick="del_user_aff(\''.$id.'\'); post_form(\'del_user_aff\', \'affectations\');update_affectation_modal()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                                </li>';
+        }
+        $this->output .= '</ul>
+                        <div class="justify-content-center">
+                            <button type="button" class="btn btn-outline-success width100" onclick="post_form(\'update_task\', \'affectations\');">
+                            Enregistrer
+                            </button>
+                        </div>';
+        return $this;
+    }
     
 }

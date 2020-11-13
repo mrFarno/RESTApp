@@ -373,58 +373,75 @@ function delete_eq(id, table) {
     }
 }
 
-function init_cleaning_modal(id) {
-    hidden = document.getElementById('t_target_id')
-    hidden.value = id
-
-    select = document.getElementById('t_user_id')
-    ul = document.getElementById('responsibles')
-
-    ul.innerHTML = ''
-    select.innerHTML = ''
-
-    selected = document.createElement('option')
-    selected.selected = true
-    selected.disabled = true
-    selected.innerHTML='---Ajouter un responsable---'
-    select.appendChild(selected)
+function init_affectations_modal(id) {
+    //
+    // select = document.getElementById('t_user_id')
+    // ul = document.getElementById('responsibles')
+    //
+    // ul.innerHTML = ''
+    // select.innerHTML = ''
+    //
+    // selected = document.createElement('option')
+    // selected.selected = true
+    // selected.disabled = true
+    // selected.innerHTML='---Ajouter un responsable---'
+    // select.appendChild(selected)
 
     $.ajax({
-        url : 'index.php?page=cleaning',
+        url : 'index.php?page=affectations',
         type : 'POST',
         data : 'search='+id,
-        dataType : 'json',
+        dataType : 'html',
         success: function(data) {
-            for (var key in data.employees) {
-                console.log(key, data.employees[key])
-                let option = document.createElement('option')
-                option.value = key
-                option.innerHTML = data.employees[key]
-                select.appendChild(option)
-            }
-            for (var keyy in data.responsibles) {
-                let li = document.createElement('li')
-                li.innerHTML = data.responsibles[keyy]
-                let input_del = document.createElement('input')
-                input_del.type='hidden'
-                input_del.name = 'delete'
-                input_del.value = keyy
-                li.appendChild(input_del)
-                let del = document.createElement('button')
-                del.type = 'button'
-                del.classList.add('fnt_aw-btn')
-                del.classList.add('delete-btn')
-                del.innerHTML = '<i class="fas fa-trash-alt"></i>'
-                li.appendChild(del)
-                li.addEventListener('click', function() {
-                    post_form('del_user_aff', 'cleaning')
-                })
-                ul.appendChild(li)
-            }
-            comment = document.getElementById('t_comment')
-            comment.value = data.comment
+            // var li = document.createElement('li')
+            // for (var key in data.employees) {
+            //     console.log(key, data.employees[key])
+            //     let option = document.createElement('option')
+            //     option.value = key
+            //     option.innerHTML = data.employees[key]
+            //     select.appendChild(option)
+            // }
+            // var input_del = document.createElement('input')
+            // input_del.type='hidden'
+            // input_del.name = 'delete'
+            // input_del.id = 'delete-hidden'
+            // li.appendChild(input_del)
+            // for (var keyy in data.responsibles) {
+            //
+            //     li.innerHTML = data.responsibles[keyy]
+            //
+            //     let del = document.createElement('button')
+            //     del.type = 'button'
+            //     del.classList.add('fnt_aw-btn')
+            //     del.classList.add('delete-btn')
+            //     del.innerHTML = '<i class="fas fa-trash-alt"></i>'
+            //     li.appendChild(del)
+            //     del.addEventListener('click', function() {
+            //         let hidden_del = document.getElementById('delete-hidden')
+            //         hidden_del.value = keyy
+            //         post_form('del_user_aff', 'affectations');
+            //         update_affectation_modal();
+            //     })
+            //     ul.appendChild(li)
+            // }
+            // comment = document.getElementById('t_comment')
+            // comment.value = data.comment
+            modal = document.getElementById('modal-content')
+            modal.innerHTML = data
+            hidden = document.getElementById('t_target_id')
+            hidden.value = id
         }
     })
+}
+
+function del_user_aff(id) {
+    var del = document.getElementById('delete-hidden')
+    del.value = id
+}
+
+function update_affectation_modal() {
+    hidden = document.getElementById('t_target_id')
+    init_affectations_modal(hidden.value)
 }
 
 function init_products_modal(p_id) {

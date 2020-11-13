@@ -53,6 +53,13 @@ overflow-y: scroll !important;">
                 <th>Photo</th>
                 <th>Suivi</th>';
         foreach ($products as $product) {
+            if (is_file(__DIR__.'/../public/uploads/products/product-'.$product['p_id'].'.png')) {
+                $link = '<a target="_blank" href="'.$GLOBALS['domain'].'/public/uploads/products/product-'.$product['p_id'].'.png">
+                          ->
+                        </a>';
+            } else {
+                $link = '';
+            }
             switch ($product['p_sent_back']) {
                 case '0':
                     $sent = 'Non';
@@ -71,7 +78,7 @@ overflow-y: scroll !important;">
             <td id="aspect-'.$product['p_id'].'">'.$product['p_aspect'].'</td>                     
             <td id="temperature-'.$product['p_id'].'">'.$product['p_temperature'].'</td>                     
             <td id="sent_back-'.$product['p_id'].'">'.$sent.'</td>                                        
-            <td></td>                                        
+            <td>'.$link.'</td>                                        
             <td>
                 <button type="button" onclick="init_products_modal(\''.$product['p_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#products_modal">
                     <i class="far fa-clipboard"></i>

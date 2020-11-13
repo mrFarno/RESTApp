@@ -102,6 +102,10 @@ html {
     white-space: nowrap; */
 }
 
+.absent {
+    font-style: italic;
+}
+
 .td-btn {
     width: 100% !important;
     height: 100% !important;

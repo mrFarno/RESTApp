@@ -25,8 +25,8 @@ class CleaningRenderer extends BaseRenderer
                 $this->output .= '<tr>
                 <td>'.$equipment['eq_name'].'</td>                 
                 <td>
-                    <button onclick="init_cleaning_modal(\''.$equipment['eq_id'].'\')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
-                        <i class="fas fa-trash-alt"></i>
+                    <button onclick="init_affectations_modal(\''.$equipment['eq_id'].'\')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
+                        <i class="far fa-clipboard"></i>
                     </button>
                 </td>                                                          
             </tr>';
@@ -50,8 +50,8 @@ class CleaningRenderer extends BaseRenderer
                 $this->output .= '<tr>
                 <td>'.$space['s_name'].'</td>                 
                 <td>
-                    <button type="button" onclick="init_cleaning_modal(\''.$space['s_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
-                        <i class="fas fa-trash-alt"></i>
+                    <button type="button" onclick="init_affectations_modal(\''.$space['s_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
+                        <i class="far fa-clipboard"></i>
                     </button>
                 </td>                                                          
             </tr>';
@@ -74,30 +74,8 @@ class CleaningRenderer extends BaseRenderer
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">  
-                        <input type="hidden" name="t_target_id" id="t_target_id">
-                        <div class="">
-                            <label for="t_user_id">Responsable : </label>
-                            <select id="t_user_id" name="t_user_id"></select>
-                            <button type="button" class="btn btn-outline-success width100" onclick="post_form(\'add_user\', \'cleaning\');">
-                                    +
-                            </button>
-                        </div>
-                        <div class="">
-                            <label for="t_done">A été nettoyé : </label>
-                            <input type="checkbox" id="t_done" name="t_done">
-                        </div>
-                        Commentaire : 
-                        <textarea id="t_comment" name="t_comment" class="form-control"></textarea>
-                        <hr>
-                        <h5 style="text-align: center">Responsable(s) :</h5>
-                        <ul id="responsibles">                        
-                        </ul>
-                        <div class="justify-content-center">
-                            <button type="button" class="btn btn-outline-success width100" onclick="post_form(\'update_task\', \'cleaning\');">
-                            Enregistrer
-                            </button>
-                        </div>
+                    <div class="modal-body" id="modal-content">  
+
                     </div>
                 </div>
             </div>
