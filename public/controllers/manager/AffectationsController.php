@@ -93,6 +93,7 @@ if (isset($POST['u_id'])) {
 if(isset($POST['search'])) {
     $task = $task_dao->find([
         't_target_id' => $POST['search'],
+        't_date' => $day
     ]);
     $type = $task_context_dao->find([
         'tc_id' => $POST['search'],
@@ -106,8 +107,24 @@ if(isset($POST['search'])) {
     } else {
         $id = $task_dao->persist([
             't_target_id' => $POST['search'],
+            't_date' => $day
         ]);
         $task = $task_dao->find(['t_id' => $id]);
+    }
+    $regulars = $task_affectation_dao->frequents_affectations($POST['search'], $day);
+    foreach ($regulars as $regular) {
+        $e_id = $employement_dao->find([
+            'e_user_id' => $regular['u_id'],
+            'e_restaurant_id' => $restaurant->getId(),
+        ])['e_id'];
+        $task_affectation_dao->persist([
+            'ta_task_id' => $id,
+            'ta_employement_id' => $e_id,
+            'ta_date' => $day,
+            'ta_frequency' => $regular['ta_frequency'],
+            'ta_dateend' => $regular['ta_dateend'],
+            'ta_number' => $regular['ta_number'],
+        ]);
     }
     $t_affectations = $task_affectation_dao->find_by_id_date($id, $day);
     foreach ($t_affectations as $t_affectation) {
@@ -135,6 +152,7 @@ if(isset($POST['search'])) {
 if(isset($POST['validform'])) {
     $task = $task_dao->find([
         't_target_id' => $POST['t_target_id'],
+        't_date' => $day
     ]);
     switch ($POST['validform']) {
         case 'add_user':
@@ -183,7 +201,8 @@ if(isset($POST['validform'])) {
     die();
 }
 
-$renderer->header('Gestion des affectations')
+$renderer->set_day($day)
+            ->header('Gestion des affectations')
             ->open_body([
                 [
                     'tag' => 'div',

@@ -5,6 +5,7 @@ namespace renderers\manager;
 class AffectationsRenderer extends BaseRenderer
 {
     private $action = [];
+    private $date;
 
     public function __construct() {
         parent::__construct();
@@ -88,7 +89,7 @@ class AffectationsRenderer extends BaseRenderer
     public function modal_content($task, $employees, $responsibles, $type) {
         $check = $task['t_done'] == 1 ? 'checked' : '';
         $this->output .= '<input type="hidden" name="t_target_id" id="t_target_id" value="">
-                            <input type="hidden" name="delete" id="delete-hidden" value="">
+                            <input type="hidden" name="delete" id="delete-hidden" value="">                            
                         <div class="">
                             <label for="t_user_id">Responsable : </label>
                             <select id="t_user_id" name="t_user_id">
@@ -138,6 +139,12 @@ class AffectationsRenderer extends BaseRenderer
                             Enregistrer
                             </button>
                         </div>';
+        return $this;
+    }
+
+    public function set_day($day) {
+        $this->date = $day;
+
         return $this;
     }
     

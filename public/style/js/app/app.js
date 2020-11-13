@@ -386,9 +386,9 @@ function init_affectations_modal(id) {
     // selected.disabled = true
     // selected.innerHTML='---Ajouter un responsable---'
     // select.appendChild(selected)
-
+    inpt_date = document.getElementById('date-hidden')
     $.ajax({
-        url : 'index.php?page=affectations',
+        url : 'index.php?page=affectations&date='+inpt_date.value,
         type : 'POST',
         data : 'search='+id,
         dataType : 'html',
@@ -449,6 +449,7 @@ function init_products_modal(p_id) {
     hidden.value = p_id
     ctnr = document.getElementById('btn-ctnr')
     ctnr.innerHTML = ''
+
     $.ajax({
         url : 'index.php?page=products',
         type : 'POST',

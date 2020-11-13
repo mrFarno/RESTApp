@@ -15,6 +15,7 @@ class CleaningRenderer extends BaseRenderer
 
     public function list_equipments($equipments) {
         $this->output .= '<h1>Nettoyage et Désinfection</h1>
+            <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
             <div class="equipment-list">
             <h2>Matériel</h2>
             <table class="table table-hover" style="">

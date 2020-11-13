@@ -15,6 +15,7 @@ class ProductionRenderer extends BaseRenderer
 
     public function production_form($recipes, $meal_types) {
         $this->output .= '<h2 style="text-align: center;">Production</h2><br>
+            <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
             <div class="" >
             <table class="table table-hover" style="">
                     <th>Nom</th>
