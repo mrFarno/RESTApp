@@ -45,11 +45,12 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
             'u_lastname' => $POST['u_lastname'],
             'u_email' => $POST['u_email'],
             'u_password' => generate_token(),
-            'u_token' => null,
+            'u_token' => generate_token(),
             'u_role' => 'employee'
         ];
         $user = new User($datas);
         $user_dao->persist($user);
+        notify_new_user($user, $smtp_connector);
     }
     $employement_dao->persist([
         'e_restaurant_id' => $restaurant->getId(),

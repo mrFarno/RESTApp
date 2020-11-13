@@ -2,6 +2,40 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
+function notify_new_user($user, $smtp_connector) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
+        $mail->Host       = $smtp_connector['smtp_host'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $smtp_connector['smtp_user'];
+        $mail->Password   = $smtp_connector['smtp_pass'];
+        $mail->SMTPSecure = 'ssl';
+        if ($smtp_connector['smtp_certs'] == 'on') {
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+        }
+        //$mail->SMTPDebug  = 4;
+        $mail->Port       = $smtp_connector['smtp_port'];
+        $mail->setFrom($smtp_connector['smtp_user'], 'Administration RESTApp');
+        $mail->addAddress($user->getEmail());
+        $mail->isHTML(true);
+        $mail->Subject = 'Invitation sur RESTApp';
+        $mail->Body = 'Bonjour,
+        Vous avez été invité(e) à rejoindre l\'application RESTApp. Veuille cliquer sur ce lien pour choisir un mot de passe : '.$GLOBALS['domain'].'/public/index.php?page=reset&token='.$user->getToken();
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        throw new Exception($e->getMessage());
+    }
+}
+
 function send_mail($user, $subject, $body, $smtp_connector) {
     // Instantiation and passing `true` enables exceptions
 	$mail = new PHPMailer(true);

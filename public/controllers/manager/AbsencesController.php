@@ -40,7 +40,7 @@ if (isset($POST['ab_user_id'])) {
             'u_lastname' => $POST['u_lastname'],
             'u_email' => $POST['u_email'],
             'u_password' => generate_token(),
-            'u_token' => null,
+            'u_token' => generate_token(),
             'u_role' => 'employee'
         ];
         $substitute = new User($datas);
@@ -49,6 +49,7 @@ if (isset($POST['ab_user_id'])) {
             'e_restaurant_id' => $restaurant->getId(),
             'e_user_id' => $substitute->getId()
         ]);
+        notify_new_user($substitute, $smtp_connector);
     }
     $employement = $employement_dao->find([
         'e_restaurant_id' => $restaurant->getId(),
