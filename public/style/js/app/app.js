@@ -212,7 +212,7 @@ function post_form(form, page) {
         data : data,
         dataType : 'json',
         success: function(data) {
-            // show_toast('success', 'Mise à jour enregistrée')
+            show_toast('success', 'Mise à jour enregistrée')
             if(data.p_id !== undefined) {
                 hidden = document.getElementById('p_id')
                 hidden.value = data.p_id
@@ -500,5 +500,16 @@ function product_form(event) {
     hidden = document.getElementById('p_id')
     console.log(hidden.value)
     init_products_modal(hidden.value)
+}
+
+function update_task_status(id) {
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 'status='+id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
 }
 

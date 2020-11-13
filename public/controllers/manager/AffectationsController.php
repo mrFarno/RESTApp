@@ -112,18 +112,23 @@ if(isset($POST['search'])) {
         $task = $task_dao->find(['t_id' => $id]);
     }
     $regulars = $task_affectation_dao->frequents_affectations($POST['search'], $day);
+    $count = 0;
     foreach ($regulars as $regular) {
         $e_id = $employement_dao->find([
             'e_user_id' => $regular['u_id'],
             'e_restaurant_id' => $restaurant->getId(),
         ])['e_id'];
+        if ($regular['t_date'] !== $day) {
+            $count++;
+        }
+    }
+    if ($count === count($regulars)) {
         $task_affectation_dao->persist([
             'ta_task_id' => $id,
-            'ta_employement_id' => $e_id,
-            'ta_date' => $day,
-            'ta_frequency' => $regular['ta_frequency'],
-            'ta_dateend' => $regular['ta_dateend'],
-            'ta_number' => $regular['ta_number'],
+            'ta_employement_id' => reset($regulars)['e_id'],
+            'ta_frequency' => reset($regulars)['ta_frequency'],
+            'ta_dateend' => reset($regulars)['ta_dateend'],
+            'ta_number' => reset($regulars)['ta_number'],
         ]);
     }
     $t_affectations = $task_affectation_dao->find_by_id_date($id, $day);
