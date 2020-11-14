@@ -21,7 +21,7 @@ class ProductionRenderer extends BaseRenderer
                     <th>Nom</th>
                     <th>Repas</th>
                     <th>Affectations</th>
-                    <th>Suivi température</th>
+                    <th>Suivi</th>
                     <th></th>';
         if (count($recipes) !== 0) {
             foreach ($recipes as $recipe) {

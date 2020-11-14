@@ -60,7 +60,7 @@ class ProductionRenderer extends BaseRenderer
                     <form method="POST" action="?page=production" onsubmit="recipe_form(event)" id="step-form">
                     <div class="justify-content-center">
                         <label for="recipe-current-input" id="label"></label>
-                        <input id="recipe-current-input">  
+                        <input id="recipe-current-input" type="number">  
                     </div>  
                     <input type="hidden" name="rs_id" id="rs_id">                                     
                     <input type="hidden" name="date" id="current-date" value="'.$this->day.'">                                     

@@ -83,10 +83,17 @@ class TeamRenderer extends BaseRenderer
             <th>Supprimer</th>';
 
             foreach ($employees as $employee) {
+            $title = 'Cette personne est employée dans le(s) restaurant(s) suivant(s) :
+            ';
+            foreach ($restaurants[$employee->getId()] as $restaurant) {
+                $title .= $restaurant->getName().'
+            ';
+            }
+
             $this->output .= '<tr>
                 <td>'.$employee->getLastname().'</td>
                 <td>'.$employee->getFirstname().'</td>
-                <td>'.$employee->getEmail().'</td>
+                <td>'.$employee->getEmail().' <i class="fas fa-info-circle" title="'.$title.'"></i></td>
                 <td>
                     <button type="submit" onclick="valid_form(); return delete_confirm();" name="delete" value="'.$employee->getId().'" class="fnt_aw-btn delete-btn">
                     <i class="fas fa-trash-alt"></i>
