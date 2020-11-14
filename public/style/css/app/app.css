@@ -185,6 +185,12 @@ html {
     left: 40vw !important;
 }
 
+.cprght {
+    padding-top: 20% !important;
+    font-style: italic;
+    font-size: small;
+}
+
 .btn-active {
     color: black !important;
 }

@@ -57,6 +57,15 @@ class LoginRenderer extends BaseRenderer
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <span class="cprght">
+                            Texte instutitionnel <br>
+                            <img src="'.$GLOBALS['domain'].'/public/style/resources/logo.png">
+                            @Copyright CNFPT 2020
+                        </span>
                     </div>
                             </form>
                             </div>
