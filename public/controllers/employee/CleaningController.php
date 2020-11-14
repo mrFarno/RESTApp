@@ -116,7 +116,8 @@ $eq_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
     'prefix' => 'eq'
 ]);
 
-$renderer->header('Nettoyage et désinfection')
+$renderer->set_day($day)
+    ->header('Nettoyage et désinfection')
     ->open_body([
         [
             'tag' => 'div',

@@ -121,7 +121,7 @@ class AffectationsRenderer extends BaseRenderer
                         <textarea id="t_comment" name="t_comment" class="form-control">'.$task['t_comment'].'</textarea>
                         <div class="">
                             <label for="t_done">A été fait : </label>
-                            <input type="checkbox" '.$check.' id="t_done" name="t_done">
+                            <input disabled type="checkbox" '.$check.' id="t_done" name="t_done">
                         </div>
                         <hr>
                         <h5 style="text-align: center">Responsable(s) :</h5>

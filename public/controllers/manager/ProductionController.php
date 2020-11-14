@@ -45,42 +45,9 @@ if(isset($POST['delete'])) {
 }
 
 if(isset($POST['search'])) {
-    $task = $task_dao->find([
-        't_target_id' => $POST['search'],
-    ]);
-    $responsibles = [];
-    if($task !== false) {
-        $id = $task['t_id'];
-//        $t_affectations = $task_affectation_dao->find([
-//            'ta_task_id' => $id,
-//        ], true);
-    } else {
-        $id = $task_dao->persist([
-            't_target_id' => $POST['search'],
-        ]);
-        $done = 0;
-        $task = $task_dao->find(['t_id' => $id]);
-    }
-    $t_affectations = $task_affectation_dao->find_by_id_date($id, $day);
-    foreach ($t_affectations as $t_affectation) {
-        $employement = $employement_dao->find(['e_id' => $t_affectation['ta_employement_id']]);
-        $user = $user_dao->find(['u_id' => $employement['e_user_id']]);
-        $responsibles[$user->getId()] = $user->getFirstname().' '.$user->getLastname();
-    }
-    $done = $task['t_done'];
-    $employees = $employement_dao->employees_by_restaurant($restaurant->getId(), true);
-    $users = [];
-    foreach ($employees as $employee) {
-        $users[$employee->getId()] = $employee->getFirstname().' '.$employee->getLastname();
-    }
-
-
-    echo json_encode([
-        'employees' => array_diff($users, $responsibles),
-        'responsibles' => $responsibles,
-        'done' => $done,
-        'comment' => $task['t_comment']
-    ]);
+    $sheet = $recipe_sheet_dao->find(['rs_id' => $POST['search']]);
+    $renderer->temperature_content($sheet)
+                ->render();
     die();
 }
 
@@ -99,6 +66,7 @@ $renderer->set_day($day)
         ]
     ])
     ->production_modal()
+    ->temperature_modal()
     ->previous_page('management&date='.$day)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),

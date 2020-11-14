@@ -434,6 +434,22 @@ function init_affectations_modal(id) {
     })
 }
 
+function init_temperature_modal(id) {
+    inpt_date = document.getElementById('date-hidden')
+    $.ajax({
+        url : 'index.php?page=production&date='+inpt_date.value,
+        type : 'POST',
+        data : 'search='+id,
+        dataType : 'html',
+        success: function(data) {
+            modal = document.getElementById('temperature-modal-content')
+            modal.innerHTML = data
+            hidden = document.getElementById('t_target_id')
+            hidden.value = id
+        }
+    })
+}
+
 function del_user_aff(id) {
     var del = document.getElementById('delete-hidden')
     del.value = id
@@ -490,6 +506,30 @@ function init_products_modal(p_id) {
     })
 }
 
+function employee_tmp_modal(rs_id) {
+    hidden = document.getElementById('rs_id')
+    hidden.value = rs_id
+    $.ajax({
+        url : 'index.php?page=production',
+        type : 'POST',
+        data : 'search='+rs_id,
+        dataType : 'json',
+        success: function(data) {
+            input = document.getElementById('recipe-current-input')
+            label = document.getElementById('label')
+            if (Array.isArray(data)) {
+                input.type = data[0]
+                input.name = data[2]
+
+                label.innerHTML = data[1]+' : '
+            } else {
+                input.style.display = 'none'
+                label.innerHTML = data
+            }
+        }
+    })
+}
+
 $('#products_modal').on('hide.bs.modal', function () {
     window.location.reload(true)
 });
@@ -500,6 +540,14 @@ function product_form(event) {
     hidden = document.getElementById('p_id')
     console.log(hidden.value)
     init_products_modal(hidden.value)
+}
+
+function recipe_form(event) {
+    event.preventDefault()
+    post_form('recipe', 'production')
+    hidden = document.getElementById('rs_id')
+    console.log(hidden.value)
+    employee_tmp_modal(hidden.value)
 }
 
 function update_task_status(id) {

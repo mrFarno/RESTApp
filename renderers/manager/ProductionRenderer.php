@@ -20,7 +20,8 @@ class ProductionRenderer extends BaseRenderer
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Repas</th>
-                    <th>Suivi</th>
+                    <th>Affectations</th>
+                    <th>Suivi température</th>
                     <th></th>';
         if (count($recipes) !== 0) {
             foreach ($recipes as $recipe) {
@@ -30,6 +31,9 @@ class ProductionRenderer extends BaseRenderer
                 <td><button type="button" onclick="init_affectations_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#production_modal">
                     <i class="far fa-clipboard"></i>
                 </button></td>  
+                <td><button type="button" onclick="init_temperature_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#temperature_modal">
+                    <i class="fas fa-thermometer-half"></i>
+                </button></td>
                 <td>           
                     <button type="submit" onclick="return confirm(\'Etes vous sur de vouloir supprimer cette fiche technique ?\')" name="delete" value="'.$recipe['rs_id'].'" class="fnt_aw-btn delete-btn">
                         <i class="fas fa-trash-alt"></i>
@@ -75,6 +79,41 @@ class ProductionRenderer extends BaseRenderer
                 </div>
             </div>
         </div>';
+        return $this;
+    }
+
+    public function temperature_modal() {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="temperature_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel"><span id="eq_name-modal">Suivi des températures</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="temperature-modal-content">  
+
+                    </div>
+                </div>
+            </div>
+        </div>';
+        return $this;
+    }
+
+    public function temperature_content($recipe_sheet) {
+        $this->output .= '<span>Température de fin de cuisson : </span>'.$recipe_sheet['rs_end_cooking_tmp'].'°C<br>
+        <span>Mise en cellule : </span>
+        <ul>
+            <li>Température : '.$recipe_sheet['rs_refrigeration_tmp'].'°C</li>
+            <li>Heure : '.$recipe_sheet['rs_refrigeration_hour'].'</li>            
+        </ul>
+        <span>Sortie de cellule : </span>
+        <ul>
+            <li>Température : '.$recipe_sheet['rs_end_refrigeration_tmp'].'°C</li>
+            <li>Heure : '.$recipe_sheet['rs_end_refrigeration_hour'].'</li>
+        </ul>
+        <span>Échantillon : </span>'.$recipe_sheet['rs_sample'];
         return $this;
     }
 

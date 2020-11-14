@@ -33,6 +33,8 @@ $domain = str_replace($_SERVER['DOCUMENT_ROOT'],'',__DIR__);
 $domain = str_replace('/app', '', $domain)   ;
 $GLOBALS['domain'] = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$domain;
 
+date_default_timezone_set("Europe/Paris");
+
 //config.php instance
 $config= Config::getInstance();
 
