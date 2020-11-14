@@ -61,7 +61,7 @@ if(isset($POST['search'])) {
             die();
         }
     }
-    echo json_encode('Le suivi de cette marchandise est terminé');
+    echo json_encode('Le suivi de cette fiche technique est terminé');
     die();
 }
 
