@@ -35,7 +35,8 @@ if(isset($POST['rs_name']) && $POST['rs_name'] !== '' && isset($POST['rs_meal_ty
     $recipe_sheet_dao->persist([
         'rs_name' => $POST['rs_name'],
         'rs_meal_type' => $POST['rs_meal_type'],
-        'rs_restaurant_id' => $restaurant->getId()
+        'rs_restaurant_id' => $restaurant->getId(),
+        'rs_date' => $day
     ]);
 }
 
@@ -101,6 +102,7 @@ $renderer->set_day($day)
     ->previous_page('management&date='.$day)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),
+        'rs_date' => $day
     ], true), $meal_types)
     ->close_body()
     ->footer()

@@ -122,7 +122,7 @@ if(isset($POST['search'])) {
             $count++;
         }
     }
-    if ($count === count($regulars)) {
+    if (count($regulars) !== 0 && $count === count($regulars)) {
         $task_affectation_dao->persist([
             'ta_task_id' => $id,
             'ta_employement_id' => reset($regulars)['e_id'],
@@ -177,7 +177,6 @@ if(isset($POST['validform'])) {
                 'ta_employement_id' => $employement['e_id'],
                 'ta_number' => $POST['ta_number'] ?? null,
                 'ta_frequency' => $frequency !== '' ? $frequency : null,
-                'ta_date' => $day
             ]);
             break;
         case 'del_user_aff':
@@ -188,7 +187,6 @@ if(isset($POST['validform'])) {
             $t_af = $task_affectation_dao->find([
                 'ta_task_id' => $task['t_id'],
                 'ta_employement_id' => $employement['e_id'],
-                'ta_date' => $day
             ]);
             $task_affectation_dao->delete($t_af['ta_id']);
             break;
