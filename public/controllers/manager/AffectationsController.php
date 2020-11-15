@@ -57,14 +57,15 @@ if (isset($POST['u_id'])) {
     $employement = $employement_dao->find([
         'e_user_id' => $POST['u_id'],
         'e_restaurant_id' => $_SESSION['current-rest']
-    ]);
-    foreach ($restaurant->getMeals() as $meal) {
+    ]);  foreach ($restaurant->getMeals() as $meal) {
+        $search_start = $POST['af_timestart-'.$meal] == '' ? null : $POST['af_timestart-'.$meal];
+        $search_end = $POST['af_timeend-'.$meal] == '' ? null : $POST['af_timeend-'.$meal];
         $af_id = $meal_affectation_dao->find([
             'maf_employement_id' => $employement['e_id'],
-            'maf_meal_type' => $meal
+            'maf_meal_type' => $meal,
         ]);
         if ($af_id !== false) {
-            $af_id = $af_id['af_id'];
+            $af_id = $af_id['maf_id'];
         } else {
             $af_id = null;
         }
@@ -206,19 +207,14 @@ if(isset($POST['validform'])) {
 
 $renderer->set_day($day)
             ->header('Gestion des affectations')
+            ->user_modal($meals)
             ->open_body([
                 [
                     'tag' => 'div',
                     'class' => 'content-center' 
                 ],
-                [
-                    'tag' => 'form',
-                    'action' => 'index.php?page=affectations',
-                    'method' => 'POST'
-                ],             
             ])
             ->employees_table($employees)
-            ->user_modal($meals)
             ->close_body()
             ->footer()
             ->render();

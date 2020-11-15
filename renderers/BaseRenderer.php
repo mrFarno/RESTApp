@@ -188,6 +188,8 @@ abstract class BaseRenderer
         if ($role !== false) {
             $this->navbar($role);
         }
+        $this->output .= '<div class="app-container">';
+        $this->opened_tags[] = 'div';
         foreach ($tags as $attributes) {
             $this->output .= '<'.$attributes['tag'];
             foreach ($attributes as $key => $value) {

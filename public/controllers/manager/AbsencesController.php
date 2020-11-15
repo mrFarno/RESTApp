@@ -1,5 +1,7 @@
 <?php
 
+use app\BO\User;
+
 $args = [
     'ab_user_id' => FILTER_VALIDATE_INT,
     'ab_mealtype_id' => FILTER_VALIDATE_INT,

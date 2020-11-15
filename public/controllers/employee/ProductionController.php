@@ -93,13 +93,13 @@ foreach ($cols as $col => $value) {
 
 $renderer->set_day($day)
     ->header('Production')
+    ->temperature_modal()
     ->open_body([
         [
             'tag' => 'div',
             'class' => 'content-center'
         ]
     ], $USER->getRole())
-    ->temperature_modal()
     ->previous_page('management&date='.$day)
     ->tasks_list($rs_tasks)
     ->close_body()

@@ -4,7 +4,7 @@ $renderer->header('Erreur')
             ->open_body([
                 [
                     'tag' => 'div',
-                    'class' => 'app-container content-center'
+                    'class' => 'content-center'
                 ]             
                 ], false)
             ->set_referer($from)
