@@ -71,19 +71,14 @@ foreach ($r_employees as $employee) {
 
 rendering :
 $renderer->header('Gestion de l\'équipe')
+            ->team_modal($restaurant->getId())
             ->open_body([
                 [
                     'tag' => 'div',
                     'class' => 'content-center' 
                 ],
-                [
-                    'tag' => 'form',
-                    'action' => 'index.php?page=team&restid='.$restaurant->getId(),
-                    'method' => 'POST'
-                ],             
             ])
-            ->team_modal()
-            ->employees_list($r_employees, $restaurants)
+            ->employees_list($r_employees, $restaurants, $restaurant->getId())
             ->home()
             ->close_body()
             ->footer()

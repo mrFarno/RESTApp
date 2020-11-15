@@ -13,15 +13,15 @@ class EquipmentRenderer extends BaseRenderer
 
     public function inventory_navigation() {
         $this->output .= '<h1>Inventaire</h1>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-inventory">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-inventory" style="background-color: white">
             <ul class="navbar-nav">
-              <li class="nav-item">
+              <li class="nav-item" style="background-color: white;">
                 <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn btn-active inventory-btn" onclick="load_form(\'team_equipment\', \'equipment\')">Equipement des employés</button>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" style="background-color: white;">
                 <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn inventory-btn" onclick="load_form(\'equipment\', \'equipment\')">Matériel</button>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" style="background-color: white;">
                 <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn inventory-btn" onclick="load_form(\'cutlery\', \'equipment\')">Petit matériel</button>
               </li>         
             </ul>

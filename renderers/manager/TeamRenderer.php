@@ -9,7 +9,7 @@ class TeamRenderer extends BaseRenderer
         $this->from = 'team';
     }
 
-    public function team_modal() {
+    public function team_modal($id) {
 //        $disabled = '';
 //        $this->output .= '
 //        <div class-"rest-form-container" style="width: fit-content;">
@@ -34,6 +34,7 @@ class TeamRenderer extends BaseRenderer
 //        </div>
 //        </div>
 //        <br>';
+
         $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="team_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
             <div  class="modal-dialog modal-lg" role="document" id="formManual">
                 <div class="modal-content" style="margin-top: 33%">
@@ -44,22 +45,24 @@ class TeamRenderer extends BaseRenderer
                         </button>
                     </div>
                     <div class="modal-body">  
-                    <div class="team-ctnr">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="u_firstname" name="u_firstname" required placeholder="Prénom">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="u_lastname" name="u_lastname" required placeholder="Nom">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="u_email" name="u_email" required placeholder="Adresse email">
-                    </div>
-                    <div class="row justify-content-center">
-                    <button type="submit" class="btn btn-outline-success width100">
-                    Ajouter
-                    </button>
-                    </div>
-                    </div>
+                    <form method="POST" action="index.php?page=team&restid='.$id.'">  
+                        <div class="team-ctnr">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="u_firstname" name="u_firstname" required placeholder="Prénom">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="u_lastname" name="u_lastname" required placeholder="Nom">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="u_email" name="u_email" required placeholder="Adresse email">
+                            </div>
+                            <div class="row justify-content-center">
+                            <button type="submit" class="btn btn-outline-success width100">
+                            Ajouter
+                            </button>
+                            </div>
+                        </div>
+                    </form>
                     </div>
                     </div>
                 </div>
@@ -68,8 +71,9 @@ class TeamRenderer extends BaseRenderer
         return $this;
     }
 
-    public function employees_list($employees, $restaurants) {
+    public function employees_list($employees, $restaurants, $id) {
         $this->output .= '<h1 style="text-align: center;">Gestion de l\'équipe</h1>
+        <form method="POST" action="index.php?page=team&restid='.$id.'"> 
         <h3 style="text-align: center;">Liste des employés</h3>';
         if (count($employees) === 0) {
             $this->output .= 'Ce restaurant ne compte encore aucun employé';
@@ -116,7 +120,8 @@ class TeamRenderer extends BaseRenderer
         <button type="button" class="btn btn-outline-success width100">
         <a href="?page=home">Terminer</a>
         </button>
-        </div>';
+        </div>
+        </form>';
 
         return $this;
     }

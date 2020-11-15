@@ -53,20 +53,14 @@ if(isset($POST['search'])) {
 
 $renderer->set_day($day)
     ->header('Production')
+    ->production_modal()
+    ->temperature_modal()
     ->open_body([
         [
             'tag' => 'div',
             'class' => 'content-center'
-        ],
-        [
-            'tag' => 'form',
-            'method' => 'POST',
-            'action' => '?page=production',
-            'id' => 'step-form'
         ]
     ])
-    ->production_modal()
-    ->temperature_modal()
     ->previous_page('management&date='.$day)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),

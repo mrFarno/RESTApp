@@ -206,19 +206,14 @@ if(isset($POST['validform'])) {
 
 $renderer->set_day($day)
             ->header('Gestion des affectations')
+            ->user_modal($meals)
             ->open_body([
                 [
                     'tag' => 'div',
                     'class' => 'content-center' 
                 ],
-                [
-                    'tag' => 'form',
-                    'action' => 'index.php?page=affectations',
-                    'method' => 'POST'
-                ],             
             ])
             ->employees_table($employees)
-            ->user_modal($meals)
             ->close_body()
             ->footer()
             ->render();

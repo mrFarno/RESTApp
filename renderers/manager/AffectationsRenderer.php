@@ -54,6 +54,7 @@ class AffectationsRenderer extends BaseRenderer
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form method="POST" action="?page=affectations">
                 <input type="hidden" name="u_id" id="u_id" value="">
                 <input type="hidden" name="r_id" value="'.$_SESSION['current-rest'].'">
                 <div class="modal-body">
@@ -80,6 +81,7 @@ class AffectationsRenderer extends BaseRenderer
             </button>
             </div>
             </div>
+            </form>
             </div>
         </div>
     </div>';
@@ -88,7 +90,8 @@ class AffectationsRenderer extends BaseRenderer
 
     public function modal_content($task, $employees, $responsibles, $type) {
         $check = $task['t_done'] == 1 ? 'checked' : '';
-        $this->output .= '<input type="hidden" name="t_target_id" id="t_target_id" value="">
+        $this->output .= '<form method="POST" action="?page=affectations" id="step-form">
+                            <input type="hidden" name="t_target_id" id="t_target_id" value="">
                             <input type="hidden" name="delete" id="delete-hidden" value="">                            
                         <div class="">
                             <label for="t_user_id">Responsable : </label>
@@ -138,7 +141,8 @@ class AffectationsRenderer extends BaseRenderer
                             <button type="button" class="btn btn-outline-success width100" onclick="post_form(\'update_task\', \'affectations\');">
                             Enregistrer
                             </button>
-                        </div>';
+                        </div>
+        </form>';
         return $this;
     }
 
