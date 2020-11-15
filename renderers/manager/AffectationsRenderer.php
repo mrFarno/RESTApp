@@ -90,7 +90,8 @@ class AffectationsRenderer extends BaseRenderer
 
     public function modal_content($task, $employees, $responsibles, $type) {
         $check = $task['t_done'] == 1 ? 'checked' : '';
-        $this->output .= '<form method="POST" action="?page=affectations" id="step-form">
+        $this->output .= '<form method="POST" action="?page='.$type.'" id="step-form">
+                            <input type="hidden" name="date" value="'.$task['t_date'].'">
                             <input type="hidden" name="t_target_id" id="t_target_id" value="">
                             <input type="hidden" name="delete" id="delete-hidden" value="">                            
                         <div class="">

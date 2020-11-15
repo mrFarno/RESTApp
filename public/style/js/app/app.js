@@ -121,25 +121,26 @@ function modal_init(u_id) {
         data : 'findaf_uid='+u_id,
         dataType : 'json',
         success: function(data) {
+            console.log(data)
             for (let i = 1; i < 5; i++) {
                 $('#mt-'+i).prop('checked', false)
                 $('#start-mt-'+i).attr('hidden', true)
                 $('#end-mt-'+i).attr('hidden', true)
             }
             for (var i in data) {
-                check = $('#mt-'+data[i].af_meal_type)
+                check = $('#mt-'+data[i].maf_meal_type)
                 console.log(check)
                 check.prop('checked', true)
-                start = document.getElementById('af_timestart-'+data[i].af_meal_type)
-                $('#start-mt-'+data[i].af_meal_type).removeAttr('hidden')
+                start = document.getElementById('af_timestart-'+data[i].maf_meal_type)
+                $('#start-mt-'+data[i].maf_meal_type).removeAttr('hidden')
                 start.hidden = false
-                start.value = data[i].af_timestart.split(' ')[0]
-                end = document.getElementById('af_timeend-'+data[i].af_meal_type)
-                $('#end-mt-'+data[i].af_meal_type).removeAttr('hidden')
+                start.value = data[i].maf_timestart.split(' ')[0]
+                end = document.getElementById('af_timeend-'+data[i].maf_meal_type)
+                $('#end-mt-'+data[i].maf_meal_type).removeAttr('hidden')
 
                 end.hidden = false
-                if (data[i].af_timeend !== null) {
-                    end.value = data[i].af_timeend.split(' ')[0]
+                if (data[i].maf_timeend !== null) {
+                    end.value = data[i].maf_timeend.split(' ')[0]
                 }
             }
         }

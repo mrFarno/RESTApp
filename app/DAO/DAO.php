@@ -112,12 +112,19 @@ abstract class DAO extends \PDO
         $i = 0;
         $binds = [];
         foreach ($params as $filter => $value) {
-            if ($i === 0) {
-                $request .= ' WHERE '.$filter.' = :value'.$i;
+            $word = $i === 0 ? ' WHERE ' : ' AND ';
+            if ($value === null) {
+                $request .= $word.$filter.' IS NULL';
             } else {
-                $request .= ' AND '.$filter.' = :value'.$i;
+                $request .= $word.$filter.' = :value'.$i;
+                $binds[':value'.$i] = $value;
             }
-            $binds[':value'.$i] = $value;
+//            if ($i === 0) {
+//                $request .= ' WHERE '.$filter.' = :value'.$i;
+//            } else {
+//                $request .= ' AND '.$filter.' = :value'.$i;
+//            }
+//            $binds[':value'.$i] = $value;
             $i++;
         }
         $stmt = $this->getPDO()->prepare($request);

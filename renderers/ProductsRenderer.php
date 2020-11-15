@@ -86,9 +86,13 @@ overflow-y: scroll !important;">
             </td>                                        
         </tr>';
         }
-        $this->output .= '<button class="btn btn-outline-success width100" type="button" onclick="init_products_modal(\'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#products_modal">
-                    +
-                </button>';
+        $this->output .= '<tr><td></td><td></td><td></td><td>
+                    <button class="btn btn-outline-success width100" type="button" onclick="init_products_modal(\'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#products_modal">
+                        +
+                    </button>
+                    </td>
+                    <td></td><td></td><td></td><td></td>
+                </tr>';
 //        $this->output .= '<tr>
 //            <td><input type="text" name="p_name" required></td>
 //            <td><input type="text" name="p_provider"></td>

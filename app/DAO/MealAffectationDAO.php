@@ -29,6 +29,10 @@ class MealAffectationDAO extends DAO
         return parent::persist($datas);
     }
 
+    public function find_by($USER, $restaurant, $start, $end) {
+
+    }
+
     public function find_users($r_id, $mt_id, $date, $force_array = false) {
         $u_dao = new UserDAO([
             'db_host' => $this->host,

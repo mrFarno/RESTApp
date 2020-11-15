@@ -140,6 +140,7 @@ if(isset($_FILES['p_photo'])) {
 
 
 $renderer->header('Marchandises')
+    ->products_modal($day)
     ->open_body([
         [
             'tag' => 'div',
@@ -147,7 +148,6 @@ $renderer->header('Marchandises')
         ]
     ], $USER->getRole())
     ->previous_page('management&date='.$day)
-    ->products_modal($day)
     ->products_list($products)
     ->close_body()
     ->footer()
