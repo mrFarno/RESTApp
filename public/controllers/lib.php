@@ -23,12 +23,12 @@ function notify_new_user($user, $smtp_connector) {
         }
         //$mail->SMTPDebug  = 4;
         $mail->Port       = $smtp_connector['smtp_port'];
-        $mail->setFrom($smtp_connector['smtp_user'], 'Administration RESTApp');
+        $mail->setFrom($smtp_connector['smtp_user'], 'Administration Good For Restau');
         $mail->addAddress($user->getEmail());
         $mail->isHTML(true);
-        $mail->Subject = 'Invitation sur RESTApp';
+        $mail->Subject = 'Invitation sur Good For Restau';
         $mail->Body = 'Bonjour,
-        Vous avez été invité(e) à rejoindre l\'application RESTApp. Veuille cliquer sur ce lien pour choisir un mot de passe : '.$GLOBALS['domain'].'/public/index.php?page=reset&token='.$user->getToken();
+        Vous avez été invité(e) à rejoindre l\'application Good For Restau. Veuille cliquer sur ce lien pour choisir un mot de passe : '.$GLOBALS['domain'].'/public/index.php?page=reset&token='.$user->getToken();
         $mail->send();
         return true;
     } catch (Exception $e) {
@@ -58,7 +58,7 @@ function send_mail($user, $subject, $body, $smtp_connector) {
 		}
 		//$mail->SMTPDebug  = 4;
 	    $mail->Port       = $smtp_connector['smtp_port'];                                   
-	    $mail->setFrom($smtp_connector['smtp_user'], 'Administration RESTApp');
+	    $mail->setFrom($smtp_connector['smtp_user'], 'Administration Good For Restau');
 	    $mail->addAddress($user->getEmail());    
 	    $mail->isHTML(true);                                 
 	    $mail->Subject = $subject;

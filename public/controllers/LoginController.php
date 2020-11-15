@@ -83,10 +83,10 @@ if (isset($POST['reset']) && trim($POST['reset']) !== '') {
     $user->setToken($token);
     $user_dao->persist($user);
     try{
-        $content = '<p>Ce mail a été envoyé automatiquement par OpenFlow pour vous permettre de réinitialiser votre mot de passe.
+        $content = '<p>Ce mail a été envoyé automatiquement par Good For Restau pour vous permettre de réinitialiser votre mot de passe.
                     Merci de ne pas y répondre</p>
                     <a href = "'.$GLOBALS['domain'].'/public/index.php?page=reset&token='.$user->getToken().'">Cliquez sur ce lien pour réinitialiser votre mot de passe OpenFlow</a>';
-        send_mail($user, 'Réinitialisaton de votre mot de passe OpenFlow', $content, $smtp_connector);
+        send_mail($user, 'Réinitialisaton de votre mot de passe Good For Restau', $content, $smtp_connector);
     }catch(Exception $e){
         echo json_encode([
             'error',
