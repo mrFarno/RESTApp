@@ -22,7 +22,7 @@ abstract class BaseRenderer
     //--- HTML ---
 
     protected function navbar($role) {
-        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #b2b2b2;">
+        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e5d9cc;">
         <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
