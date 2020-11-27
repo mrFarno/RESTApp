@@ -28,7 +28,7 @@ if(isset($GET['page'])) {
     // If is not connected
     if ($auth->isAnon() || $SESSION->getUserdata() === null) {
         // Page that can be visited without authentication
-        $can_access = ['login', 'success', 'error', 'reset', 'logout', 'calendar', 'signin'];
+        $can_access = ['login', 'success', 'error', 'reset', 'logout', 'signin'];
         // Redirect to login
         if (!in_array($page, $can_access)) {
             $from = $page;
@@ -42,7 +42,7 @@ if(isset($GET['page'])) {
         }
     }
 } else {
-    $page = 'home';
+    $page = $auth->isAnon() || $SESSION->getUserdata() === null ? 'login' : 'home';
 }
 
 if ($USER !== null && $USER->getRole() === 'manager') {
@@ -72,7 +72,7 @@ $page = $page === 'home' ? 'calendar' : $page;
 // Load renderer and controller
 $controller = ucfirst($page).'Controller.php';
 $page = ucfirst($page);
-if (!file_exists(__DIR__.'/controllers/'.$controller)) {
+if (!file_exists(__DIR__.'/controllers/'.$controller) && $USER !== null) {
     $controller = $USER->getRole().'/'.$controller;
     $page = $USER->getRole().'\\'.$page;
 }

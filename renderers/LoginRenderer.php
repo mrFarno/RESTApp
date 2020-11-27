@@ -24,6 +24,7 @@ class LoginRenderer extends BaseRenderer
                     </div>
                 </div>
                 <input type="hidden" name="from" value="'.$from.'">
+                <br>
                 <div class="row justify-content-center">
                     <div class="">
                         <input type="hidden" name="token" value="'.$token.'">

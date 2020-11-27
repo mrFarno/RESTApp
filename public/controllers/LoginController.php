@@ -25,6 +25,8 @@ $ERROR = [
     'message' => true
 ];
 
+$from = 'home';
+
 // trying to login
 if (isset($POST['username']) && isset($POST['password'])) {
     $from = $POST['from'];
