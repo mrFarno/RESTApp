@@ -9,5 +9,14 @@ public/uploads/absences/*
 public/uploads/products/*
 !public/uploads/products/.gitkeep
 
-public/uploads/restaurants/*
-!public/uploads/restaurants/.gitkeep
+public/uploads/restaurants/maps/*
+!public/uploads/restaurants/maps/.gitkeep
+
+public/uploads/restaurants/photos/*
+!public/uploads/restaurants/photos/.gitkeep
+
+public/uploads/users/*
+!public/uploads/users/.gitkeep
+
+public/uploads/equipments/*
+!public/uploads/equipments/.gitkeep
