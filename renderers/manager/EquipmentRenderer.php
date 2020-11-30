@@ -34,6 +34,26 @@ class EquipmentRenderer extends BaseRenderer
         return $this;
     }
 
+    public function map_modal($r_id) {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="map_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel">Plan du restaurant</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">  
+                        <img class="map-pic" src="'.$GLOBALS['domain'].'/public/uploads/restaurants/maps/rest-'.$r_id.'.png">
+                    </div>
+                </div>
+            </div>
+        </div>';
+
+        return $this;
+    }
+
     public function team_equipment_form($equipments) {
         $this->output .= '<div class="" >
             <table class="table table-hover" style="">
@@ -74,6 +94,11 @@ class EquipmentRenderer extends BaseRenderer
     }
 
     public function equipment_form($equipments) {
+        if (is_file(__DIR__.'/../../public/uploads/restaurants/maps/rest-'.$_SESSION['current-rest'].'.png')) {
+            $this->output .= '<button type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#map_modal">
+                        <i class="fas fa-map"></i>
+                    </button>';
+        }
         $this->output .= '<div class="" >
             <table class="table table-hover" style="">
                     <th>Nom</th>

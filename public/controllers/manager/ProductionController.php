@@ -60,7 +60,7 @@ $renderer->set_day($day)
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ])
+    ],  $USER)
     ->previous_page('management&date='.$day)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),

@@ -47,8 +47,8 @@ $renderer->header('Réinitialiser mot de passe')
             ->open_body([
                 [
                     'tag' => 'div',
-                ]
-            ])
+                ],
+            ], false)
             ->previous_page($from)
             ->error($ERROR['message'])
             ->reset_form($user)

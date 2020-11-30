@@ -28,18 +28,20 @@ if(isset($POST['validform'])) {
             $args['te_stock'] = FILTER_VALIDATE_INT;
             $args['te_kit_part'] = FILTER_SANITIZE_STRING;
             $POST = filter_input_array(INPUT_POST, $args, false);
-            $team_equipment_dao->persist([
-                'te_name' => $POST['te_name'],
-                'te_stock' => $POST['te_stock'],
-                'te_restaurant_id' => $restaurant->getId(),
-                'te_kit_part' => isset($POST['te_kit_part']) ? '1' : '0'
-            ]);
-            if (isset($POST['te_kit_part'])) {
-                $max = $team_equipment_dao->select('SELECT MAX(te_stock) as max FROM team_equipments WHERE te_kit_part = 1 AND te_restaurant_id = '.$restaurant->getId())['max'];
-                if (intval($POST['te_stock']) > intval($max)) {
-                    $max = $POST['te_stock'];
+            if (trim($POST['te_name']) !== '') {
+                $team_equipment_dao->persist([
+                    'te_name' => $POST['te_name'],
+                    'te_stock' => $POST['te_stock'],
+                    'te_restaurant_id' => $restaurant->getId(),
+                    'te_kit_part' => isset($POST['te_kit_part']) ? '1' : '0'
+                ]);
+                if (isset($POST['te_kit_part'])) {
+                    $max = $team_equipment_dao->select('SELECT MAX(te_stock) as max FROM team_equipments WHERE te_kit_part = 1 AND te_restaurant_id = '.$restaurant->getId())['max'];
+                    if (intval($POST['te_stock']) > intval($max)) {
+                        $max = $POST['te_stock'];
+                    }
+                    $team_equipment_dao->update('UPDATE team_equipments SET te_stock = '.$max.' WHERE te_kit_part = 1 AND te_restaurant_id = '.$restaurant->getId());
                 }
-                $team_equipment_dao->update('UPDATE team_equipments SET te_stock = '.$max.' WHERE te_kit_part = 1 AND te_restaurant_id = '.$restaurant->getId());
             }
             break;
         case 'equipment':
@@ -50,14 +52,18 @@ if(isset($POST['validform'])) {
             $args['eq_cleaning_instructions'] = FILTER_SANITIZE_STRING;
             $POST = filter_input_array(INPUT_POST, $args, false);
 
-            $equipment_dao->persist([
-                'eq_name' => $POST['eq_name'],
-                'eq_mark' => $POST['eq_mark'],
-                'eq_fail_contact' => $POST['eq_fail_contact'],
-                'eq_fail_instructions' => $POST['eq_fail_instructions'],
-                'eq_cleaning_instructions' => $POST['eq_cleaning_instructions'],
-                'eq_restaurant_id' => $restaurant->getId()
-            ]);
+            if (trim($POST['eq_name']) !== '' &&
+                trim($POST['eq_fail_contact']) !== '' &&
+                trim($POST['eq_fail_instructions']) !== '') {
+                $equipment_dao->persist([
+                    'eq_name' => $POST['eq_name'],
+                    'eq_mark' => $POST['eq_mark'],
+                    'eq_fail_contact' => $POST['eq_fail_contact'],
+                    'eq_fail_instructions' => $POST['eq_fail_instructions'],
+                    'eq_cleaning_instructions' => $POST['eq_cleaning_instructions'],
+                    'eq_restaurant_id' => $restaurant->getId()
+                ]);
+            }
             break;
         case 'cutlery':
             $args['se_name'] = FILTER_SANITIZE_STRING;
@@ -65,12 +71,16 @@ if(isset($POST['validform'])) {
             $args['se_stock'] = FILTER_VALIDATE_INT;
             $POST = filter_input_array(INPUT_POST, $args, false);
 
-            $small_equipment_dao->persist([
-                'se_name' => $POST['se_name'],
-                'se_type' => $POST['se_type'],
-                'se_stock' => $POST['se_stock'],
-                'se_restaurant_id' => $restaurant->getId()
-            ]);
+            if (trim($POST['se_name']) !== '' &&
+                trim($POST['se_type']) !== '' &&
+                trim($POST['se_stock']) !== '') {
+                $small_equipment_dao->persist([
+                    'se_name' => $POST['se_name'],
+                    'se_type' => $POST['se_type'],
+                    'se_stock' => $POST['se_stock'],
+                    'se_restaurant_id' => $restaurant->getId()
+                ]);
+            }
             break;
         default:
             break;
@@ -137,12 +147,13 @@ if(isset($POST['delete'])) {
 }
 
 $renderer->header('Inventaire')
+    ->map_modal($restaurant->getId())
     ->open_body([
         [
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ])
+    ],  $USER)
     ->inventory_navigation()
     ->team_equipment_form($team_equipment_dao->find(['te_restaurant_id' => $restaurant->getId()], true))
     ->close_body()

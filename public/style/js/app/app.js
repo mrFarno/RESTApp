@@ -247,6 +247,11 @@ function update_stock(kit_part) {
     }
 }
 
+function submit_pic_form() {
+    form = document.getElementById('pic-form')
+    form.submit()
+}
+
 function show_absence_button(id) {
     btn = document.getElementById('absence-'+id)
     check = document.getElementById(id+'-present')

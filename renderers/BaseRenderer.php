@@ -21,7 +21,7 @@ abstract class BaseRenderer
 
     //--- HTML ---
 
-    protected function navbar($role) {
+    protected function navbar($USER) {
         $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e5d9cc;">
         <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +30,7 @@ abstract class BaseRenderer
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">';
-        switch ($role) {
+        switch ($USER->getRole()) {
             case 'manager':
                 $this->output .= '<li class="nav-item dropdown ' . $this->active('restaurants') . $this->active('equipment') . $this->active('spaces') . '">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,12 +70,24 @@ abstract class BaseRenderer
             <input type="hidden" name="from" value="' . $this->from . '">
             </form>';
         } else {
-            if ($role === 'manager') {
+            if ($USER->getRole() === 'manager') {
                 $this->output .= 'Créer un restaurant :
                 <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>';
             }
         }
-        $this->output .= '<a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
+        if (is_file(__DIR__.'/../public/uploads/users/user-'.$USER->getId().'.png')) {
+            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
+        } else {
+            $this->output .= '<form action="?page=profile" method="POST" enctype="multipart/form-data" id="pic-form">
+            <label class="user-pic" for="user-pic">
+                <img class="user-pic" src="'.$GLOBALS['domain'].'/public/style/resources/avatar.png" title="Ajouter une photo de profil">
+            </label>
+            <input type="file" id="user-pic" name="user-pic" style="display: none" onchange="submit_pic_form()">
+            <input type="hidden" name="from" value="' . $this->from . '">
+            </form>';
+        }
+        $this->output .= '                
+            <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
             </div>
         </nav>';
 
@@ -180,13 +192,13 @@ abstract class BaseRenderer
     /**
      * Open body with optional params
      * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)
-     * @param bool $role : User role, false if no navbar, default manager
+     * @param bool $USER : User role, false if no navbar, default manager
      * @return self
      */
-    public function open_body(array $tags = [], $role = 'manager') {
+    public function open_body(array $tags = [], $USER) {
         $this->output .='<body>';
-        if ($role !== false) {
-            $this->navbar($role);
+        if ($USER !== false) {
+            $this->navbar($USER);
             $this->output .= '<div class="app-container">';
             $this->opened_tags[] = 'div';
         } else {

@@ -120,3 +120,9 @@ function can_access($page, $USER) {
 	}
 	return in_array($page, $can_access);
 }
+
+function upload($file, $destination) {
+    if(!is_file(__DIR__.'/../uploads/'.$destination.'.png')) {
+        imagepng(imagecreatefromstring(file_get_contents($file['tmp_name'])), __DIR__.'/../uploads/'.$destination.'.png');
+    }
+}

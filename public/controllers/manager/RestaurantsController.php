@@ -70,8 +70,14 @@ if(isset($POST['r_name'])) {
                 ->setMeals($meals);
     if (isset($GET['edit'])) {
         $restaurant->setId(intval($GET['edit']));
-    } 
+    }
     $restaurant_dao->persist($restaurant);
+    if (isset($_FILES['rest-map'])) {
+        upload($_FILES['rest-map'], 'restaurants/maps/rest-'.$restaurant->getId());
+    }
+    if (isset($_FILES['rest-pic'])) {
+        upload($_FILES['rest-pic'], 'restaurants/photos/rest-'.$restaurant->getId());
+    }
     if ($edit === false) {
         $team_eqs = ['Blouses', 'Chaussures', 'Coiffes'];
         foreach ($team_eqs as $team_eq) {
@@ -96,9 +102,10 @@ $renderer->header('Gestion du restaurant')
                 [
                     'tag' => 'form',
                     'action' => 'index.php?page=restaurants'.$form_action,
-                    'method' => 'POST'
+                    'method' => 'POST',
+                    'enctype' => 'multipart/form-data'
                 ],             
-            ])
+            ],  $USER)
             ->set_action($action)
             ->restaurant_form($prefill, $restaurant_types, $meal_types)
             ->close_body()

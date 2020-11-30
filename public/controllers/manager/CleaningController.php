@@ -110,8 +110,8 @@ $renderer->set_day($day)
         [
             'tag' => 'div',
             'class' => 'content-center'
-        ]
-    ])
+        ],
+    ],  $USER)
     ->previous_page('management&date='.$day)
     ->list_equipments($equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true))
     ->list_spaces($space_dao->find(['s_restaurant_id' => $restaurant->getId()], true))

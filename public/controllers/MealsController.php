@@ -223,7 +223,7 @@ $renderer->set_day($day)
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ], $USER->getRole())
+    ], $USER)
     ->previous_page('management&date='.$day)
     ->dropdown($meal_types, $day)
     ->checks_navigation()

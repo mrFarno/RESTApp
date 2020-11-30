@@ -77,7 +77,7 @@ $renderer->header('Gestion de l\'équipe')
                     'tag' => 'div',
                     'class' => 'content-center' 
                 ],
-            ])
+            ],  $USER)
             ->employees_list($r_employees, $restaurants, $restaurant->getId())
             ->home()
             ->close_body()

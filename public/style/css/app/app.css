@@ -56,6 +56,19 @@ html {
     background: transparent !important;
 }
 
+.user-pic {
+    width: 2vw;
+    height: auto;
+}
+
+.map-pic {
+    width: 30vw;
+}
+
+.user-pic:hover {
+    cursor: pointer;
+}
+
 #formLogin {
     text-align: center;
     position: absolute;

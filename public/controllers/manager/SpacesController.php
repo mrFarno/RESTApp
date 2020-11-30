@@ -33,7 +33,7 @@ $renderer->header('Locaux')
             'method' => 'POST',
             'action' => '?page=spaces'
         ]
-    ])
+    ],  $USER)
     ->spaces_form($space_dao->find(['s_restaurant_id' => $restaurant->getId()], true))
     ->close_body()
     ->footer()

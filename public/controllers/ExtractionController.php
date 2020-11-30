@@ -18,7 +18,7 @@ $renderer->header('Extraction')
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ], $USER->getRole())
+    ], $USER)
     ->previous_page('management&date='.$day)
     ->wip()
     ->close_body()

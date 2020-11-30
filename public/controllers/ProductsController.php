@@ -146,7 +146,7 @@ $renderer->header('Marchandises')
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ], $USER->getRole())
+    ], $USER)
     ->previous_page('management&date='.$day)
     ->products_list($products)
     ->close_body()

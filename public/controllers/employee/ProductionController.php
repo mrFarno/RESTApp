@@ -99,7 +99,7 @@ $renderer->set_day($day)
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ], $USER->getRole())
+    ], $USER)
     ->previous_page('management&date='.$day)
     ->tasks_list($rs_tasks)
     ->close_body()

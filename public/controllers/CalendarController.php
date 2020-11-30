@@ -44,7 +44,7 @@ $renderer->header()
                     'tag' => 'div',
                     'class' => 'calendar-container'
                 ],
-            ], $USER->getRole())
+            ], $USER)
             ->set_referer('home')
             ->options()
             ->monthly()

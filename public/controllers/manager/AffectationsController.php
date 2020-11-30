@@ -213,7 +213,7 @@ $renderer->set_day($day)
                     'tag' => 'div',
                     'class' => 'content-center' 
                 ],
-            ])
+            ],  $USER)
             ->employees_table($employees)
             ->close_body()
             ->footer()

@@ -123,7 +123,7 @@ $renderer->set_day($day)
             'tag' => 'div',
             'class' => 'content-center'
         ]
-    ], $USER->getRole())
+    ], $USER)
     ->previous_page('management&date='.$day)
     ->equipement_tasks_list($eq_tasks)
     ->spaces_tasks_list($spaces_tasks)

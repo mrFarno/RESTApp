@@ -58,7 +58,16 @@ class RestaurantsRenderer extends BaseRenderer
                 </label>
                 </div>';
             }
-        $this->output .= '<div class="row justify-content-center">
+        $this->output .= '
+        <div class="form-group">
+            <label for="rest-pic">Photo du restaurant</label>
+            <input type="file" name="rest-pic" id="rest-pic">
+        </div>
+        <div class="form-group">
+            <label for="rest-map">Plan du restaurant</label>
+            <input type="file" name="rest-map" id="rest-map">
+        </div>
+        <div class="row justify-content-center">
         <div class="">
             <button type="submit" class="btn btn-outline-success width100">
                     '.$this->action['btn'].'
