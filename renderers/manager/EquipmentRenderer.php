@@ -111,14 +111,18 @@ class EquipmentRenderer extends BaseRenderer
         if (count($equipments) !== 0) {
             foreach ($equipments as $equipment) {
                 $checked = $equipment['eq_failed'] == 1 ? ' checked ' : '';
+                $link = is_file(__DIR__.'/../../public/uploads/equipments/failed-'.$equipment['eq_id'].'.png') ? '<a id="link-failed-'.$equipment['eq_id'].'" target="_blank" href="'.$GLOBALS['domain'].'/public/uploads/equipments/failed-'.$equipment['eq_id'].'.png'.'">-></a>' : '';
                 $this->output .= '<tr>
                 <td>'.$equipment['eq_name'].'</td>
                 <td>'.$equipment['eq_mark'].'</td>
                 <td>'.$equipment['eq_fail_contact'].'</td>                     
                 <td>'.$equipment['eq_fail_instructions'].'</td>                     
                 <td>'.$equipment['eq_cleaning_instructions'].'</td>                     
-                <td><input type="checkbox"'.$checked.' onclick="update_failed_eq(\''.$equipment['eq_id'].'\')"></td> 
-                                <td>
+                <td>
+                    <input value="'.$equipment['eq_id'].'" type="checkbox"'.$checked.' onclick="update_failed_eq(\''.$equipment['eq_id'].'\')">
+                    '.$link.'
+                </td> 
+                <td>
                     <button type="button" onclick="delete_eq(\''.$equipment['eq_id'].'\', \'equipment\'); load_form(\'equipment\', \'equipment\') " name="delete" class="fnt_aw-btn delete-btn">
                         <i class="fas fa-trash-alt"></i>
                     </button>

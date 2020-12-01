@@ -7,6 +7,7 @@ $args = [
     'form' => FILTER_SANITIZE_STRING,
     'validform' => FILTER_SANITIZE_STRING,
     'current-meal' => FILTER_VALIDATE_INT,
+    'upload' => FILTER_VALIDATE_INT,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
@@ -143,6 +144,9 @@ if (isset($POST['validform'])) {
                     'eq_failed' => isset($POST['eq_'.$equipment['eq_id'].'_ok']) ? '0' : '1'
                 ]);
             }
+            if (isset($POST['eq_'.$equipment['eq_id'].'_ok'])) {
+                delete_file('equipments/failed-'.$POST['eq_'.$equipment['eq_id'].'_ok']);
+            }
             break;
         case 'cutlery' :
             $equipments = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
@@ -177,6 +181,11 @@ if (isset($POST['validform'])) {
             break;
     }
     $meal_dao->persist($meal);
+    die();
+}
+
+if (isset($POST['upload'])) {
+    upload($_FILES['failed'], 'equipments/failed-'.$POST['upload']);
     die();
 }
 

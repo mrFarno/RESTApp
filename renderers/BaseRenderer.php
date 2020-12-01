@@ -76,17 +76,19 @@ abstract class BaseRenderer
             }
         }
         if (is_file(__DIR__.'/../public/uploads/users/user-'.$USER->getId().'.png')) {
-            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
+//            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
+            $src = $GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png';
         } else {
-            $this->output .= '<form action="?page=profile" method="POST" enctype="multipart/form-data" id="pic-form">
-            <label class="user-pic" for="user-pic">
-                <img class="user-pic" src="'.$GLOBALS['domain'].'/public/style/resources/avatar.png" title="Ajouter une photo de profil">
-            </label>
-            <input type="file" id="user-pic" name="user-pic" style="display: none" onchange="submit_pic_form()">
-            <input type="hidden" name="from" value="' . $this->from . '">
-            </form>';
+            $src = $GLOBALS['domain'].'/public/style/resources/avatar.png';
         }
-        $this->output .= '                
+        $this->output .= '   
+           <form action="?page=profile" method="POST" enctype="multipart/form-data" id="pic-form">
+                <label class="user-pic" for="user-pic">
+                    <img class="user-pic" src="'.$src.'" title="Ajouter une photo de profil">
+                </label>
+                <input type="file" id="user-pic" name="user-pic" style="display: none" onchange="submit_pic_form()">
+                <input type="hidden" name="from" value="' . $this->from . '">
+            </form>             
             <a style="color: black" class="nav-link" href="?page=logout"><i title="Déconnexion" alt="Déconnexion" class="fas fa-sign-out-alt fa-2x"></i></a>
             </div>
         </nav>';

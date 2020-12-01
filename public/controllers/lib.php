@@ -122,7 +122,13 @@ function can_access($page, $USER) {
 }
 
 function upload($file, $destination) {
-    if(!is_file(__DIR__.'/../uploads/'.$destination.'.png')) {
+//    if(!is_file(__DIR__.'/../uploads/'.$destination.'.png')) {
         imagepng(imagecreatefromstring(file_get_contents($file['tmp_name'])), __DIR__.'/../uploads/'.$destination.'.png');
+//    }
+}
+
+function delete_file() {
+    if(is_file(__DIR__.'/../uploads/'.$destination.'.png')) {
+        unlink(__DIR__.'/../uploads/'.$destination.'.png');
     }
 }

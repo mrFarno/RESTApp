@@ -336,11 +336,33 @@ function get_equipment_infos(eq_id) {
         success: function(data) {
             contact = document.getElementById('eq_contact')
             instructions = document.getElementById('eq_instructions')
-
+            input = document.getElementById('upload')
+            input.value = eq_id
             contact.innerText = data.eq_fail_contact
             instructions.innerText = data.eq_fail_instructions
         }
     })
+}
+
+function upload_eq_pic() {
+    upload = document.getElementById('eq_pic')
+    input = document.getElementById('upload')
+    let formData = new FormData()
+    formData.append('upload', input.value)
+    formData.append('failed', upload.files[0])
+    $.ajax({
+        url : 'index.php?page=meals',
+        type : 'POST',
+        data : formData,
+        mimeType: "multipart/form-data",
+        processData: false,
+        contentType: false,
+        dataType : 'json',
+        success: function(data) {
+            show_toast('success', 'Photo enregistrée')
+        }
+    })
+
 }
 
 function update_eq_stock(eq_id, table) {
@@ -356,6 +378,10 @@ function update_eq_stock(eq_id, table) {
 }
 
 function update_failed_eq(id) {
+    if (event.target.checked === false) {
+        link = document.getElementById('link-failed-'+id)
+        link.parentNode.removeChild(link)
+    }
     $.ajax({
         url : 'index.php?page=equipment',
         type : 'POST',

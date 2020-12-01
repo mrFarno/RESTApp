@@ -136,6 +136,9 @@ if (isset($POST['failed'])) {
 //        $eq['eq_failed'] == 0;
 //    }
     $eq['eq_failed'] = $eq['eq_failed'] == 0 ? 1 : 0;
+    if ($eq['eq_failed'] == 0 ) {
+        delete_file('equipments/failed-'.$POST['failed']);
+    }
     $equipment_dao->persist($eq);
     die();
 }

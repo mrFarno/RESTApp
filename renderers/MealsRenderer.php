@@ -58,7 +58,7 @@ class MealsRenderer extends BaseRenderer
               </li>            
             </ul>
         </nav>
-        <form method="POST" action="?page=meals" id="step-form">
+        <form method="POST" action="?page=meals" id="step-form" enctype="multipart/form-data">
         <input type="hidden" name="current-meal" id="current-meal" value="'.$this->current_meal.'">
         <input type="hidden" name="date" id="current-date" value="'.$this->day.'">
         <input type="hidden" id="nav-step" value="\'team\'">
@@ -346,6 +346,8 @@ class MealsRenderer extends BaseRenderer
                     <div class="modal-body">  
                         <div>Contact : <span id="eq_contact"></span></div>
                         <div>Instructions : <span id="eq_instructions"></span></div>
+                        <div>Prendre une photo : <input type="file" id="eq_pic"><button type="button" onclick="upload_eq_pic()" class="btn btn-outline-success width100">Ajouter</button></div>
+                        <input type="hidden" name="upload" id="upload">
                     </div>
                 </div>
             </div>
