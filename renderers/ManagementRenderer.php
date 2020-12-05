@@ -11,7 +11,7 @@ class ManagementRenderer extends BaseRenderer
         $this->from = 'management';
     }
 
-    public function links($day) {
+    public function links($day, $meal) {
         $this->set_day($day);
 //        $this->output .= '<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 //            <div class="row justify-content-between">
@@ -23,24 +23,24 @@ class ManagementRenderer extends BaseRenderer
 //            </div>
 //        </div>';
         $this->output .= '<br><br><div class="row">';
-        $this->link('meals', $day)
-                ->link('production', $day)
-                ->link('service', $day);
+        $this->link('meals', $day, $meal)
+                ->link('production', $day, $meal)
+                ->link('service', $day, $meal);
         $this->output .= '</div>';
         $this->output .= '<br><div class="row">';
-        $this->link('products', $day)
-                ->link('cleaning', $day)
-                ->link('biowaste', $day);
+        $this->link('products', $day, $meal)
+                ->link('cleaning', $day, $meal)
+                ->link('biowaste', $day, $meal);
         $this->output .= '</div>';
         $this->output .= '<br><div class="row">';
-        $this->link('nutrition', $day)
-            ->link('animation', $day)
-            ->link('extraction', $day);
+        $this->link('nutrition', $day, $meal)
+            ->link('animation', $day, $meal)
+            ->link('extraction', $day, $meal);
         $this->output .= '</div>';
         return $this;
     }
 
-    private function link($page, $day) {
+    private function link($page, $day, $meal) {
         $trads = [
             'meals' => 'Repas',
             'products' => 'Marchandise',
@@ -53,7 +53,7 @@ class ManagementRenderer extends BaseRenderer
             'extraction' => 'Extraction'
         ];
         $this->output .= '<div class="col-4">
-        <a href="?page='.$page.'&date='.$day.'">
+        <a href="?page='.$page.'&date='.$day.'&current-meal='.$meal.'">
             <img class="icon-img" id="'.$page.'-page" src="'.$GLOBALS['domain'].'/public/style/resources/icons/'.$page.'.png"> 
             <p style="text-align: center; color: black; font-size: large;" for="'.$page.'-page">'.$trads[$page].'</p>
         </a>

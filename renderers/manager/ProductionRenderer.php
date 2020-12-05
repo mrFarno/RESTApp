@@ -13,13 +13,13 @@ class ProductionRenderer extends BaseRenderer
         $this->from = 'production';
     }
 
-    public function production_form($recipes, $meal_types) {
+    public function production_form($recipes, $meal_types, $current_meal) {
         $this->output .= '<h2 style="text-align: center;">Production</h2><br>
             <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
+            <input type="hidden" name="current-meal" id="date-hidden" value="'.$current_meal.'">
             <div class="" >
             <table class="table table-hover" style="">
                     <th>Nom</th>
-                    <th>Repas</th>
                     <th>Affectations</th>
                     <th>Suivi</th>
                     <th></th>';
@@ -43,15 +43,7 @@ class ProductionRenderer extends BaseRenderer
             }
         }
         $this->output .= '<tr>
-            <td><input type="text" name="rs_name"></td>
-            <td>
-                <select name="rs_meal_type">
-                    <option selected disabled>---Sélectionner un repas---</option>';
-        foreach ($meal_types as $id => $meal_type) {
-            $this->output .= '<option value="'.$id.'">'.$meal_type.'</option>';
-        }
-        $this->output .= '</select>
-            </td>                                                 
+            <td><input type="text" name="rs_name"></td>                                                
             <td></td>  
             <td></td>  
             <td>

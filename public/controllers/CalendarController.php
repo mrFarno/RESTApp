@@ -37,7 +37,7 @@ $renderer->header()
             ->open_body([
                 [
                     'tag' => 'form',
-                    'action' => 'index.php?page=management',
+                    'action' => 'index.php?page=dayly',
                     'method' => 'POST'
                 ],
                 [

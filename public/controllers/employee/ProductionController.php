@@ -21,6 +21,8 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 
+$current_meal = $GET['current-meal'] ?? $POST['current-meal'];
+
 $rs_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
     'table' => 'recipe_sheets',
     'prefix' => 'rs'
@@ -100,7 +102,7 @@ $renderer->set_day($day)
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('management&date='.$day)
+    ->previous_page('management&date='.$day.'&meal='.$current_meal)
     ->tasks_list($rs_tasks)
     ->close_body()
     ->footer()

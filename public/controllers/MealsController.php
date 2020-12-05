@@ -11,6 +11,7 @@ $args = [
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -233,8 +234,8 @@ $renderer->set_day($day)
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('management&date='.$day)
-    ->dropdown($meal_types, $day)
+    ->previous_page('management&date='.$day.'&meal='.$type_id)
+//    ->dropdown($meal_types, $day)
     ->checks_navigation()
     ->team_form($employees)
     ->close_body()

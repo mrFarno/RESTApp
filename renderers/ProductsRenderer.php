@@ -50,7 +50,7 @@ overflow-y: scroll !important;">
                 <th>Aspect</th>
                 <th>Température</th>
                 <th>Renvoyé</th>
-                <th>Photo</th>
+                <th>Photo de l\'étiquette</th>
                 <th>Suivi</th>';
         foreach ($products as $product) {
             if (is_file(__DIR__.'/../public/uploads/products/product-'.$product['p_id'].'.png')) {

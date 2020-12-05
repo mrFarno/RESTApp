@@ -7,11 +7,12 @@ $args = [
     't_target_id' => FILTER_VALIDATE_INT,
     't_user_id' => FILTER_VALIDATE_INT,
     'delete' => FILTER_VALIDATE_INT,
-    'rs_meal_type' => FILTER_VALIDATE_INT,
     'rs_name' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -31,10 +32,12 @@ foreach ($restaurant->getMeals() as $meal) {
     $meal_types[$meal] = $meal_types_dao->find(['mt_id' => $meal])['mt_name'];
 }
 
+$current_meal = $GET['current-meal'] ?? $POST['current-meal'] ?? array_keys($meal_types)[0];
+
 if(isset($POST['rs_name']) && $POST['rs_name'] !== '' && isset($POST['rs_meal_type']) && $POST['rs_meal_type'] !== '') {
     $recipe_sheet_dao->persist([
         'rs_name' => $POST['rs_name'],
-        'rs_meal_type' => $POST['rs_meal_type'],
+        'rs_meal_type' => $current_meal,
         'rs_restaurant_id' => $restaurant->getId(),
         'rs_date' => $day
     ]);
@@ -59,13 +62,18 @@ $renderer->set_day($day)
         [
             'tag' => 'div',
             'class' => 'content-center'
+        ],
+        [
+            'tag' => 'form',
+            'action' => 'index.php?page=production',
+            'method' => 'POST'
         ]
     ],  $USER)
-    ->previous_page('management&date='.$day)
+    ->previous_page('management&date='.$day.'&meal='.$current_meal)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),
         'rs_date' => $day
-    ], true), $meal_types)
+    ], true), $meal_types, $current_meal)
     ->close_body()
     ->footer()
     ->render();

@@ -59,6 +59,7 @@ abstract class BaseRenderer
                 break;
             default: break;
         }
+        $this->output .= '<div class="rest-choice">';
         if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
             $this->output .= '<form action="?page=calendar" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
             <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
@@ -69,12 +70,20 @@ abstract class BaseRenderer
             $this->output .= '</select>
             <input type="hidden" name="from" value="' . $this->from . '">
             </form>';
+            if (is_file(__DIR__.'/../public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png')) {
+//            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
+                $src = $GLOBALS['domain'].'/public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png';
+            } else {
+                $src = $GLOBALS['domain'].'/public/style/resources/upload.png';
+            }
+            $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>';
         } else {
             if ($USER->getRole() === 'manager') {
                 $this->output .= 'Créer un restaurant :
                 <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>';
             }
         }
+        $this->output .= '</div>';
         if (is_file(__DIR__.'/../public/uploads/users/user-'.$USER->getId().'.png')) {
 //            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
             $src = $GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png';
