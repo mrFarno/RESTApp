@@ -55,7 +55,10 @@ abstract class BaseRenderer
                   </ul>';
                 break;
             case 'employee':
-                $this->output .= '</ul>';
+                $this->output .= '<li class="nav-item  '. $this->active('team') .'">
+                    <a class="nav-link" href="?page=team">Déclarer une absence</a>
+                  </li>
+                </ul>';
                 break;
             default: break;
         }
@@ -76,7 +79,11 @@ abstract class BaseRenderer
             } else {
                 $src = $GLOBALS['domain'].'/public/style/resources/upload.png';
             }
-            $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>';
+            if ($USER->getRole() === 'manager') {
+                $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>';
+            } else {
+                $this->output .= '<img class="user-pic" src="'.$src.'" title="Editer mon restaurant">';
+            }
         } else {
             if ($USER->getRole() === 'manager') {
                 $this->output .= 'Créer un restaurant :

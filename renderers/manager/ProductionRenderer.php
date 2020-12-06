@@ -26,8 +26,7 @@ class ProductionRenderer extends BaseRenderer
         if (count($recipes) !== 0) {
             foreach ($recipes as $recipe) {
                 $this->output .= '<tr>
-                <td>'.$recipe['rs_name'].'</td>
-                <td>'.$meal_types[$recipe['rs_meal_type']].'</td>             
+                <td>'.$recipe['rs_name'].'</td>          
                 <td><button type="button" onclick="init_affectations_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#production_modal">
                     <i class="far fa-clipboard"></i>
                 </button></td>  

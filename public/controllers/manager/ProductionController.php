@@ -72,6 +72,7 @@ $renderer->set_day($day)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
     ->production_form($recipe_sheet_dao->find([
         'rs_restaurant_id' => $restaurant->getId(),
+        'rs_meal_type' => $current_meal,
         'rs_date' => $day
     ], true), $meal_types, $current_meal)
     ->close_body()

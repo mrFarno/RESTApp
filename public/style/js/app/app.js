@@ -365,6 +365,17 @@ function upload_eq_pic() {
 
 }
 
+function user_affect(u_id) {
+    $.ajax({
+        url : 'index.php?page=products',
+        type : 'POST',
+        data : 'affect='+u_id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
 function update_eq_stock(eq_id, table) {
     stock = document.getElementById(eq_id+'-stock')
     $.ajax({

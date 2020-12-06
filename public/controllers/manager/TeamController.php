@@ -39,7 +39,9 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
     && (isset($POST['u_email']) && $POST['u_email'] !== '')) {
 
     $user = $user_dao->find(['u_email' => $POST['u_email']]);
+    $new = false;
     if ($user === false) {
+        $new = true;
         $datas = [
             'u_firstname' => $POST['u_firstname'],
             'u_lastname' => $POST['u_lastname'],
@@ -52,10 +54,15 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
         $user_dao->persist($user);
         notify_new_user($user, $smtp_connector);
     }
-    $employement_dao->persist([
+    $id = $employement_dao->persist([
         'e_restaurant_id' => $restaurant->getId(),
         'e_user_id' => $user->getId()
     ]);
+    if ($new === true) {
+        $pra_dao->persist([
+            'pra_employement_id' => $id,
+        ]);
+    }
 }
 
 if (isset($POST['delete'])) {

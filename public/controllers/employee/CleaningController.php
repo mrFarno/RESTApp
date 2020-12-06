@@ -6,6 +6,7 @@ $args = [
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -15,6 +16,8 @@ $POST = filter_input_array(INPUT_POST, $args, false);
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
+
+$current_meal = $GET['current-meal'] ?? array_keys($restaurant->getMeals())[0];
 
 $eqs = $equipment_dao->find([
     'eq_restaurant_id' => $restaurant->getId()
@@ -124,7 +127,7 @@ $renderer->set_day($day)
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('management&date='.$day)
+    ->previous_page('management&date='.$day.'&meal='.$current_meal)
     ->equipement_tasks_list($eq_tasks)
     ->spaces_tasks_list($spaces_tasks)
     ->close_body()

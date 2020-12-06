@@ -39,8 +39,48 @@ class ProductsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function products_list($products) {
+    public function affectations_modal($users, $affectations, $display) {
+        if ($display === true) {
+            $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="affectations_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel"><span id="eq_name-modal">Affectations</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    <table class="table table-hover">
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Affecté</th>';
+            if (count($users) > 0) {
+                foreach ($users as $user) {
+                    $checked = isset($affectations[$user->getId()]) ? 'checked' : '';
+                    $this->output .= '<tr>
+                        <td>'.$user->getLastName().'</td>
+                        <td>'.$user->getFirstName().'</td>
+                        <td><input type="checkbox" '.$checked.' onclick="user_affect(\''.$user->getId().'\')"></td>                        
+                    </tr>';
+                }
+            }
+            $this->output .= '</table>
+                    </div>
+                </div>
+            </div>
+        </div>';
+        }
+        return $this;
+    }
+
+    public function products_list($products, $manager) {
         $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
+        if ($manager === true) {
+            $this->output .= '<button type="button" data-toggle="modal" data-target="#affectations_modal">
+                    Affectations
+                </button>';
+        }
         $this->output .= '<div class="" style="    max-height: 70vh !important;
 overflow-y: scroll !important;">
         <table class="table table-hover" style="">

@@ -10,9 +10,11 @@ $args = [
     'p_provider' => FILTER_SANITIZE_STRING,
     'p_aspect' => FILTER_SANITIZE_STRING,
     'p_sent_back' => FILTER_SANITIZE_STRING,
+    'affect' => FILTER_VALIDATE_INT,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -20,6 +22,17 @@ $GET = filter_input_array(INPUT_GET, $argsGet, false);
 $POST = filter_input_array(INPUT_POST, $args, false);
 
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
+
+foreach ($restaurant->getMeals() as $meal) {
+//    $meals[] = $meal_dao->find([
+//        'm_restaurant_id' => $restaurant->getId(),
+//        'm_type_id' => $meal,
+//        'm_date' => $day
+//    ]);
+    $meal_types[$meal] = $meal_types_dao->find(['mt_id' => $meal])['mt_name'];
+}
+
+$current_meal = $GET['current-meal'] ?? array_keys($meal_types)[0];
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 $products = $product_dao->find([
@@ -96,6 +109,22 @@ if(isset($POST['p_id'])
     die();
 }
 
+if(isset($POST['affect']) && $USER->getRole() === 'manager') {
+    $employement = $employement_dao->find([
+        'e_restaurant_id' => $restaurant->getId(),
+        'e_user_id' => $POST['affect'],
+    ]);
+    $aff = $pra_dao->find(['pra_employement_id' => $employement['e_id'],]);
+    if ($aff === false) {
+        $pra_dao->persist([
+            'pra_employement_id' => $employement['e_id'],
+        ]);
+    } else {
+        $pra_dao->delete($aff['pra_id']);
+    }
+    die();
+}
+
 foreach ($cols as $col => $value) {
     if(isset($POST[$col])) {
         switch ($col) {
@@ -141,14 +170,17 @@ if(isset($_FILES['p_photo'])) {
 
 $renderer->header('Marchandises')
     ->products_modal($day)
+    ->affectations_modal($employement_dao->employees_by_restaurant($restaurant->getId()),
+        $pra_dao->affectations_by_restaurant($restaurant->getId()),
+        $USER->getRole() === 'manager')
     ->open_body([
         [
             'tag' => 'div',
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('management&date='.$day)
-    ->products_list($products)
+    ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->products_list($products, $USER->getRole() === 'manager')
     ->close_body()
     ->footer()
     ->render();
