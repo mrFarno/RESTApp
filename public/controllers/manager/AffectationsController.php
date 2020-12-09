@@ -15,6 +15,7 @@ $args = [
     't_user_id' => FILTER_VALIDATE_INT,
     't_done' => FILTER_SANITIZE_STRING,
     't_comment' => FILTER_SANITIZE_STRING,
+    't_controller' => FILTER_SANITIZE_STRING,
     'delete' => FILTER_VALIDATE_INT,
     'ta_number' => FILTER_VALIDATE_INT,
     'day-1' => FILTER_VALIDATE_INT,
@@ -113,6 +114,12 @@ if(isset($POST['search'])) {
         ]);
         $task = $task_dao->find(['t_id' => $id]);
     }
+    if($task['t_controller'] !== null) {
+        $controller = $user_dao->find(['u_id' => $task['t_controller']]);
+    } else {
+        $controller = false;
+    }
+    $task['controller'] = $controller;
     $regulars = $task_affectation_dao->frequents_affectations($POST['search'], $day);
     $count = 0;
     foreach ($regulars as $regular) {
@@ -197,6 +204,12 @@ if(isset($POST['validform'])) {
                 't_id' => $task['t_id'],
                 't_done' => isset($POST['t_done']) ? 1 : 0,
                 't_comment' => trim($POST['t_comment'])
+            ]);
+            break;
+        case 'add_responsible':
+            $task_dao->persist([
+                't_id' => $task['t_id'],
+                't_controller' => $POST['t_controller']
             ]);
             break;
         default:

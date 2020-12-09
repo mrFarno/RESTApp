@@ -8,9 +8,11 @@ $args = [
     'rs_refrigeration_tmp' => FILTER_VALIDATE_INT,
     'rs_end_refrigeration_tmp' => FILTER_VALIDATE_INT,
     'rs_id' => FILTER_VALIDATE_INT,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -21,7 +23,7 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 
-$current_meal = $GET['current-meal'] ?? $POST['current-meal'];
+$current_meal = $GET['current-meal'] ?? $POST['current-meal'] ?? array_keys($restaurant->getMeals())[0];
 
 $rs_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
     'table' => 'recipe_sheets',
@@ -29,7 +31,12 @@ $rs_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
 ]);
 
 foreach ($rs_tasks as $index => $rs_task) {
-    $rs_tasks[$index]['meal'] = $meal_types_dao->find(['mt_id' => $rs_task['rs_meal_type']])['mt_name'];
+    if ($rs_tasks[$index]['rs_meal_type'] === $current_meal) {
+        $rs_tasks[$index]['meal'] = $meal_types_dao->find(['mt_id' => $rs_task['rs_meal_type']])['mt_name'];
+    } else {
+        unset($rs_tasks[$index]);
+    }
+
 }
 
 $cols = [
@@ -70,20 +77,22 @@ if(isset($POST['search'])) {
 foreach ($cols as $col => $value) {
     if(isset($POST[$col])) {
         switch ($col) {
-            case 'rs_end_cooking_tmp':
             case 'rs_sample':
                 $recipe_sheet_dao->persist([
                     'rs_id' => $POST['rs_id'],
                     $col => $POST[$col]
                 ]);
                 break;
+            case 'rs_end_cooking_tmp':
             case 'rs_refrigeration_tmp':
             case 'rs_end_refrigeration_tmp':
                 $hour_col = str_replace('tmp', 'hour', $col);
+                $responsible_col = str_replace('tmp', 'responsible', $col);
                 $recipe_sheet_dao->persist([
                     'rs_id' => $POST['rs_id'],
                     $col => $POST[$col],
-                    $hour_col => date('H:i')
+                    $hour_col => date('H:i'),
+                    $responsible_col => $USER->getId()
                 ]);
                 break;
             default:

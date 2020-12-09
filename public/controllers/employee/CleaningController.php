@@ -2,7 +2,8 @@
 
 $args = [
     'date' => FILTER_SANITIZE_STRING,
-    'status' => FILTER_VALIDATE_INT
+    'status' => FILTER_VALIDATE_INT,
+    'done' => FILTER_VALIDATE_INT
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
@@ -106,6 +107,23 @@ foreach ($spaces as $space) {
 if(isset($POST['status'])) {
     $task = $task_dao->find(['t_id' => $POST['status']]);
     $task['t_done'] = $task['t_done'] == 1 ? 0 : 1;
+    $emp = $employement_dao->find([
+        'e_user_id' => $USER->getId(),
+        'e_restaurant_id' => $restaurant->getId()
+    ]);
+    $aff = $task_affectation_dao->find([
+        'ta_task_id' => $POST['status'],
+        'ta_employement_id' => $emp['e_id'],
+    ]);
+    $aff['ta_done'] = $aff['ta_done'] == 1 ? 0 : 1;
+    $task_affectation_dao->persist($aff);
+//    $task_dao->persist($task);
+    die();
+}
+
+if(isset($POST['done'])) {
+    $task = $task_dao->find(['t_id' => $POST['done']]);
+    $task['t_done'] = $task['t_done'] == 1 ? 0 : 1;
     $task_dao->persist($task);
     die();
 }
@@ -119,8 +137,24 @@ $eq_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
     'prefix' => 'eq'
 ]);
 
+$controls = $task_dao->find([
+    't_date' => $day,
+    't_controller' => $USER->getId()
+], true);
+
+foreach ($controls as $index => $control) {
+    $name = $space_dao->find(['s_id' => $control['t_target_id']]);
+    if($name === false) {
+        $name = $equipment_dao->find(['eq_id' => $control['t_target_id']])['eq_name'];
+    } else {
+        $name = $name['s_name'];
+    }
+    $controls[$index]['target'] = $name;
+}
+
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
+    ->controls_modal($controls)
     ->open_body([
         [
             'tag' => 'div',

@@ -20,13 +20,30 @@ class ProductionRenderer extends BaseRenderer
             <div class="" >
             <table class="table table-hover" style="">
                     <th>Nom</th>
+                    <th>Portions réalisées</th>
+                    <th>Prochaine étape</th>
                     <th>Affectations</th>
                     <th>Suivi</th>
                     <th></th>';
         if (count($recipes) !== 0) {
+            $trads = [
+                'rs_end_cooking_tmp' => 'Fin de cuisson',
+                'rs_refrigeration_tmp' => 'Mise en cellule',
+                'rs_end_refrigeration_tmp' => 'Sortie de cellule',
+                'rs_sample' => 'Échantillon',
+            ];
             foreach ($recipes as $recipe) {
+                foreach ($recipe as $col => $value) {
+                    if($value === null || $value === '') {
+                        $recipe['state'] = $trads[$col];
+                        goto display;
+                    }
+                }
+                display :
                 $this->output .= '<tr>
                 <td>'.$recipe['rs_name'].'</td>          
+                <td>'.$recipe['done_parts'].'</td>          
+                <td>'.$recipe['state'].'</td>          
                 <td><button type="button" onclick="init_affectations_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#production_modal">
                     <i class="far fa-clipboard"></i>
                 </button></td>  
@@ -93,19 +110,26 @@ class ProductionRenderer extends BaseRenderer
     }
 
     public function temperature_content($recipe_sheet) {
-        $this->output .= '<span>Température de fin de cuisson : </span>'.$recipe_sheet['rs_end_cooking_tmp'].'°C<br>
-        <span>Mise en cellule : </span>
+        $this->output .= '<span>Température de fin de cuisson '.$this->responsible('ec', $recipe_sheet).' : </span>'.$recipe_sheet['rs_end_cooking_tmp'].'°C<br>
+        <span>Mise en cellule '.$this->responsible('r', $recipe_sheet).' : </span>
         <ul>
             <li>Température : '.$recipe_sheet['rs_refrigeration_tmp'].'°C</li>
             <li>Heure : '.$recipe_sheet['rs_refrigeration_hour'].'</li>            
         </ul>
-        <span>Sortie de cellule : </span>
+        <span>Sortie de cellule '.$this->responsible('er', $recipe_sheet).' : </span>
         <ul>
             <li>Température : '.$recipe_sheet['rs_end_refrigeration_tmp'].'°C</li>
             <li>Heure : '.$recipe_sheet['rs_end_refrigeration_hour'].'</li>
         </ul>
         <span>Échantillon : </span>'.$recipe_sheet['rs_sample'];
         return $this;
+    }
+
+    private function responsible($col, $recipe_sheet) {
+        if($recipe_sheet[$col.'_responsible'] !== '') {
+            return '(par '.$recipe_sheet[$col.'_responsible'].')';
+        }
+        return '';
     }
 
     public function set_day($day) {

@@ -306,6 +306,18 @@ function save_comment() {
     })
 }
 
+function save_event_comment(ev_id) {
+    comment = document.getElementById('ev_comment-'+ev_id)
+    $.ajax({
+        url : 'index.php?page=events',
+        type : 'POST',
+        data : 'target='+ev_id+'&ev_comment='+comment.value,
+        success: function() {
+            show_toast('success', 'Commentaire enregistré')
+        }
+    })
+}
+
 function init_comment_modal() {
     data = {}
     step = document.getElementById('check-step')
@@ -598,6 +610,17 @@ function update_task_status(id) {
         url : 'index.php?page=cleaning',
         type : 'POST',
         data : 'status='+id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function set_task_done(id) {
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 'done='+id,
         success: function() {
             show_toast('success', 'Mise à jour réussie')
         }

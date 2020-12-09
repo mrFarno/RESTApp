@@ -12,7 +12,8 @@ class TeamRenderer extends \renderers\BaseRenderer
     }
 
     public function absence_form() {
-        $this->output .= '<div class="form-row" style="margin-top: 5vh;">
+        $this->output .= '<h1 style="text-align: center;">Déclarer une absence</h1>
+            <div class="form-row" style="margin-top: 5vh;">
             <div class="form-group">
                 <label for="datestart">Du&nbsp;</label>
                 <input type="date" id="datestart" name="ab_date" value="'.date('Y-m-d').'">                

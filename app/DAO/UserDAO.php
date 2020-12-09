@@ -105,6 +105,14 @@ class UserDAO extends DAO implements AdapterInterface
         return is_array($result);
     }
 
+    public function identify($u_id) {
+        if($u_id !== null) {
+            $user = $this->find(['u_id' => $u_id]);
+            return $user->getFirstname().' '.$user->getLastname();
+        }
+        return '';
+    }
+
     // --- AddapterInterface methods implementation ---
 
     public function authenticate(array $credentials)

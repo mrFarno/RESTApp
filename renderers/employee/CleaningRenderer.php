@@ -14,8 +14,13 @@ class CleaningRenderer extends BaseRenderer
     }
 
     public function equipement_tasks_list($tasks) {
-        $this->output .= '<h1>Nettoyage et Désinfection</h1>
-            <div class="equipment-list">
+        $this->output .= '<h1>Nettoyage et Désinfection</h1>';
+        if (true) {
+            $this->output .= '<button type="button" data-toggle="modal" data-target="#controls_modal">
+                    Contrôles
+                </button>';
+        }
+        $this->output .= '<div class="equipment-list">
             <h2>Matériel</h2>
             <table class="table table-hover" style="">
                     <th>Nom</th>
@@ -23,7 +28,7 @@ class CleaningRenderer extends BaseRenderer
                     <th>Terminé</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
-                $checked = $task['t_done'] == 1 ? 'checked' : '';
+                $checked = $task['ta_done'] == 1 ? 'checked' : '';
                 $this->output .= '<tr>
                 <td>'.$task['eq_name'].'</td>                 
                 <td>'.$task['eq_cleaning_instructions'].'</td>                 
@@ -49,7 +54,7 @@ class CleaningRenderer extends BaseRenderer
                     <th>Terminé</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
-                $checked = $task['t_done'] == 1 ? 'checked' : '';
+                $checked = $task['ta_done'] == 1 ? 'checked' : '';
                 $this->output .= '<tr>
                 <td>'.$task['s_name'].'</td>                 
                 <td>'.$task['s_cleaning_instructions'].'</td>                 
@@ -66,7 +71,41 @@ class CleaningRenderer extends BaseRenderer
         return $this;
     }
 
-
+    public function controls_modal($controls)
+    {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="controls_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel"><span id="eq_name-modal">Contrôles</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">';
+        if(count($controls) === 0) {
+            $this->output .= 'Vous n\'avez pas de contrôles à effectuer';
+        } else {
+            $this->output .= '<table class="table table-hover" style="">
+                    <th>Nom</th>
+                    <th>Terminé</th>';
+            foreach ($controls as $control) {
+                $checked = $control['t_done'] == 1 ? 'checked' : '';
+                $this->output .= '<tr>
+                    <td>'.$control['target'].'</td>
+                    <td>
+                    <input type="checkbox" '.$checked.' onclick="set_task_done(\''.$control['t_id'].'\')">
+                </td> 
+                </tr>';
+            }
+            $this->output .= '</table>';
+        }
+        $this->output .= '</div>
+                </div>
+            </div>
+        </div>';
+        return $this;
+    }
 
     public function set_day($day) {
         $this->day = $day;

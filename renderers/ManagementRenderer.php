@@ -34,7 +34,7 @@ class ManagementRenderer extends BaseRenderer
         $this->output .= '</div>';
         $this->output .= '<br><div class="row">';
         $this->link('nutrition', $day, $meal)
-            ->link('animation', $day, $meal)
+            ->link('events', $day, $meal)
             ->link('extraction', $day, $meal);
         $this->output .= '</div>';
         return $this;
@@ -49,7 +49,7 @@ class ManagementRenderer extends BaseRenderer
             'biowaste' => 'Suivi des biodéchets',
             'service' => 'Service',
             'nutrition' => 'Nutrition',
-            'animation' => 'Animation/Évenementiel',
+            'events' => 'Animation/Évenementiel',
             'extraction' => 'Extraction'
         ];
         $this->output .= '<div class="col-4">

@@ -90,14 +90,30 @@ class AffectationsRenderer extends BaseRenderer
 
     public function modal_content($task, $employees, $responsibles, $type) {
         $check = $task['t_done'] == 1 ? 'checked' : '';
+        $all = $employees + $responsibles;
         $this->output .= '<form method="POST" action="?page='.$type.'" id="step-form">
                             <input type="hidden" name="date" value="'.$task['t_date'].'">
                             <input type="hidden" name="t_target_id" id="t_target_id" value="">
                             <input type="hidden" name="delete" id="delete-hidden" value="">                            
                         <div class="">
                             <label for="t_user_id">Responsable : </label>
+                            <select id="t_controller" name="t_controller">
+                            <option selected disabled>---Sélectionner un responsable---</option>';
+        foreach ($all as $id => $employee) {
+            $selected = '';
+            if($task['t_controller'] == $id) {
+                $selected = 'selected';
+            }
+            $this->output .= '<option '.$selected.' value="'.$id.'">'.$employee.'</option>';
+        }
+        $this->output .= '</select>
+                            <button type="button" class="btn btn-outline-success width100" onclick="post_form(\'add_responsible\', \'affectations\');update_affectation_modal()">
+                                Enregistrer le responsable
+                            </button>
+                    <br>';
+        $this->output .= '<label for="t_user_id">Intervenants : </label>
                             <select id="t_user_id" name="t_user_id">
-                                <option selected disabled>---Sélectionner un employé---</option>';
+                                <option selected disabled>---Ajouter un employé---</option>';
         foreach ($employees as $id => $employee) {
             $this->output .= '<option value="'.$id.'">'.$employee.'</option>';
         }
@@ -119,7 +135,7 @@ class AffectationsRenderer extends BaseRenderer
         }
 
         $this->output .= '<button type="button" class="btn btn-outline-success width100" onclick="post_form(\'add_user\', \'affectations\');update_affectation_modal()">
-                              Ajouter le responsable
+                              Ajouter l\'intervenant
                             </button><br>
                         Commentaire : 
                         <textarea id="t_comment" name="t_comment" class="form-control">'.$task['t_comment'].'</textarea>
@@ -128,7 +144,7 @@ class AffectationsRenderer extends BaseRenderer
                             <input disabled type="checkbox" '.$check.' id="t_done" name="t_done">
                         </div>
                         <hr>
-                        <h5 style="text-align: center">Responsable(s) :</h5>
+                        <h5 style="text-align: center">Intervenant(s) :</h5>
                         <ul id="responsibles">';
         foreach ($responsibles as $id => $responsible) {
             $this->output .= '<li>'.$responsible.'                            

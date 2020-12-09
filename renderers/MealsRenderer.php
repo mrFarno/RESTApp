@@ -164,7 +164,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function cutlery_form($equipments) {
-        $this->output .= '<h2 style="text-align: center;">Petit matériel</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Petit matériel (pré-inventaire)</h2><br>';
         if (count($equipments) === 0) {
             $this->output .= 'Pas d\'epi renseigné';
         } else {
@@ -206,7 +206,7 @@ class MealsRenderer extends BaseRenderer
         $this->output .= '<h2 style="text-align: center;">Convives</h2><br>
         <table class="table table-hover">
                             <th>Convives prévus</th>
-                            <th>Convives absents</th>
+                            <th>Convives déclarés</th>
                             <th>Convives servis</th>
                             <tr>    
                                 <td><input type="number" min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>

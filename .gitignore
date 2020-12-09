@@ -20,3 +20,6 @@ public/uploads/users/*
 
 public/uploads/equipments/*
 !public/uploads/equipments/.gitkeep
+
+public/uploads/samples/*
+!public/uploads/samples/.gitkeep

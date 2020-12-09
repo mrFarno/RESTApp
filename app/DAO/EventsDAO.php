@@ -4,14 +4,14 @@
 namespace app\DAO;
 
 
-class RecipeSheetDAO extends DAO
+class EventsDAO extends DAO
 {
-    protected $table = 'recipe_sheets';
-    protected $prefix = 'rs';
+    protected $table = 'events';
+    protected $prefix = 'ev';
 
     public function persist($datas)
     {
-        if(!isset($datas['rs_id'])) {
+        if(!isset($datas['ev_id'])) {
             $tc_dao = new TaskContextDAO([
                 'db_host' => $this->host,
                 'db_user' => $this->user,
@@ -19,8 +19,8 @@ class RecipeSheetDAO extends DAO
                 'db_name' => $this->db_name,
                 'db_type' => $this->type
             ]);
-            $id = $tc_dao->persist(['tc_type' => 'production']);
-            $datas['rs_id'] = $id;
+            $id = $tc_dao->persist(['tc_type' => 'events']);
+            $datas['ev_id'] = $id;
         }
         return parent::persist($datas);
     }
@@ -36,18 +36,5 @@ class RecipeSheetDAO extends DAO
         ]);
         $tc_dao->delete($id);
         parent::delete($id);
-    }
-
-    public function done_parts($rs_id) {
-        $request = 'SELECT * FROM tasks
-                    INNER JOIN task_affectations ON ta_task_id = t_id
-                    WHERE ta_done = 1 AND t_target_id = '.$rs_id.';';
-
-        $result = $this->getPDO()->query($request)->fetchAll();
-        $total = 0;
-        foreach ($result as $row) {
-            $total = $total + $row['ta_number'];
-        }
-        return $total;
     }
 }

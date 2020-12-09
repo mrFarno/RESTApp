@@ -7,7 +7,7 @@ $args = [
     't_target_id' => FILTER_VALIDATE_INT,
     't_user_id' => FILTER_VALIDATE_INT,
     'delete' => FILTER_VALIDATE_INT,
-    'rs_name' => FILTER_SANITIZE_STRING,
+    'ev_name' => FILTER_SANITIZE_STRING,
     'current-meal' => FILTER_SANITIZE_STRING,
 ];
 $argsGet = [
@@ -34,43 +34,26 @@ foreach ($restaurant->getMeals() as $meal) {
 
 $current_meal = $GET['current-meal'] ?? $POST['current-meal'] ?? array_keys($meal_types)[0];
 
-if(isset($POST['rs_name']) && trim($POST['rs_name']) !== '') {
-    $recipe_sheet_dao->persist([
-        'rs_name' => $POST['rs_name'],
-        'rs_meal_type' => $current_meal,
-        'rs_restaurant_id' => $restaurant->getId(),
-        'rs_date' => $day
+if(isset($POST['ev_name']) && trim($POST['ev_name']) !== '') {
+    $events_dao->persist([
+        'ev_name' => $POST['ev_name'],
+        'ev_restaurant_id' => $restaurant->getId(),
+        'ev_date' => $day
     ]);
 }
 
 if(isset($POST['delete'])) {
-    $recipe_sheet_dao->delete($POST['delete']);
+    $events_dao->delete($POST['delete']);
 }
 
 if(isset($POST['search'])) {
-    $sheet = $recipe_sheet_dao->find(['rs_id' => $POST['search']]);
-    $sheet['ec_responsible'] = $user_dao->identify($sheet['rs_end_cooking_responsible']);
-    $sheet['r_responsible'] = $user_dao->identify($sheet['rs_refrigeration_responsible']);
-    $sheet['er_responsible'] = $user_dao->identify($sheet['rs_end_refrigeration_responsible']);
-    $renderer->temperature_content($sheet)
-                ->render();
+    $event = $recipe_sheet_dao->find(['ev_id' => $POST['search']]);
     die();
 }
 
-$sheets = $recipe_sheet_dao->find([
-    'rs_restaurant_id' => $restaurant->getId(),
-    'rs_meal_type' => $current_meal,
-    'rs_date' => $day
-], true);
-
-foreach ($sheets as $index => $sheet) {
-    $sheets[$index]['done_parts'] = $recipe_sheet_dao->done_parts($sheet['rs_id']);
-}
-
 $renderer->set_day($day)
-    ->header('Production')
-    ->production_modal()
-    ->temperature_modal()
+    ->header('Animation/Évenementiel')
+    ->events_modal()
     ->open_body([
         [
             'tag' => 'div',
@@ -78,12 +61,15 @@ $renderer->set_day($day)
         ],
         [
             'tag' => 'form',
-            'action' => 'index.php?page=production',
+            'action' => 'index.php?page=events',
             'method' => 'POST'
         ]
     ],  $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->production_form($sheets, $meal_types, $current_meal)
+    ->events_form($events_dao->find([
+        'ev_restaurant_id' => $restaurant->getId(),
+        'ev_date' => $day
+    ], true), $current_meal)
     ->close_body()
     ->footer()
     ->render();
