@@ -27,7 +27,8 @@ class ProductsRenderer extends BaseRenderer
                         <label for="product-current-input" id="label">Nom : </label>
                         <input id="product-current-input" name="p_name" type="text">  
                     </div>  
-                    <div class="justify-content-center" id="btn-ctnr">                    
+                    <div class="justify-content-center" id="btn-ctnr">
+                        <button type="submit" id="btn-ok" class="btn btn-success">Ok</button>                 
                     </div>
                     <input type="hidden" name="p_id" id="p_id">                                     
                     <input type="hidden" name="date" id="current-date" value="'.$day.'">                                     

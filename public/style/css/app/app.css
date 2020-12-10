@@ -296,7 +296,7 @@ html {
 
 .equipment-list {
     position: absolute;
-    left: 20vw;
+    left: 5vw;
     top: 20vh;
     max-height: 60vh;
     overflow-y: scroll;
@@ -306,7 +306,7 @@ html {
 
 .space-list {
     position: absolute;
-    right: 20vw;
+    right: 5vw;
     top: 20vh;
     max-height: 60vh;
     overflow-y: scroll;

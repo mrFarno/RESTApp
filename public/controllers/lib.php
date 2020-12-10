@@ -127,7 +127,7 @@ function upload($file, $destination) {
 //    }
 }
 
-function delete_file() {
+function delete_file($destination) {
     if(is_file(__DIR__.'/../uploads/'.$destination.'.png')) {
         unlink(__DIR__.'/../uploads/'.$destination.'.png');
     }

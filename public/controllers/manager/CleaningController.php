@@ -8,6 +8,9 @@ $args = [
     't_user_id' => FILTER_VALIDATE_INT,
     't_done' => FILTER_SANITIZE_STRING,
     't_comment' => FILTER_SANITIZE_STRING,
+    'comment' => FILTER_SANITIZE_STRING,
+    't_id_comment' => FILTER_VALIDATE_INT,
+    't_id' => FILTER_VALIDATE_INT,
     'delete' => FILTER_VALIDATE_INT
 ];
 $argsGet = [
@@ -107,9 +110,46 @@ $current_meal = $GET['current-meal'] ?? array_keys($restaurant->getMeals())[0];
 //    die();
 //}
 
+$list_equipments = $equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true);
+$list_spaces = $space_dao->find(['s_restaurant_id' => $restaurant->getId()], true);
+$eq_tasks = [];
+$s_tasks = [];
+
+foreach ($list_equipments as $equipment) {
+    $eq_tasks[$equipment['eq_id']] = $task_dao->find([
+        't_target_id' => $equipment['eq_id'],
+        't_date' => $day
+    ]);
+}
+foreach ($list_spaces as $space) {
+    $s_tasks[$space['s_id']] = $task_dao->find([
+        't_target_id' => $space['s_id'],
+        't_date' => $day
+    ]);
+}
+
+if(isset($POST['t_id_comment'])) {
+    $task = $task_dao->find([
+        't_id' => $POST['t_id_comment']
+    ]);
+    if ($task !== false) {
+        echo $task['t_comment'];
+    }
+    die();
+}
+
+if(isset($POST['comment'])) {
+    $task_dao->persist([
+        't_id' => $POST['t_id'],
+        't_comment' => $POST['comment']
+    ]);
+    die();
+}
+
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
     ->cleaning_modal()
+    ->comment_modal()
     ->open_body([
         [
             'tag' => 'div',
@@ -117,8 +157,8 @@ $renderer->set_day($day)
         ],
     ],  $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->list_equipments($equipment_dao->find(['eq_restaurant_id' => $restaurant->getId()], true))
-    ->list_spaces($space_dao->find(['s_restaurant_id' => $restaurant->getId()], true))
+    ->list_equipments($list_equipments, $eq_tasks)
+    ->list_spaces($list_spaces, $s_tasks)
     ->close_body()
     ->footer()
     ->render();

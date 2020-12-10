@@ -98,8 +98,14 @@ foreach ($cols as $col => $value) {
             default:
                 break;
         }
-        die();
+        if($col !== 'rs_sample') {
+            die();
+        }
     }
+}
+
+if(isset($_FILES['sample-pic'])) {
+    upload($_FILES['sample-pic'], 'samples/rs-'.$POST['rs_id']);
 }
 
 $renderer->set_day($day)

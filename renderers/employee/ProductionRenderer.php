@@ -57,11 +57,12 @@ class ProductionRenderer extends BaseRenderer
                         </button>
                     </div>
                     <div class="modal-body" id="temperature-modal-content">  
-                    <form method="POST" action="?page=production" onsubmit="recipe_form(event)" id="step-form">
-                    <div class="justify-content-center">
+                    <form method="POST" action="?page=production" enctype="multipart/form-data" onsubmit="recipe_form(event)" id="step-form">
+                    <div class="justify-content-center" id="input-ctnr">
                         <label for="recipe-current-input" id="label"></label>
-                        <input id="recipe-current-input" type="number">  
+                        <input id="recipe-current-input" type="number">                          
                     </div>  
+                    <button type="submit" id="btn-ok" class="btn btn-success">Ok</button>
                     <input type="hidden" name="rs_id" id="rs_id">                                     
                     <input type="hidden" name="date" id="current-date" value="'.$this->day.'">                                     
                     </form>   

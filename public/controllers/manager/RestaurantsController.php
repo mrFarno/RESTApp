@@ -78,6 +78,7 @@ if(isset($POST['r_name'])) {
     if (isset($_FILES['rest-pic'])) {
         upload($_FILES['rest-pic'], 'restaurants/photos/rest-'.$restaurant->getId());
     }
+    $_SESSION['current-rest'] = $restaurant->getId();
     if ($edit === false) {
         $team_eqs = ['Blouses', 'Chaussures', 'Coiffes'];
         foreach ($team_eqs as $team_eq) {

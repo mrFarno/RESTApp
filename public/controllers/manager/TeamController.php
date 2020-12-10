@@ -58,11 +58,11 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
         'e_restaurant_id' => $restaurant->getId(),
         'e_user_id' => $user->getId()
     ]);
-    if ($new === true) {
+//    if ($new === true) {
         $pra_dao->persist([
             'pra_employement_id' => $id,
         ]);
-    }
+//    }
 }
 
 if (isset($POST['delete'])) {

@@ -122,6 +122,9 @@ class ProductionRenderer extends BaseRenderer
             <li>Heure : '.$recipe_sheet['rs_end_refrigeration_hour'].'</li>
         </ul>
         <span>Échantillon : </span>'.$recipe_sheet['rs_sample'];
+        if (is_file(__DIR__.'/../../public/uploads/samples/rs-'.$recipe_sheet['rs_id'].'.png')) {
+            $this->output .= '<a href="'.$GLOBALS['domain'].'/public/uploads/samples/rs-'.$recipe_sheet['rs_id'].'.png" target="_blank">&nbsp;-></a>';
+        }
         return $this;
     }
 

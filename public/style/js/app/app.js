@@ -529,29 +529,34 @@ function init_products_modal(p_id) {
         success: function(data) {
             input = document.getElementById('product-current-input')
             label = document.getElementById('label')
+            btn = document.getElementById('btn-ok')
+            btn.addEventListener('click', function() {
+                post_form('products', 'products')
+                init_products_modal(p_id)
+            })
             if (Array.isArray(data)) {
                 input.type = data[0]
                 input.name = data[2]
-                if(data[0] == 'checkbox' || data[0] == 'file') {
-                    btn = document.createElement('button');
-                    if (data[0] == 'checkbox') {
-                        btn.type = 'button'
-                        btn.addEventListener('click', function() {
-                            post_form('products', 'products')
-                            init_products_modal(p_id)
-                        })
-                    } else {
-                        btn.type = 'submit'
-                        form = document.getElementById('step-form')
-                        form.onsubmit = ''
-                    }
-                    btn.innerHTML = 'Ok'
-                    btn.classList.add('btn')
-                    btn.classList.add('btn-outline-success')
-                    btn.classList.add('width100')
-
-                    ctnr.appendChild(btn)
-                }
+                // if(data[0] == 'checkbox' || data[0] == 'file') {
+                //     btn = document.createElement('button');
+                //     if (data[0] == 'checkbox') {
+                //         btn.type = 'button'
+                //         btn.addEventListener('click', function() {
+                //             post_form('products', 'products')
+                //             init_products_modal(p_id)
+                //         })
+                //     } else {
+                //         btn.type = 'submit'
+                //         form = document.getElementById('step-form')
+                //         form.onsubmit = ''
+                //     }
+                //     btn.innerHTML = 'Ok'
+                //     btn.classList.add('btn')
+                //     btn.classList.add('btn-outline-success')
+                //     btn.classList.add('width100')
+                //
+                //     ctnr.appendChild(btn)
+                // }
                 label.innerHTML = data[1]+' : '
             } else {
                 input.style.display = 'none'
@@ -577,6 +582,14 @@ function employee_tmp_modal(rs_id) {
                 input.name = data[2]
 
                 label.innerHTML = data[1]+' : '
+                if(data[2] == 'rs_sample') {
+                    file = document.createElement('input')
+                    file.type = 'file'
+                    file.name = 'sample-pic'
+                    file.id = 'input_file'
+                    inpt_ctnr = document.getElementById('input-ctnr')
+                    inpt_ctnr.appendChild(file)
+                }
             } else {
                 input.style.display = 'none'
                 label.innerHTML = data
@@ -598,11 +611,14 @@ function product_form(event) {
 }
 
 function recipe_form(event) {
-    event.preventDefault()
-    post_form('recipe', 'production')
-    hidden = document.getElementById('rs_id')
-    console.log(hidden.value)
-    employee_tmp_modal(hidden.value)
+    input = document.getElementById('input_file')
+    if(input === null) {
+        event.preventDefault()
+        post_form('recipe', 'production')
+        hidden = document.getElementById('rs_id')
+        console.log(hidden.value)
+        employee_tmp_modal(hidden.value)
+    }
 }
 
 function update_task_status(id) {
@@ -621,6 +637,48 @@ function set_task_done(id) {
         url : 'index.php?page=cleaning',
         type : 'POST',
         data : 'done='+id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function update_done_hour(t_id) {
+    input = event.target
+    check = document.getElementById('check-t-'+t_id)
+    check.checked = true
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 't_id='+t_id+'&done_hour='+input.value,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function comment_modal(t_id) {
+    hidden = document.getElementById('task_id')
+    hidden.value = t_id
+    comment = document.getElementById('comment-content')
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 't_id_comment='+t_id,
+        dataType : 'text',
+        success: function(data) {
+            comment.value = data
+        }
+    })
+}
+
+function save_task_comment() {
+    hidden = document.getElementById('task_id')
+    comment = document.getElementById('comment-content')
+    $.ajax({
+        url : 'index.php?page=cleaning',
+        type : 'POST',
+        data : 't_id='+hidden.value+'&comment='+comment.value,
         success: function() {
             show_toast('success', 'Mise à jour réussie')
         }

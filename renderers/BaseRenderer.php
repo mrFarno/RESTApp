@@ -80,7 +80,8 @@ abstract class BaseRenderer
                 $src = $GLOBALS['domain'].'/public/style/resources/upload.png';
             }
             if ($USER->getRole() === 'manager') {
-                $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>';
+                $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>
+                <a style="color: black;" href="?page=restaurants" title="Nouveau restaurant"><i class="fas fa-plus-circle"></i></a>';
             } else {
                 $this->output .= '<img class="user-pic" src="'.$src.'" title="Editer mon restaurant">';
             }
