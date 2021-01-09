@@ -1,7 +1,7 @@
 <?php
 
 
-namespace renderers\manager;
+namespace renderers\staff\manager;
 
 
 class CleaningRenderer extends BaseRenderer

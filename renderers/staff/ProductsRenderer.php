@@ -1,8 +1,10 @@
 <?php
 
 
-namespace renderers;
+namespace renderers\staff;
 
+
+use renderers\BaseRenderer;
 
 class ProductsRenderer extends BaseRenderer
 {

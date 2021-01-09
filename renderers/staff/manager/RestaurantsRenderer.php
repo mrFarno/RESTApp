@@ -1,6 +1,6 @@
 <?php
 
-namespace renderers\manager;
+namespace renderers\staff\manager;
 
 class RestaurantsRenderer extends BaseRenderer
 {

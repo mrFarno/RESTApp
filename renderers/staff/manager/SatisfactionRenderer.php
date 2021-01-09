@@ -1,7 +1,7 @@
 <?php
 
 
-namespace renderers\employee;
+namespace renderers\staff\manager;
 
 
 class SatisfactionRenderer extends BaseRenderer
@@ -12,7 +12,7 @@ class SatisfactionRenderer extends BaseRenderer
     }
 
     public function satisfaction() {
-        $this->output .= '<img src="'.$GLOBALS['domain'].'/public/style/resources/satisfaction.png"> ';
+        $this->output .= '<img src="'.$GLOBALS['domain'].'/public/style/resources/satisfaction2.png"> ';
 
 
         return $this;

@@ -93,14 +93,15 @@ function error_redirect($error_code, $from, $user = null) {
 	$from = $from;
 	$error_code = $error_code;
 	$renderer = renderers\Provider::get_renderer('error');
-	require __DIR__.'/ErrorController.php';
+	require __DIR__ . '/ErrorController.php';
 	die();
 }
 
 function page_exist($page) {
 	$files = array_diff(scandir(__DIR__), array('..', '.'));
-	$files = array_merge($files, array_diff(scandir(__DIR__.'/manager'), array('..', '.')));
-	$files = array_merge($files, array_diff(scandir(__DIR__.'/employee'), array('..', '.')));
+	$files = array_merge($files, array_diff(scandir(__DIR__ . '/staff/manager'), array('..', '.')));
+	$files = array_merge($files, array_diff(scandir(__DIR__ . '/staff/employee'), array('..', '.')));
+	$files = array_merge($files, array_diff(scandir(__DIR__ . '/staff'), array('..', '.')));
 	return in_array(ucfirst($page).'Controller.php', $files);
 }
 
@@ -110,8 +111,10 @@ function can_access($page, $USER) {
 	}
 	$can_access = [];
 	$files = array_diff(scandir(__DIR__), array('..', '.', 'manager'));
-	$files = array_merge($files, array_diff(scandir(__DIR__.'/'.$USER->getRole()), array('..', '.')));
-
+	$files = array_merge($files, array_diff(scandir(__DIR__.'/'.str_replace('::', DIRECTORY_SEPARATOR, $USER->getRole())), array('..', '.')));
+	if(strpos($USER->getRole(), 'staff') !== false) {
+        $files = array_merge($files, array_diff(scandir(__DIR__.'/staff'), array('..', '.')));
+    }
 	foreach ($files as $file) {
 		if ($file !== 'lib.php') {
 			$file = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $file));
