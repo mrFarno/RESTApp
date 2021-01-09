@@ -40,10 +40,11 @@ class ProductionRenderer extends BaseRenderer
                     }
                 }
                 display :
+                $state = $recipe['state'] ?? 'Suivi terminé';
                 $this->output .= '<tr>
                 <td>'.$recipe['rs_name'].'</td>          
                 <td>'.$recipe['done_parts'].'</td>          
-                <td>'.$recipe['state'].'</td>          
+                <td>'.$state.'</td>          
                 <td><button type="button" onclick="init_affectations_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#production_modal">
                     <i class="far fa-clipboard"></i>
                 </button></td>  

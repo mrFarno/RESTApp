@@ -14,7 +14,7 @@ class EventsRenderer extends BaseRenderer
     }
 
     public function tasks_list($tasks) {
-        $this->output .= '<h1>Animation/Évenemtiel</h1><br>
+        $this->output .= '<h1>Animation/Évenementiel</h1><br>
             <div class="">
             <table class="table table-hover" style="">
                     <th>Nom</th>
@@ -38,7 +38,7 @@ class EventsRenderer extends BaseRenderer
             </tr>';
             }
         } else {
-            $this->output .= 'Pas de tâches';
+            $this->output .= 'Pas de tâche';
         }
         $this->output .= '</table>
         </div>';

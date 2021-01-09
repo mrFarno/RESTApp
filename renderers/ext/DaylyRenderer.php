@@ -1,8 +1,10 @@
 <?php
 
 
-namespace renderers;
+namespace renderers\ext;
 
+
+use renderers\BaseRenderer;
 
 class DaylyRenderer extends BaseRenderer
 {
@@ -22,7 +24,7 @@ class DaylyRenderer extends BaseRenderer
         justify-content: space-around;     height: 90%;
         align-items: center;">';
         foreach ($meal_types as $id => $name) {
-            $this->output .= '<a href="?page=management&meal='.$id.'&date='.$day.'">
+            $this->output .= '<a href="?page=service&meal='.$id.'&date='.$day.'">
                 <img class="icon-img" id="'.$id.'-meal" src="'.$GLOBALS['domain'].'/public/style/resources/icons/'.$imgs[$id].'.png"> 
                 <p style="text-align: center; color: black; font-size: large;" for="'.$id.'-meal">'.$name.'</p>
             </a>';

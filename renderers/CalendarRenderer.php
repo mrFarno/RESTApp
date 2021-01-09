@@ -48,7 +48,6 @@ class CalendarRenderer extends BaseRenderer
         $this->output .= '<button class="btn btn-light" type="button" onclick="calendar_settings('.$day.', '.$this->month->getMonth().', '.$this->month->getYear().', \''.$target_display.'\')">'.$message.'</button>';
         $this->output .= $previous;
         $this->output .= $next;
-
         return $this;
     }
 

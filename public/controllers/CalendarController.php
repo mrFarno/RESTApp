@@ -32,7 +32,6 @@ if (isset($POST['current-rest'])) {
     header('Location: ?page='.$page);
     die();
 }
-
 $renderer->header()
             ->open_body([
                 [

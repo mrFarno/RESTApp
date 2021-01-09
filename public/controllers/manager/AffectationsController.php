@@ -98,9 +98,7 @@ if(isset($POST['search'])) {
         't_target_id' => $POST['search'],
         't_date' => $day
     ]);
-    $type = $task_context_dao->find([
-        'tc_id' => $POST['search'],
-    ])['tc_type'];
+
     $responsibles = [];
     if($task !== false) {
         $id = $task['t_id'];
@@ -114,6 +112,9 @@ if(isset($POST['search'])) {
         ]);
         $task = $task_dao->find(['t_id' => $id]);
     }
+    $type = $task_context_dao->find([
+        'tc_id' => $POST['search'],
+    ])['tc_type'];
     if($task['t_controller'] !== null) {
         $controller = $user_dao->find(['u_id' => $task['t_controller']]);
     } else {
@@ -145,6 +146,9 @@ if(isset($POST['search'])) {
         $employement = $employement_dao->find(['e_id' => $t_affectation['ta_employement_id']]);
         $user = $user_dao->find(['u_id' => $employement['e_user_id']]);
         $responsibles[$user->getId()] = $user->getFirstname().' '.$user->getLastname();
+        if($type == 'production') {
+            $responsibles[$user->getId()] .= '('.$t_affectation['ta_number'].' portions)';
+        }
     }
     $done = $task['t_done'];
     $employees = $employement_dao->employees_by_restaurant($restaurant->getId(), true);

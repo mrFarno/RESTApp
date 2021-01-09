@@ -20,10 +20,11 @@ if (isset($POST['ab_date'])) {
         'e_user_id' => $USER->getId(),
         'e_restaurant_id' => $restaurant->getId()
     ]);
+    $dateend = $POST['ab_dateend'] == '' ? null : $POST['ab_dateend'];
     $absence_dao->persist([
-        'ab_employement_id' => $e_id,
+        'ab_employement_id' => $e_id['e_id'],
         'ab_date' => $POST['ab_date'],
-        'ab_dateend' => $POST['ab_dateend'] ?? null,
+        'ab_dateend' => $dateend,
         'ab_reason' => $POST['ab_reason'] ?? null
     ]);
     if (isset($_FILES['absence_pic'])) {

@@ -19,6 +19,7 @@ class ProductionRenderer extends BaseRenderer
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Repas</th>
+                    <th>Portions à réaliser</th>
                     <th>Suivi température</th>
                     <th>Terminé</th>';
         if (count($tasks) !== 0) {
@@ -26,7 +27,8 @@ class ProductionRenderer extends BaseRenderer
                 $checked = $task['t_done'] == 1 ? 'checked' : '';
                 $this->output .= '<tr>
                 <td>'.$task['rs_name'].'</td>                 
-                <td>'.$task['meal'].'</td>                 
+                <td>'.$task['meal'].'</td>                  
+                <td>'.$task['number'].'</td>                  
                 <td>
                 <button type="button" onclick="employee_tmp_modal(\''.$task['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#temperature_modal">
                     <i class="fas fa-thermometer-half"></i>

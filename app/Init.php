@@ -6,6 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 app\Autoloader::register();
 
 use app\Config;
+use app\DAO\BiowastesDAO;
 use app\DAO\EventsDAO;
 use app\DAO\MealAffectationDAO;
 use app\DAO\AbsenceDAO;
@@ -96,3 +97,4 @@ $recipe_sheet_dao = new RecipeSheetDAO($db_connector);
 $task_context_dao = new TaskContextDAO($db_connector);
 $pra_dao = new ProductsReceptionAffectationsDAO($db_connector);
 $events_dao = new EventsDAO($db_connector);
+$biowastes_dao = new BiowastesDAO($db_connector);

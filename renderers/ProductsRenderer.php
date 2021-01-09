@@ -76,7 +76,7 @@ class ProductsRenderer extends BaseRenderer
     }
 
     public function products_list($products, $manager) {
-        $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Marchandises</h2><br>';
         if ($manager === true) {
             $this->output .= '<button type="button" data-toggle="modal" data-target="#affectations_modal">
                     Affectations

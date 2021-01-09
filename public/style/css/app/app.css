@@ -313,3 +313,15 @@ html {
     -ms-overflow-style: none !important;  /* IE and Edge */
     scrollbar-width: none !important;  /* Firefox */
 }
+
+.left {
+    position: absolute;
+    left: 5vw;
+    top: 20vh;
+}
+
+.right {
+    position: absolute;
+    right: 5vw;
+    top: 20vh;
+}

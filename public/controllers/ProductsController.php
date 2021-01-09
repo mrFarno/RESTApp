@@ -5,7 +5,7 @@ $args = [
     'search' => FILTER_VALIDATE_INT,
     'p_id' => FILTER_VALIDATE_INT,
     'p_stock' => FILTER_VALIDATE_INT,
-    'p_temperature' => FILTER_VALIDATE_INT,
+    'p_temperature' => FILTER_SANITIZE_STRING,
     'p_name' => FILTER_SANITIZE_STRING,
     'p_provider' => FILTER_SANITIZE_STRING,
     'p_aspect' => FILTER_SANITIZE_STRING,
@@ -62,7 +62,7 @@ $cols = [
         'p_aspect'
     ],
     'p_temperature' => [
-        'number',
+        'text',
         'Temperature',
         'p_temperature'
     ],

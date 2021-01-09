@@ -1,5 +1,4 @@
 <?php
-
 require __DIR__.'/../app/Init.php';
 require __DIR__.'/controllers/lib.php';
 $args = [
@@ -11,7 +10,7 @@ $GET = filter_input_array(INPUT_GET, $args, false);
 //     $from = 'home';
 // }
 $USER = null;
-
+ini_set('display_errors', 'Off');
 //rooting
 if(isset($GET['page'])) {
     $page = $GET['page'];
@@ -56,7 +55,7 @@ if ($USER !== null && $USER->getRole() === 'manager') {
             $_SESSION['current-rest'] = reset($restaurants)->getId();
         }
     }
-} elseif ($USER !== null && $USER->getRole() === 'employee') {
+} elseif ($USER !== null && ($USER->getRole() === 'employee' || $USER->getRole() === 'ext')) {
     $restaurants = $restaurant_dao->restaurants_by_employee($USER);
     if ($restaurants !== []) {
         foreach ($restaurants as $restaurant) {
@@ -72,9 +71,25 @@ $page = $page === 'home' ? 'calendar' : $page;
 // Load renderer and controller
 $controller = ucfirst($page).'Controller.php';
 $page = ucfirst($page);
-if (!file_exists(__DIR__.'/controllers/'.$controller) && $USER !== null) {
-    $controller = $USER->getRole().'/'.$controller;
-    $page = $USER->getRole().'\\'.$page;
+$to_render = $page;
+
+if($USER !== null) {
+    $controller = str_replace('::', DIRECTORY_SEPARATOR, $USER->getRole()).'/'.$controller;
+    $to_render = str_replace('::', '\\', $USER->getRole()).'\\'.$page;
 }
-$renderer = renderers\Provider::get_renderer($page);
+
+if (!file_exists(__DIR__.'/controllers/'.$controller)) {
+    $controller = $controller = ucfirst($page).'Controller.php';
+    $to_render = $page;
+}
+//dump($to_render);die();
+//if($USER !== null && strpos($USER->getRole(), 'ext') !== false) {
+//    $controller = str_replace('::', DIRECTORY_SEPARATOR, $USER->getRole()).'/'.$controller;
+//    $page = str_replace('::', '\\', $USER->getRole()).'\\'.$page;
+//} elseif (!file_exists(__DIR__.'/controllers/'.$controller) && $USER !== null) {
+//    $controller = $USER->getRole().'/'.$controller;
+//    $page = $USER->getRole().'\\'.$page;
+//}
+
+$renderer = renderers\Provider::get_renderer($to_render);
 require __DIR__.'/controllers/'.$controller;

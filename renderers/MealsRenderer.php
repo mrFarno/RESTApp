@@ -42,13 +42,13 @@ class MealsRenderer extends BaseRenderer
                 <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'team_equipment\', \'meals\')">EPI</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'equipment\', \'meals\')">Matériel</button>
+                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'equipment\', \'meals\')">Matériels</button>
               </li>
               <li class="nav-item">
                 <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'cutlery\', \'meals\')">Petit matériel</button>
               </li>
               <li class="nav-item">
-                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'products\', \'meals\')">Marchandise</button>
+                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'products\', \'meals\')">Marchandises</button>
               </li>
               <li class="nav-item">
                 <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'guests\', \'meals\')">Convives</button>
@@ -136,7 +136,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function equipment_form($equipments) {
-        $this->output .= '<h2 style="text-align: center;">Matériel</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Matériels</h2><br>';
         if (count($equipments) === 0) {
             $this->output .= 'Pas d\'équipement renseigné';
         } else {
@@ -153,7 +153,7 @@ class MealsRenderer extends BaseRenderer
                     </td>
                     <td>
                         <input type="checkbox" name="eq_'.$equipment['eq_id'].'_ok" '.$checked.' onclick="show_infos_button('.$equipment['eq_id'].')">
-                        <button onclick="get_equipment_infos('.$equipment['eq_id'].')" type="button" data-toggle="modal" data-target="#equipment_modal" '.$hidden.' id="failure-'.$equipment['eq_id'].'">Infos</button>
+                        <button onclick="get_equipment_infos('.$equipment['eq_id'].')" type="button" data-toggle="modal" data-target="#equipment_modal" '.$hidden.' id="failure-'.$equipment['eq_id'].'">Suivi</button>
                     </td>
                 </tr>';
             }
@@ -164,7 +164,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function cutlery_form($equipments) {
-        $this->output .= '<h2 style="text-align: center;">Petit matériel (pré-inventaire)</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Petits matériels (pré-inventaire)</h2><br>';
         if (count($equipments) === 0) {
             $this->output .= 'Pas d\'epi renseigné';
         } else {
@@ -191,7 +191,7 @@ class MealsRenderer extends BaseRenderer
 
     public function products_form(Meal $meal) {
         $checked = $meal->getCheck_products() == 1 ? 'checked' : '';
-        $this->output .= '<h2 style="text-align: center;">Marchandise</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Marchandises</h2><br>';
         $this->output .= '<div class="">
         <label for="m_check_products">Toutes les marchandises ont bien été réceptionnées</label>
         <input type="checkbox" '.$checked.' name="m_check_products" id="m_check_products">

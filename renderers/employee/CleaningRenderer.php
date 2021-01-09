@@ -14,14 +14,14 @@ class CleaningRenderer extends BaseRenderer
     }
 
     public function equipement_tasks_list($tasks) {
-        $this->output .= '<h1>Nettoyage et Désinfection</h1>';
+        $this->output .= '<h1>Nettoyage et désinfection</h1>';
         if (true) {
             $this->output .= '<button type="button" data-toggle="modal" data-target="#controls_modal">
                     Contrôles
                 </button>';
         }
         $this->output .= '<div class="equipment-list">
-            <h2>Matériel</h2>
+            <h2>Matériels</h2>
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Instructions</th>

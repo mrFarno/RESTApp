@@ -14,16 +14,15 @@ class CleaningRenderer extends BaseRenderer
     }
 
     public function list_equipments($equipments, $tasks) {
-        $this->output .= '<h1>Nettoyage et Désinfection</h1>
+        $this->output .= '<h1>Nettoyage et désinfection</h1>
             <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
             <div class="equipment-list">
-            <h2>Matériel</h2>
+            <h2>Matériels</h2>
             <table class="table table-hover" style="">
-                    <th>Nom</th>
-                    <th>Néttoyé aujourd\'hui</th>
+                    <th>Désignation</th>
+                    <th>Par</th>
                     <th>A</th>
-                    <th>Commentaire</th>
-                    <th>Nettoyer</th>';
+                    <th>Commentaire</th>';
         if (count($equipments) !== 0) {
             foreach ($equipments as $equipment) {
                 if(isset($tasks[$equipment['eq_id']]) && $tasks[$equipment['eq_id']] !== false) {
@@ -35,18 +34,17 @@ class CleaningRenderer extends BaseRenderer
                 }
                 $this->output .= '<tr>
                 <td>'.$equipment['eq_name'].'</td>                 
-                <td><input type="checkbox" disabled '.$checked.'></td>                 
+                <td>
+                    <button onclick="init_affectations_modal(\''.$equipment['eq_id'].'\')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
+                        <i class="far fa-clipboard"></i>
+                    </button>
+                </td>                
                 <td>'.$hour.'</td>                 
                 <td>
                     <button type="button" onclick="comment_modal('.$tasks[$equipment['eq_id']]['t_id'].')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
-                </td>                 
-                <td>
-                    <button onclick="init_affectations_modal(\''.$equipment['eq_id'].'\')" type="button" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
-                        <i class="far fa-clipboard"></i>
-                    </button>
-                </td>                                                          
+                </td>                                                                          
             </tr>';
             }
         } else {
@@ -61,11 +59,10 @@ class CleaningRenderer extends BaseRenderer
         $this->output .= '<div class="space-list">
             <h2>Locaux</h2>
             <table class="table table-hover" style="">
-                    <th>Nom</th>
-                    <th>Néttoyé aujourd\'hui</th>
+                    <th>Désignation</th>
+                    <th>Par</th>
                     <th>A</th>
-                    <th>Commentaire</th>
-                    <th>Nettoyer</th>';
+                    <th>Commentaire</th>';
         if (count($spaces) !== 0) {
             foreach ($spaces as $space) {
                 if(isset($tasks[$space['s_id']]) && $tasks[$space['s_id']] !== false) {
@@ -76,19 +73,18 @@ class CleaningRenderer extends BaseRenderer
                     $hour = '';
                 }
                 $this->output .= '<tr>
-                <td>'.$space['s_name'].'</td>                 
-                <td><input type="checkbox" disabled '.$checked.'></td>                 
+                <td>'.$space['s_name'].'</td>  
+                <td>
+                    <button type="button" onclick="init_affectations_modal(\''.$space['s_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
+                        <i class="far fa-clipboard"></i>
+                    </button>
+                </td>                               
                 <td>'.$hour.'</td>                 
                 <td>
                     <button type="button" onclick="comment_modal('.$tasks[$space['s_id']]['t_id'].')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
-                </td>                  
-                <td>
-                    <button type="button" onclick="init_affectations_modal(\''.$space['s_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#cleaning_modal">
-                        <i class="far fa-clipboard"></i>
-                    </button>
-                </td>                                                          
+                </td>                                                                           
             </tr>';
             }
         } else {

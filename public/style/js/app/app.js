@@ -518,8 +518,8 @@ function update_affectation_modal() {
 function init_products_modal(p_id) {
     hidden = document.getElementById('p_id')
     hidden.value = p_id
-    ctnr = document.getElementById('btn-ctnr')
-    ctnr.innerHTML = ''
+    // ctnr = document.getElementById('btn-ctnr')
+    // ctnr.innerHTML = ''
 
     $.ajax({
         url : 'index.php?page=products',

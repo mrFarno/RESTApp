@@ -122,10 +122,10 @@ if(isset($POST['status'])) {
     $aff['ta_done'] = $aff['ta_done'] == 1 ? 0 : 1;
     $aff['ta_done_hour'] = date('H:i');
     $task_affectation_dao->persist($aff);
-    if ($task['t_controller'] === null || $task['t_controller'] === '') {
+//    if ($task['t_controller'] === null || $task['t_controller'] === '') {
         $task['t_done_hour'] = date('H:i');
         $task_dao->persist($task);
-    }
+//    }
     die();
 }
 
@@ -150,10 +150,11 @@ if(isset($POST['done_hour'])) {
     $aff['ta_done'] = 1;
     $aff['ta_done_hour'] = $POST['done_hour'];
     $task_affectation_dao->persist($aff);
-    if ($task['t_controller'] === null || $task['t_controller'] === '') {
+//    if ($task['t_controller'] === null || $task['t_controller'] === '') {
         $task['t_done_hour'] = $POST['done_hour'];
+        $task['t_done'] = 1;
         $task_dao->persist($task);
-    }
+//    }
     die();
 }
 

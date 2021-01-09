@@ -33,6 +33,14 @@ $rs_tasks = $task_affectation_dao->daily_tasks($USER, $restaurant, $day, [
 foreach ($rs_tasks as $index => $rs_task) {
     if ($rs_tasks[$index]['rs_meal_type'] === $current_meal) {
         $rs_tasks[$index]['meal'] = $meal_types_dao->find(['mt_id' => $rs_task['rs_meal_type']])['mt_name'];
+        $e = $employement_dao->find([
+            'e_user_id' => $USER->getId(),
+            'e_restaurant_id' => $restaurant->getId(),
+        ]);
+        $rs_tasks[$index]['number'] = $task_affectation_dao->find([
+            'ta_task_id' => $rs_tasks[$index]['t_id'],
+            'ta_employement_id' => $e['e_id']
+        ])['ta_number'];
     } else {
         unset($rs_tasks[$index]);
     }

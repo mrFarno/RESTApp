@@ -41,13 +41,17 @@ class RecipeSheetDAO extends DAO
     public function done_parts($rs_id) {
         $request = 'SELECT * FROM tasks
                     INNER JOIN task_affectations ON ta_task_id = t_id
-                    WHERE ta_done = 1 AND t_target_id = '.$rs_id.';';
+                    WHERE t_target_id = '.$rs_id.';';
 
         $result = $this->getPDO()->query($request)->fetchAll();
         $total = 0;
+        $done = 0;
         foreach ($result as $row) {
             $total = $total + $row['ta_number'];
+            if ($row['ta_done'] == 1) {
+                $done = $done + $row['ta_number'];
+            }
         }
-        return $total;
+        return $done.'/'.$total;
     }
 }

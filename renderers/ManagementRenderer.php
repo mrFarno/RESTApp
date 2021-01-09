@@ -43,7 +43,7 @@ class ManagementRenderer extends BaseRenderer
     private function link($page, $day, $meal) {
         $trads = [
             'meals' => 'Repas',
-            'products' => 'Marchandise',
+            'products' => 'Marchandises',
             'production' => 'Production',
             'cleaning' => 'Nettoyage et désinfection',
             'biowaste' => 'Suivi des biodéchets',
