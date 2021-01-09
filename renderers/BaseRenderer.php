@@ -31,7 +31,7 @@ abstract class BaseRenderer
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">';
         switch ($USER->getRole()) {
-            case 'manager':
+            case 'staff::manager':
                 $this->output .= '<li class="nav-item dropdown ' . $this->active('restaurants') . $this->active('equipment') . $this->active('spaces') . '">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Mon restaurant
@@ -54,7 +54,7 @@ abstract class BaseRenderer
                   </li>
                   </ul>';
                 break;
-            case 'employee':
+            case 'staff::employee':
                 $this->output .= '<li class="nav-item  '. $this->active('team') .'">
                     <a class="nav-link" href="?page=team">Déclarer une absence</a>
                   </li>
@@ -79,14 +79,14 @@ abstract class BaseRenderer
             } else {
                 $src = $GLOBALS['domain'].'/public/style/resources/upload.png';
             }
-            if ($USER->getRole() === 'manager') {
+            if ($USER->getRole() === 'staff::manager') {
                 $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>
                 <a style="color: black;" href="?page=restaurants" title="Nouveau restaurant"><i class="fas fa-plus-circle"></i></a>';
             } else {
                 $this->output .= '<img class="user-pic" src="'.$src.'" title="Editer mon restaurant">';
             }
         } else {
-            if ($USER->getRole() === 'manager') {
+            if ($USER->getRole() === 'staff::manager') {
                 $this->output .= 'Créer un restaurant :
                 <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>';
             }

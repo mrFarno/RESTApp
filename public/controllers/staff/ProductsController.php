@@ -172,7 +172,7 @@ $renderer->header('Marchandises')
     ->products_modal($day)
     ->affectations_modal($employement_dao->employees_by_restaurant($restaurant->getId()),
         $pra_dao->affectations_by_restaurant($restaurant->getId()),
-        $USER->getRole() === 'manager')
+        $USER->getRole() === 'staff::manager')
     ->open_body([
         [
             'tag' => 'div',
@@ -180,7 +180,7 @@ $renderer->header('Marchandises')
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->products_list($products, $USER->getRole() === 'manager')
+    ->products_list($products, $USER->getRole() === 'staff::manager')
     ->close_body()
     ->footer()
     ->render();

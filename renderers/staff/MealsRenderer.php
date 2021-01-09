@@ -1,10 +1,11 @@
 <?php
 
 
-namespace renderers;
+namespace renderers\staff;
 
 
 use app\BO\Meal;
+use renderers\BaseRenderer;
 
 class MealsRenderer extends BaseRenderer
 {
@@ -209,8 +210,8 @@ class MealsRenderer extends BaseRenderer
                             <th>Convives déclarés</th>
                             <th>Convives servis</th>
                             <tr>    
-                                <td><input type="number" min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>
-                                <td><input type="number" min="0" name="absences" value="'.$meal->getAbsencesGuests().'"></td>
+                                <td><input type="number" disabled min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>
+                                <td><input type="number" disabled min="0" name="absences" value="'.$meal->getAbsencesGuests().'"></td>
                                 <td><input type="number" min="0" name="real" value="'.$meal->getRealGuests().'"></td>
                             </tr>';
         $this->next_btn('guests','comment');

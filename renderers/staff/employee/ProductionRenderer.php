@@ -1,7 +1,7 @@
 <?php
 
 
-namespace renderers\employee;
+namespace renderers\staff\employee;
 
 
 class ProductionRenderer extends BaseRenderer

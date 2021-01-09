@@ -46,7 +46,7 @@ if (isset($POST['username']) && isset($POST['password'])) {
             'u_lastname' => $POST['lastname'],
             'u_email' => $POST['username'],
             'u_password' => password_hash($POST['password'], PASSWORD_DEFAULT),
-            'u_role' => 'manager'
+            'u_role' => 'staff::manager'
         ]);
         $user_dao->persist($user);
     }

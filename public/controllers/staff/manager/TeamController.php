@@ -48,7 +48,7 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
             'u_email' => $POST['u_email'],
             'u_password' => generate_token(),
             'u_token' => generate_token(),
-            'u_role' => 'employee'
+            'u_role' => 'staff::employee'
         ];
         $user = new User($datas);
         $user_dao->persist($user);

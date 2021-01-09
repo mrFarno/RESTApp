@@ -1,7 +1,7 @@
 <?php
 
 
-namespace renderers\employee;
+namespace renderers\staff\employee;
 
 
 class EventsRenderer extends BaseRenderer
