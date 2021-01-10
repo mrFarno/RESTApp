@@ -18,6 +18,28 @@ class SatisfactionRenderer extends BaseRenderer
         return $this;
     }
 
+    public function satisfaction_form($poll, $stats) {
+        $this->output .= '<h1 style="text-align: center;">Enquête de satisfaction</h1>
+        <div>';
+        for ($i = 1; $i < 11; $i++) {
+            $value = $poll !== false ? $poll['sp_field_'.$i] : '';
+            if (isset($stats['spv_field_'.$i]) && $stats['spv_field_'.$i]['count'] !== 0) {
+                $percent = $stats['spv_field_'.$i]['sum'] / $stats['spv_field_'.$i]['count'];
+                $satisfaction = 'Satisfaction : '.$percent.'% ('.$stats['spv_field_'.$i]['count'].' votes)';
+            } else {
+                $satisfaction = '';
+            }
+            $this->output .= '<div class="form-inline" style="padding-bottom: 10px">
+            <input name="sp_field_'.$i.'" type="text" class="form-control" style="width: 30vw;" placeholder="Critère n°'.$i.'" value="'.$value.'">
+            <button class="btn btn-success">+</button>  
+            &nbsp;'.$satisfaction.'                      
+            </div>';
+        }
+        $this->output .= '</div>';
+
+        return $this;
+    }
+
     private function set_day($day) {
         $this->from .= '&date='.$day;
 

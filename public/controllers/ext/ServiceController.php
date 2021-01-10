@@ -44,6 +44,10 @@ if(isset($POST['declared'])) {
 $renderer->header('Service')
     ->open_body([
         [
+            'tag' => 'div',
+            'class' => 'content-center'
+        ],
+        [
             'tag' => 'form',
             'action' => 'index.php?page=service&meal='.$current_meal.'&date='.$day,
             'method' => 'POST',

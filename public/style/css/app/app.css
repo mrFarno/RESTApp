@@ -325,3 +325,31 @@ html {
     right: 5vw;
     top: 20vh;
 }
+
+.sat-icon {
+    width:64px;
+    padding-right:15px;
+}
+
+.sat-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sat-radio-0:checked + img {
+    filter: invert(10%) sepia(94%) saturate(5414%) hue-rotate(358deg) brightness(87%) contrast(96%);
+}
+
+.sat-radio-33:checked + img {
+    filter: invert(93%) sepia(16%) saturate(5814%) hue-rotate(1deg) brightness(103%) contrast(111%);
+}
+
+.sat-radio-67:checked + img {
+    filter: invert(71%) sepia(34%) saturate(880%) hue-rotate(19deg) brightness(98%) contrast(100%);
+}
+
+.sat-radio-100:checked + img {
+    filter: invert(61%) sepia(70%) saturate(1422%) hue-rotate(66deg) brightness(111%) contrast(120%);
+}
