@@ -15,12 +15,12 @@ $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
 ];
 
-
 $GET = filter_input_array(INPUT_GET, $argsGet, false);
 $POST = filter_input_array(INPUT_POST, $args, false);
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
+$notify = false;
 
 if (isset($POST['bw_production'])
     || isset($POST['bw_bread'])
@@ -52,12 +52,23 @@ if (isset($POST['bw_production'])
             'bw_valuation' => -abs($POST['bw_valuation']) ?? null,
             'bw_comment' => $POST['bw_comment'] ?? null,
         ]);
+        $notify = 'Données sauvegardées';
 }
 $biowaste = $biowastes_dao->find([
     'bw_date' => $day,
     'bw_restaurant_id' => $restaurant->getId()]);
 if ($biowaste === false) {
-    $biowaste = [];
+    $biowaste = [
+        'bw_id' => '',
+        'bw_production' => null,
+        'bw_bread' => null,
+        'bw_other' => null,
+        'bw_carton' => null,
+        'bw_package_other' => null,
+        'bw_green' => null,
+        'bw_valuation' => null,
+        'bw_comment' => '',
+    ];
 }
 $renderer->header('Biodéchets')
     ->open_body([
@@ -70,4 +81,5 @@ $renderer->header('Biodéchets')
     ->biowaste_form($biowaste, $day)
     ->close_body()
     ->footer()
+    ->notify($notify)
     ->render();

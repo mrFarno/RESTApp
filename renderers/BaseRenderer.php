@@ -208,6 +208,73 @@ abstract class BaseRenderer
         return $this;
     }
 
+    public function notify($notify) {
+        if($notify !== false) {
+            $this->output .= '<script>show_toast(\'success\', \''.$notify.'\')</script>';
+        }
+        return $this;
+    }
+
+    public function comments_modal($date)
+    {
+        $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="comments_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
+            <div  class="modal-dialog modal-lg" role="document" id="formManual">
+                <div class="modal-content" style="margin-top: 33%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="manualModalLabel"><span id="eq_name-modal">Commentaires</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="comments-list"></div>
+                        <input type="hidden" id="today" value="'.$date.'">
+                        <textarea class="form-control" rows="5" id="comment-content" placeholder="Votre commentaire"></textarea>     
+                        <div class="row justify-content-center">
+                            <button type="button" onclick="submit_comment(\''.$date.'\')" class="btn btn-outline-success width100">
+                                Enregistrer
+                            </button>
+                        </div>                   
+                    </div>
+                </div>
+            </div>
+        </div>';
+        return $this;
+    }
+
+    public function comments_list($comments, $task, $USER) {
+        $this->output .= '<input type="hidden" id="c_target" name="c_target" value="'.$task['t_id'].'">
+                            <input type="hidden" id="t_target" name="t_target" value="'.$task['t_target_id'].'">';
+        if (count($comments) > 0) {
+            $this->output .= '<table class="table table-hover">';
+            foreach ($comments as $comment) {
+                $date = new \DateTime($comment['c_date']);
+                $date = $date->format('d/m Y');
+                $time = new \DateTime($comment['c_time']);
+                $time = $time->format('G:i');
+                $delete = '';
+                if ($comment['c_author'] == $USER->getId()) {
+                    $delete = '<button type="button" onclick="delete_comment('.$comment['c_id'].')" name="delete" value="' . $comment['c_id'] . '" class="fnt_aw-btn delete-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>';
+                }
+                $this->output .= '<tr>
+                    <td style="font-style: italic">'.$comment['c_author_name'].':</td>
+                    <td>'.$comment['c_content'].'</td>
+                    <td style="font-style: italic">'.$date.' à '.$time.'</td>
+                    <td>
+                        '.$delete.'
+                    </td>
+                </tr>';
+            }
+            $this->output .= '</table>';
+        } else {
+            $this->output .= 'Pas de commentaires';
+        }
+
+        return $this;
+    }
+
     /**
      * Open body with optional params
      * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)

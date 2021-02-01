@@ -149,7 +149,7 @@ if(isset($POST['comment'])) {
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
     ->cleaning_modal()
-    ->comment_modal()
+    ->comments_modal($day)
     ->open_body([
         [
             'tag' => 'div',

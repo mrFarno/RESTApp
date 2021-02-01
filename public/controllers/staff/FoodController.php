@@ -52,7 +52,7 @@ $renderer->header('Plats servis')
             'method' => 'POST',
         ]
     ], $USER)
-    ->previous_page('calendar')
+    ->previous_page('service&current-meal='.$current_meal.'&date='.$day)
     ->service_form($meal)
     ->close_body()
     ->footer()

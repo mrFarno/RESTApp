@@ -31,6 +31,11 @@ class BiowasteRenderer extends BaseRenderer
         return $this;
     }
 
+    public function year_total($total, $year) {
+        $this->output .= '<br>Total en '.$year.' : '.$total.'kg';
+        return $this;
+    }
+
     private function set_day($day) {
         $this->from .= '&date='.$day;
 

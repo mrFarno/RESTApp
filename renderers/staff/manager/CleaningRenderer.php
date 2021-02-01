@@ -41,7 +41,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="comment_modal('.$tasks[$equipment['eq_id']]['t_id'].')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$equipment['eq_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                          
@@ -81,7 +81,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                               
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="comment_modal('.$tasks[$space['s_id']]['t_id'].')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$space['s_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                           

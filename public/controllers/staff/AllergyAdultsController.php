@@ -15,11 +15,15 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 
 $current_meal = $GET['meal'];
-$renderer->header('P.A.I')
+$renderer->header('Adultes')
     ->open_body([
-        ], $USER)
+        [
+            'tag' => 'div',
+            'class' => 'content-center'
+        ]
+    ], $USER)
     ->previous_page('calendar')
-    ->links($current_meal, $day)
+    ->wip()
     ->close_body()
     ->footer()
     ->render();

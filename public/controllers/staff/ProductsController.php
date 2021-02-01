@@ -180,7 +180,7 @@ $renderer->header('Marchandises')
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->products_list($products, $USER->getRole() === 'staff::manager')
+    ->products_list(array_reverse($products), $USER->getRole() === 'staff::manager')
     ->close_body()
     ->footer()
     ->render();

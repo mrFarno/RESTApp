@@ -19,8 +19,7 @@ class EventsRenderer extends BaseRenderer
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Terminé</th>
-                    <th>Commentaire</th>
-                    <th></th>';
+                    <th>Commentaire</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
                 $checked = $task['t_done'] == 1 ? 'checked' : '';
@@ -29,12 +28,11 @@ class EventsRenderer extends BaseRenderer
                 <td>
                     <input type="checkbox" '.$checked.' onclick="update_task_status(\''.$task['t_id'].'\')">
                 </td>   
-                <td><textarea id="ev_comment-'.$task['ev_id'].'" class="form-control">'.$task['ev_comment'].'</textarea></td>                                                       
                 <td>
-                    <button onclick="save_event_comment('.$task['ev_id'].')" type="button" class="btn btn-outline-success width100">
-                    Enregistrer
+                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                        <i class="fas fa-comment"></i>
                     </button>
-                </td>                                                       
+                </td>                                                     
             </tr>';
             }
         } else {

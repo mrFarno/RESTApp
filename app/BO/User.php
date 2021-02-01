@@ -11,6 +11,23 @@ class User
     private $u_email;
     private $u_token;
     private $u_role;
+    private $u_phone_number;
+
+    /**
+     * @return mixed
+     */
+    public function getPhoneNumber()
+    {
+        return $this->u_phone_number;
+    }
+
+    /**
+     * @param mixed $u_phone_number
+     */
+    public function setPhoneNumber($u_phone_number)
+    {
+        $this->u_phone_number = $u_phone_number;
+    }
     private $absent = false;
 
     public function __construct($data)

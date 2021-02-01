@@ -36,6 +36,40 @@ function notify_new_user($user, $smtp_connector) {
     }
 }
 
+function notify_substitute($user, $date, $restaurant, $smtp_connector) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8';
+        $mail->Host       = $smtp_connector['smtp_host'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $smtp_connector['smtp_user'];
+        $mail->Password   = $smtp_connector['smtp_pass'];
+        $mail->SMTPSecure = 'ssl';
+        if ($smtp_connector['smtp_certs'] == 'on') {
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+        }
+        //$mail->SMTPDebug  = 4;
+        $mail->Port       = $smtp_connector['smtp_port'];
+        $mail->setFrom($smtp_connector['smtp_user'], 'Administration Good For Restau');
+        $mail->addAddress($user->getEmail());
+        $mail->isHTML(true);
+        $mail->Subject = 'Remplacement Good For Restau';
+        $mail->Body = 'Bonjour,
+        Vous êtes affecté à une tâche le '.$date.' dans le restaurant '.$restaurant.'. Connectez vous sur '.$GLOBALS['domain'];
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        throw new Exception($e->getMessage());
+    }
+}
+
 function send_mail($user, $subject, $body, $smtp_connector) {
     // Instantiation and passing `true` enables exceptions
 	$mail = new PHPMailer(true);

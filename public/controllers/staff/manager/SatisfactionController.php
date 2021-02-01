@@ -106,7 +106,7 @@ $renderer->header('Satisfaction des convives')
             'method' => 'POST',
         ]
     ], $USER)
-    ->previous_page('calendar')
+    ->previous_page('service&current-meal='.$current_meal.'&date='.$day)
 //    ->satisfaction()
     ->satisfaction_form($poll, $stats)
     ->close_body()

@@ -353,3 +353,11 @@ html {
 .sat-radio-100:checked + img {
     filter: invert(61%) sepia(70%) saturate(1422%) hue-rotate(66deg) brightness(111%) contrast(120%);
 }
+
+#comments-list {
+    /*position: absolute;*/
+    max-height: 30vh;
+    overflow-y: scroll;
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}

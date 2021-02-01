@@ -54,6 +54,7 @@ if(isset($POST['search'])) {
 $renderer->set_day($day)
     ->header('Animation/Évenementiel')
     ->events_modal()
+    ->comments_modal($day)
     ->open_body([
         [
             'tag' => 'div',

@@ -55,6 +55,9 @@ class TeamRenderer extends BaseRenderer
                             </div>
                             <div class="form-group">
                                 <input type="email" class="form-control" id="u_email" name="u_email" required placeholder="Adresse email">
+                            </div>                            
+                            <div class="form-group">
+                                <input type="int" class="form-control" id="u_phone" name="u_phone" placeholder="Téléphone">
                             </div>
                             <div class="row justify-content-center">
                             <button type="submit" class="btn btn-outline-success width100">
@@ -84,6 +87,7 @@ class TeamRenderer extends BaseRenderer
             <th>Nom</th>
             <th>Prénom</th>
             <th>Adresse mail</th>
+            <th>Téléphone</th>
             <th>Supprimer</th>';
 
             foreach ($employees as $employee) {
@@ -98,6 +102,7 @@ class TeamRenderer extends BaseRenderer
                 <td>' . $employee->getLastname() . '</td>
                 <td>' . $employee->getFirstname() . '</td>
                 <td>' . $employee->getEmail() . ' <i class="fas fa-info-circle" title="' . $title . '"></i></td>
+                <td>' . $employee->getPhoneNumber() . '</td>
                 <td>
                     <button type="submit" onclick="valid_form(); return delete_confirm();" name="delete" value="' . $employee->getId() . '" class="fnt_aw-btn delete-btn">
                     <i class="fas fa-trash-alt"></i>

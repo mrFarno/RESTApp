@@ -12,6 +12,7 @@ $args = [
     'u_lastname' => FILTER_SANITIZE_STRING,
     'u_email' => FILTER_SANITIZE_STRING,
     'u_id' => FILTER_VALIDATE_INT,
+    'u_phone' => FILTER_VALIDATE_INT,
     'delete' => FILTER_VALIDATE_INT,
 ];
 
@@ -46,6 +47,7 @@ if ((isset($POST['u_firstname']) && $POST['u_firstname'] !== '')
             'u_firstname' => $POST['u_firstname'],
             'u_lastname' => $POST['u_lastname'],
             'u_email' => $POST['u_email'],
+            'u_phone_number' => $POST['u_phone'],
             'u_password' => generate_token(),
             'u_token' => generate_token(),
             'u_role' => 'staff::employee'

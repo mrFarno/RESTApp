@@ -37,6 +37,7 @@ if(isset($POST['target'])) {
 
 $renderer->set_day($day)
     ->header('Animation/Évenementiel')
+    ->comments_modal($day)
     ->open_body([
         [
             'tag' => 'div',

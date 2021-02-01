@@ -35,7 +35,11 @@ class EventsRenderer extends BaseRenderer
                 <td>
                     <input type="checkbox" disabled '.$checked.'>
                 </td>
-                <td>'.$event['ev_comment'].'</td>
+                <td>
+                    <button type="button" onclick="init_comments_modal(\''.$event['ev_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </td>  
                 <td>           
                     <button type="submit" onclick="return confirm(\'Etes vous sur de vouloir supprimer cet évenement ?\')" name="delete" value="'.$event['ev_id'].'" class="fnt_aw-btn delete-btn">
                         <i class="fas fa-trash-alt"></i>

@@ -203,7 +203,7 @@ foreach ($controls as $index => $control) {
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
     ->controls_modal($controls)
-    ->comment_modal()
+    ->comments_modal($day)
     ->open_body([
         [
             'tag' => 'div',

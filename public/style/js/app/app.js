@@ -306,6 +306,47 @@ function save_comment() {
     })
 }
 
+function submit_comment(date) {
+    data = {}
+    target = document.getElementById('c_target')
+    comment = document.getElementById('comment-content')
+
+    data = {
+        'c_target' : target.value,
+        'c_content' : comment.value,
+    }
+
+    $.ajax({
+        url : 'index.php?page=comments',
+        type : 'POST',
+        data : data,
+        dataType : 'json',
+        success: function(data) {
+            show_toast(data[0], data[1])
+            t_target = document.getElementById('t_target')
+            init_comments_modal(t_target.value, date)
+            comment.value = ''
+        }
+    })
+}
+
+function delete_comment(c_id, date) {
+    if (confirm('Etes vous sur de vouloir supprimer ce commentaire ?')) {
+        $.ajax({
+            url : 'index.php?page=comments',
+            type : 'POST',
+            data : 'delete='+c_id,
+            dataType : 'json',
+            success: function(data) {
+                show_toast(data[0], data[1])
+                t_target = document.getElementById('t_target')
+                today = document.getElementById('today')
+                init_comments_modal(t_target.value, today.value)
+            }
+        })
+    }
+}
+
 function save_event_comment(ev_id) {
     comment = document.getElementById('ev_comment-'+ev_id)
     $.ajax({
@@ -668,6 +709,22 @@ function comment_modal(t_id) {
         dataType : 'text',
         success: function(data) {
             comment.value = data
+        }
+    })
+}
+
+function init_comments_modal(t_target_id, date) {
+    $.ajax({
+        url : 'index.php?page=comments',
+        type : 'POST',
+        data : 't_target='+t_target_id+'&t_date='+date,
+        dataType : 'html',
+        success: function(data) {
+            target = document.getElementById('comments-list')
+            target.innerHTML = data
+            modal = $('#comments_modal')
+            console.log(modal)
+            modal.modal('show');
         }
     })
 }

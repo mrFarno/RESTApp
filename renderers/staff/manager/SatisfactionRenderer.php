@@ -25,17 +25,19 @@ class SatisfactionRenderer extends BaseRenderer
             $value = $poll !== false ? $poll['sp_field_'.$i] : '';
             if (isset($stats['spv_field_'.$i]) && $stats['spv_field_'.$i]['count'] !== 0) {
                 $percent = $stats['spv_field_'.$i]['sum'] / $stats['spv_field_'.$i]['count'];
-                $satisfaction = 'Satisfaction : '.$percent.'% ('.$stats['spv_field_'.$i]['count'].' votes)';
+                $satisfaction = 'Satisfaction : '.round($percent).'% ('.$stats['spv_field_'.$i]['count'].' votes)';
             } else {
                 $satisfaction = '';
             }
             $this->output .= '<div class="form-inline" style="padding-bottom: 10px">
-            <input name="sp_field_'.$i.'" type="text" class="form-control" style="width: 30vw;" placeholder="Critère n°'.$i.'" value="'.$value.'">
-            <button class="btn btn-success">+</button>  
+            <input name="sp_field_'.$i.'" type="text" class="form-control" style="width: 30vw;" placeholder="Critère n°'.$i.'" value="'.$value.'"> 
             &nbsp;'.$satisfaction.'                      
             </div>';
         }
-        $this->output .= '</div>';
+        $this->output .= '  <div class="row justify-content-center">
+                        <button class="btn btn-outline-success width100">Enregistrer</button>
+                        </div>
+        </div>';
 
         return $this;
     }

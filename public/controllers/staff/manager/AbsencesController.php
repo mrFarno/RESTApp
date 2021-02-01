@@ -82,5 +82,7 @@ if (isset($POST['ab_user_id'])) {
         ]);
     }
 
+    notify_substitute($substitute, $POST['ab_date'], $restaurant->getName(),$smtp_connector);
+
     header('Location: ?page=meals&date='.$date.'&current-meal='.$POST['ab_mealtype_id']);
 }
