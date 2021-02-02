@@ -8,6 +8,7 @@ $args = [
     't_id_comment' => FILTER_VALIDATE_INT,
     'done_hour' => FILTER_SANITIZE_STRING,
     'comment' => FILTER_SANITIZE_STRING,
+    'form' => FILTER_SANITIZE_STRING,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
@@ -200,6 +201,22 @@ foreach ($controls as $index => $control) {
     $controls[$index]['target'] = $name;
 }
 
+if(isset($POST['form'])) {
+    switch ($POST['form']) {
+        case 'equipments' :
+            $tasks = $eq_tasks;
+            break;
+        case 'spaces' :
+            $tasks = $spaces_tasks;
+            break;
+        default : break;
+    }
+    $function = $POST['form'].'_tasks_list';
+    $renderer->$function($tasks, $day)
+        ->render();
+    die();
+}
+
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
     ->controls_modal($controls)
@@ -211,8 +228,8 @@ $renderer->set_day($day)
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->equipement_tasks_list($eq_tasks)
-    ->spaces_tasks_list($spaces_tasks)
+    ->cleaning_navigation($day, $current_meal)
+    ->equipments_tasks_list($eq_tasks, $day)
     ->close_body()
     ->footer()
     ->render();

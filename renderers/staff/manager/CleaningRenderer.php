@@ -13,11 +13,31 @@ class CleaningRenderer extends BaseRenderer
         $this->from = 'cleaning';
     }
 
-    public function list_equipments($equipments, $tasks) {
+    public function cleaning_navigation($date, $meal) {
         $this->output .= '<h1>Nettoyage et désinfection</h1>
-            <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
-            <div class="equipment-list">
-            <h2>Matériels</h2>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-inventory" style="background-color: white">
+            <ul class="navbar-nav">
+              <li class="nav-item" style="background-color: white;">
+                <button type="button" id="equipments-btn" class="nav-link fnt_aw-btn inventory-btn btn-active" onclick="load_form(\'equipments\', \'cleaning\')">Matériel</button>
+              </li>
+              <li class="nav-item" style="background-color: white;">
+                <button type="button" id="spaces-btn" class="nav-link fnt_aw-btn inventory-btn" onclick="load_form(\'spaces\', \'cleaning\')">Locaux</button>
+              </li>         
+            </ul>
+        </nav>
+        <form method="POST" action="?page=cleaning" id="step-form">
+        <input type="hidden" id="current-date" name="date" value="'.$date.'">
+        <input type="hidden" id="current-meal" value="'.$meal.'">
+        <div id="form-container">';
+        $this->opened_tags[] = 'form';
+        $this->opened_tags[] = 'div';
+
+        return $this;
+    }
+
+    public function list_equipments($equipments, $tasks, $day) {
+        $this->output .= '<input type="hidden" name="date" id="date-hidden" value="'.$day.'">
+            <div class="">
             <table class="table table-hover" style="">
                     <th>Désignation</th>
                     <th>Par</th>
@@ -41,7 +61,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$equipment['eq_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$equipment['eq_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                          
@@ -55,9 +75,8 @@ class CleaningRenderer extends BaseRenderer
         return $this;
     }
 
-    public function list_spaces($spaces, $tasks) {
-        $this->output .= '<div class="space-list">
-            <h2>Locaux</h2>
+    public function list_spaces($spaces, $tasks, $day) {
+        $this->output .= '<div class="">
             <table class="table table-hover" style="">
                     <th>Désignation</th>
                     <th>Par</th>
@@ -81,7 +100,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                               
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$space['s_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$space['s_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                           

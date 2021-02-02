@@ -13,15 +13,35 @@ class CleaningRenderer extends BaseRenderer
         $this->from = 'cleaning';
     }
 
-    public function equipement_tasks_list($tasks) {
-        $this->output .= '<h1>Nettoyage et désinfection</h1>';
+    public function cleaning_navigation($date, $meal) {
+        $this->output .= '<h1>Nettoyage et désinfection</h1>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-inventory" style="background-color: white">
+            <ul class="navbar-nav">
+              <li class="nav-item" style="background-color: white;">
+                <button type="button" id="equipments-btn" class="nav-link fnt_aw-btn inventory-btn btn-active" onclick="load_form(\'equipments\', \'cleaning\')">Matériel</button>
+              </li>
+              <li class="nav-item" style="background-color: white;">
+                <button type="button" id="spaces-btn" class="nav-link fnt_aw-btn inventory-btn" onclick="load_form(\'spaces\', \'cleaning\')">Locaux</button>
+              </li>         
+            </ul>
+        </nav>
+        <form method="POST" action="?page=cleaning" id="step-form">
+        <input type="hidden" id="current-date" name="t_date" value="'.$date.'">
+        <input type="hidden" id="current-meal" value="'.$meal.'">
+        <div id="form-container">';
+        $this->opened_tags[] = 'form';
+        $this->opened_tags[] = 'div';
+
+        return $this;
+    }
+
+    public function equipments_tasks_list($tasks, $day) {
         if (true) {
             $this->output .= '<button type="button" data-toggle="modal" data-target="#controls_modal">
                     Contrôles
                 </button>';
         }
-        $this->output .= '<div class="equipment-list">
-            <h2>Matériels</h2>
+        $this->output .= '<div class="">
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Instructions</th>
@@ -42,7 +62,7 @@ class CleaningRenderer extends BaseRenderer
                     <input type="time" onchange="update_done_hour(\''.$task['t_id'].'\')">
                 </td>  
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                       
@@ -56,9 +76,8 @@ class CleaningRenderer extends BaseRenderer
         return $this;
     }
 
-    public function spaces_tasks_list($tasks) {
-        $this->output .= '<div class="space-list">
-            <h2>Locaux</h2>
+    public function spaces_tasks_list($tasks, $day) {
+        $this->output .= '<div class="">
             <table class="table table-hover" style="">
                     <th>Nom</th>
                     <th>Instructions</th>
@@ -79,7 +98,7 @@ class CleaningRenderer extends BaseRenderer
                     <input type="time" onchange="update_done_hour(\''.$task['t_id'].'\')">
                 </td>   
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                          

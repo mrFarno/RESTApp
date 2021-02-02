@@ -3,6 +3,7 @@
 $args = [
     'date' => FILTER_SANITIZE_STRING,
     'validform' => FILTER_SANITIZE_STRING,
+    'form' => FILTER_SANITIZE_STRING,
     'search' => FILTER_VALIDATE_INT,
     't_target_id' => FILTER_VALIDATE_INT,
     't_user_id' => FILTER_VALIDATE_INT,
@@ -146,6 +147,24 @@ if(isset($POST['comment'])) {
     die();
 }
 
+if(isset($POST['form'])) {
+    switch ($POST['form']) {
+        case 'equipments' :
+            $list = $list_equipments;
+            $tasks = $eq_tasks;
+            break;
+        case 'spaces' :
+            $list = $list_spaces;
+            $tasks = $s_tasks;
+            break;
+        default : break;
+    }
+    $function = 'list_'.$POST['form'];
+    $renderer->$function($list, $tasks, $day)
+                ->render();
+    die();
+}
+
 $renderer->set_day($day)
     ->header('Nettoyage et désinfection')
     ->cleaning_modal()
@@ -157,8 +176,8 @@ $renderer->set_day($day)
         ],
     ],  $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
-    ->list_equipments($list_equipments, $eq_tasks)
-    ->list_spaces($list_spaces, $s_tasks)
+    ->cleaning_navigation($day, $current_meal)
+    ->list_equipments($list_equipments, $eq_tasks, $day)
     ->close_body()
     ->footer()
     ->render();
