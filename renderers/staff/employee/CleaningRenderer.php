@@ -36,11 +36,11 @@ class CleaningRenderer extends BaseRenderer
     }
 
     public function equipments_tasks_list($tasks, $day) {
-        if (true) {
-            $this->output .= '<button type="button" data-toggle="modal" data-target="#controls_modal">
-                    Contrôles
-                </button>';
-        }
+//        if (true) {
+//            $this->output .= '<button type="button" data-toggle="modal" data-target="#controls_modal">
+//                    Contrôles
+//                </button>';
+//        }
         $this->output .= '<div class="">
             <table class="table table-hover" style="">
                     <th>Nom</th>

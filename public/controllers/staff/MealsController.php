@@ -23,7 +23,7 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
-
+$current_meal = $GET['current-meal'] ?? $POST['current-meal'] ?? array_keys($meal_types)[0];
 $meal_types = [];
 $meals = [];
 foreach ($restaurant->getMeals() as $meal) {
@@ -235,6 +235,7 @@ $renderer->set_day($day)
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$type_id)
+    ->summary($day, $meal_types[$current_meal])
 //    ->dropdown($meal_types, $day)
     ->checks_navigation()
     ->team_form($employees)

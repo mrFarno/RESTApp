@@ -126,6 +126,7 @@ $renderer->set_day($day)
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day, $meal_types_dao->find(['mt_id' => $current_meal])['mt_name'])
     ->tasks_list($rs_tasks)
     ->close_body()
     ->footer()

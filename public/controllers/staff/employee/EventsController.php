@@ -45,6 +45,7 @@ $renderer->set_day($day)
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day)
     ->tasks_list($ev_tasks)
     ->close_body()
     ->footer()

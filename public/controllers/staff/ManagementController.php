@@ -14,6 +14,7 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $renderer->header('Navigation')
     ->open_body([], $USER)
     ->previous_page('calendar')
+    ->summary($day)
     ->links($day, $GET['meal'])
     ->close_body()
     ->footer()

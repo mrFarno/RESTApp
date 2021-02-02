@@ -207,6 +207,20 @@ abstract class BaseRenderer
         return $this;
     }
 
+    public function summary($date, $meal = false) {
+        $date = new \DateTime($date);
+        $date = $date->format('d/m/Y');
+        if ($meal === false) {
+            $meal = '';
+        } else {
+            $meal = ', '.$meal;
+        }
+        $this->output .= '<div class="summary">
+            Le '.$date.$meal.'
+        </div>';
+        return $this;
+    }
+
     public function notify($notify) {
         if($notify !== false) {
             $this->output .= '<script>show_toast(\'success\', \''.$notify.'\')</script>';

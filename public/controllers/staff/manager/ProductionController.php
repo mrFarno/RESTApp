@@ -83,6 +83,7 @@ $renderer->set_day($day)
         ]
     ],  $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day, $meal_types_dao->find(['mt_id' => $current_meal])['mt_name'])
     ->production_form($sheets, $meal_types, $current_meal)
     ->close_body()
     ->footer()

@@ -228,6 +228,7 @@ $renderer->set_day($day)
         ]
     ], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day)
     ->cleaning_navigation($day, $current_meal)
     ->equipments_tasks_list($eq_tasks, $day)
     ->close_body()

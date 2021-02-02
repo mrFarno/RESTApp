@@ -361,3 +361,10 @@ html {
     -ms-overflow-style: none !important;  /* IE and Edge */
     scrollbar-width: none !important;  /* Firefox */
 }
+
+.summary {
+    font-style: italic;
+    /* text-align: right; */
+    position: absolute;
+    right: 1vw;
+}

@@ -78,6 +78,7 @@ $renderer->header('Biodéchets')
         ]
     ], $USER)
     ->previous_page('home')
+    ->summary($day)
     ->biowaste_form($biowaste, $day)
     ->close_body()
     ->footer()

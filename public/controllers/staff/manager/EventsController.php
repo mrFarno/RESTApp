@@ -67,6 +67,7 @@ $renderer->set_day($day)
         ]
     ],  $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day)
     ->events_form($events_dao->find([
         'ev_restaurant_id' => $restaurant->getId(),
         'ev_date' => $day

@@ -45,6 +45,7 @@ $renderer->header('Satisfaction des convives')
         ]
     ], $USER)
     ->previous_page('service&current-meal='.$current_meal.'&date='.$day)
+    ->summary($day, $meal_types_dao->find(['mt_id' => $current_meal])['mt_name'])
     ->satisfaction_form($poll)
     ->close_body()
     ->footer()

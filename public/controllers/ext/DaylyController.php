@@ -26,6 +26,7 @@ foreach ($restaurant->getMeals() as $meal) {
 $renderer->header('Navigation')
     ->open_body([], $USER)
     ->previous_page('calendar')
+    ->summary($day)
     ->meal_choice($meal_types, $day)
     ->close_body()
     ->footer()

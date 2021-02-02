@@ -20,6 +20,7 @@ $current_meal = $GET['current-meal'];
 $renderer->header('Service')
     ->open_body([], $USER)
     ->previous_page('management&date='.$day.'&meal='.$current_meal)
+    ->summary($day)
     ->links($current_meal, $day)
     ->close_body()
     ->footer()

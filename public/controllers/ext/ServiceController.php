@@ -54,6 +54,7 @@ $renderer->header('Service')
         ]
     ], $USER)
     ->previous_page('dayly&date='.$day)
+    ->summary($day)
     ->service_form($meal)
     ->close_body()
     ->footer()
