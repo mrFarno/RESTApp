@@ -72,7 +72,12 @@ if (isset($POST['t_target'])) {
             $author = $user_dao->find([
                 'u_id' => $comment['c_author']
             ]);
-            $comments[$index]['c_author_name'] = $author->getFirstname().' '.$author->getLastname();
+            if ($author->getId() == $USER->getId()) {
+                $author_name = 'Vous';
+            } else {
+                $author_name = $author->getFirstname().' '.$author->getLastname();
+            }
+            $comments[$index]['c_author_name'] = $author_name;
         }
     }
     $renderer->comments_list(array_reverse($comments), $task, $USER)

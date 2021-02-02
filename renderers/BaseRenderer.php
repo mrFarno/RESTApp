@@ -22,48 +22,16 @@ abstract class BaseRenderer
     //--- HTML ---
 
     protected function navbar($USER) {
-        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e5d9cc;">
-        <a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">';
-        switch ($USER->getRole()) {
-            case 'staff::manager':
-                $this->output .= '<li class="nav-item dropdown ' . $this->active('restaurants') . $this->active('equipment') . $this->active('spaces') . '">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Mon restaurant
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
-                      <a class="dropdown-item" href="?page=equipment">Inventaire</a>
-                      <a class="dropdown-item" href="?page=spaces">Locaux</a>
-                    </div>
-                  </li>
-        
-                    <li class="nav-item dropdown ' . $this->active('team') . $this->active('affectations') . '">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Mon équipe
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="?page=team">Gestion de l\'équipe</a>
-                      <a class="dropdown-item" href="?page=affectations">Affectations</a>
-                    </div>
-                  </li>
-                  </ul>';
-                break;
-            case 'staff::employee':
-                $this->output .= '<li class="nav-item  '. $this->active('team') .'">
-                    <a class="nav-link" href="?page=team">Déclarer une absence</a>
-                  </li>
-                </ul>';
-                break;
-            default: break;
-        }
-        $this->output .= '<div class="rest-choice">';
+        $this->output .= '<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e5d9cc;">';
         if (isset($_SESSION['restaurants']) && count($_SESSION['restaurants']) !== 0) {
+            if (is_file(__DIR__.'/../public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png')) {
+//            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
+                $src = $GLOBALS['domain'].'/public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png';
+                $src = '<img class="user-pic" src="'.$src.'" title="Accueil">';
+            } else {
+                $src = '<i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i>';
+            }
+            $this->output .= '<a class="navbar-brand" href="?page=home">'.$src.'</a>';
             $this->output .= '<form action="?page=calendar" method="POST" class="form-inline my-2 my-lg-0" id="current-rest-form">
             <select onchange="update_current_rest()" name="current-rest" class="form-control mr-sm-2">';
             foreach ($_SESSION['restaurants'] as $id => $name) {
@@ -73,25 +41,56 @@ abstract class BaseRenderer
             $this->output .= '</select>
             <input type="hidden" name="from" value="' . $this->from . '">
             </form>';
-            if (is_file(__DIR__.'/../public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png')) {
-//            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
-                $src = $GLOBALS['domain'].'/public/uploads/restaurants/photos/rest-'.$_SESSION['current-rest'].'.png';
-            } else {
-                $src = $GLOBALS['domain'].'/public/style/resources/upload.png';
-            }
-            if ($USER->getRole() === 'staff::manager') {
-                $this->output .= '<a href="?page=restaurants&edit"><img class="user-pic" src="'.$src.'" title="Editer mon restaurant"></a>
-                <a style="color: black;" href="?page=restaurants" title="Nouveau restaurant"><i class="fas fa-plus-circle"></i></a>';
-            } else {
-                $this->output .= '<img class="user-pic" src="'.$src.'" title="Editer mon restaurant">';
+            $this->output .= '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">';
+            switch ($USER->getRole()) {
+                case 'staff::manager':
+                    $this->output .= '<li class="nav-item dropdown ' . $this->active('restaurants') . $this->active('equipment') . $this->active('spaces') . '">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i title="Mon restaurant" class="fas fa-cog"></i>
+                    </a>                    
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="?page=restaurants&edit">Informations générales</a>
+                      <a class="dropdown-item" href="?page=equipment">Inventaire</a>
+                      <a class="dropdown-item" href="?page=spaces">Locaux</a>                      
+                    </div>
+                  </li>
+        
+                    <li class="nav-item dropdown ' . $this->active('team') . $this->active('affectations') . '">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i title="Mon équipe" class="fas fa-users-cog"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="?page=team">Gestion de l\'équipe</a>
+                      <a class="dropdown-item" href="?page=affectations">Affectations</a>
+                    </div>
+                  </li>
+                  <li><a class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a></li>
+                  </ul>';
+                    break;
+                case 'staff::employee':
+                    $this->output .= '<li class="nav-item  '. $this->active('team') .'">
+                    <a class="nav-link" href="?page=team">Déclarer une absence</a>
+                  </li>
+                </ul>';
+                    break;
+                default: $this->output.= '</li></ul>';
+                    break;
             }
         } else {
+            $this->output .= '<a class="navbar-brand" href="?page=home"><i title="Accueil" alt="Accueil" class="fas fa-home fa-2x"></i></a>';
             if ($USER->getRole() === 'staff::manager') {
                 $this->output .= 'Créer un restaurant :
                 <a style="color: black" class="nav-link" href="?page=restaurants"><i title="Nouveau restaurant" alt="Nouveau restaurant" class="fas fa-plus-circle"></i></a>';
             }
         }
-        $this->output .= '</div>';
+//        $this->output .= '<div class="rest-choice">';
+//        $this->output .= '</div>';
+        $this->output .= 'Bienvenue '.$USER->getFirstname().' '.$USER->getLastname().'&nbsp';
         if (is_file(__DIR__.'/../public/uploads/users/user-'.$USER->getId().'.png')) {
 //            $this->output .= '<img class="user-pic" src="'.$GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png">';
             $src = $GLOBALS['domain'].'/public/uploads/users/user-'.$USER->getId().'.png';
@@ -101,7 +100,7 @@ abstract class BaseRenderer
         $this->output .= '   
            <form action="?page=profile" method="POST" enctype="multipart/form-data" id="pic-form">
                 <label class="user-pic" for="user-pic">
-                    <img class="user-pic" src="'.$src.'" title="Ajouter une photo de profil">
+                    <img class="user-pic" src="'.$src.'" title="Choisir une photo de profil">
                 </label>
                 <input type="file" id="user-pic" name="user-pic" style="display: none" onchange="submit_pic_form()">
                 <input type="hidden" name="from" value="' . $this->from . '">

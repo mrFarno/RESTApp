@@ -20,6 +20,7 @@ class SatisfactionRenderer extends BaseRenderer
 
     public function satisfaction_form($poll, $stats) {
         $this->output .= '<h1 style="text-align: center;">Enquête de satisfaction</h1>
+        <h4>Liste des critères évalués :</h4>
         <div>';
         for ($i = 1; $i < 11; $i++) {
             $value = $poll !== false ? $poll['sp_field_'.$i] : '';
