@@ -42,7 +42,7 @@ class CleaningRenderer extends BaseRenderer
                     <th>Désignation</th>
                     <th>Par</th>
                     <th>A</th>
-                    <th>Commentaire</th>';
+                    <th>Commentaires</th>';
         if (count($equipments) !== 0) {
             foreach ($equipments as $equipment) {
                 if(isset($tasks[$equipment['eq_id']]) && $tasks[$equipment['eq_id']] !== false) {
@@ -61,7 +61,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$equipment['eq_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$equipment['eq_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comments_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                          
@@ -81,7 +81,7 @@ class CleaningRenderer extends BaseRenderer
                     <th>Désignation</th>
                     <th>Par</th>
                     <th>A</th>
-                    <th>Commentaire</th>';
+                    <th>Commentaires</th>';
         if (count($spaces) !== 0) {
             foreach ($spaces as $space) {
                 if(isset($tasks[$space['s_id']]) && $tasks[$space['s_id']] !== false) {
@@ -100,7 +100,7 @@ class CleaningRenderer extends BaseRenderer
                 </td>                               
                 <td>'.$hour.'</td>                 
                 <td>
-                    <button type="button" onclick="init_comments_modal(\''.$space['s_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">
+                    <button type="button" onclick="init_comments_modal(\''.$space['s_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comments_modal">
                         <i class="fas fa-comment"></i>
                     </button>
                 </td>                                                                           

@@ -13,7 +13,7 @@ class ProductionRenderer extends BaseRenderer
         $this->from = 'production';
     }
 
-    public function production_form($recipes, $meal_types, $current_meal) {
+    public function production_form($recipes, $meal_types, $current_meal, $day) {
         $this->output .= '<h2 style="text-align: center;">Production</h2><br>
             <input type="hidden" name="date" id="date-hidden" value="'.$this->day.'">
             <input type="hidden" name="current-meal" id="date-hidden" value="'.$current_meal.'">
@@ -24,6 +24,7 @@ class ProductionRenderer extends BaseRenderer
                     <th>Prochaine étape</th>
                     <th>Affectations</th>
                     <th>Suivi</th>
+                    <th>Commentaires</th>
                     <th></th>';
         if (count($recipes) !== 0) {
             $trads = [
@@ -51,6 +52,11 @@ class ProductionRenderer extends BaseRenderer
                 <td><button type="button" onclick="init_temperature_modal(\''.$recipe['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#temperature_modal">
                     <i class="fas fa-thermometer-half"></i>
                 </button></td>
+                <td>
+                    <button type="button" onclick="init_comments_modal(\''.$recipe['rs_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comments_modal">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </td>
                 <td>           
                     <button type="submit" onclick="return confirm(\'Etes vous sur de vouloir supprimer cette fiche technique ?\')" name="delete" value="'.$recipe['rs_id'].'" class="fnt_aw-btn delete-btn">
                         <i class="fas fa-trash-alt"></i>

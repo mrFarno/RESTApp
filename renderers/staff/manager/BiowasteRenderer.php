@@ -14,6 +14,8 @@ class BiowasteRenderer extends BaseRenderer
     public function biowaste_graph($biowastes) {
         $this->output .= '<h1>Synthèse</h1>
             <h4 style="font-style: italic">20 derniers jours, tous repas confondus</h4>
+            <br>
+            <br>
             <table style="border-bottom:1px solid;border-left:1px solid;margin:auto;">
             <tr>';
         foreach ($biowastes as $biowaste){

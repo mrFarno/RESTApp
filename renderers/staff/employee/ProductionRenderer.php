@@ -13,7 +13,7 @@ class ProductionRenderer extends BaseRenderer
         $this->from = 'production';
     }
 
-    public function tasks_list($tasks) {
+    public function tasks_list($tasks, $day) {
         $this->output .= '<h1>Production</h1><br>
             <div class="">
             <table class="table table-hover" style="">
@@ -21,6 +21,7 @@ class ProductionRenderer extends BaseRenderer
                     <th>Repas</th>
                     <th>Portions à réaliser</th>
                     <th>Suivi température</th>
+                    <th>Commentaires</th>
                     <th>Terminé</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
@@ -33,7 +34,12 @@ class ProductionRenderer extends BaseRenderer
                 <button type="button" onclick="employee_tmp_modal(\''.$task['rs_id'].'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#temperature_modal">
                     <i class="fas fa-thermometer-half"></i>
                 </button>
-                </td>                 
+                </td>  
+                <td>
+                    <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comments_modal">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </td>               
                 <td>
                     <input type="checkbox" '.$checked.' onclick="update_task_status(\''.$task['t_id'].'\')">
                 </td>                                                          
