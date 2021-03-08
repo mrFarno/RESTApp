@@ -6,7 +6,12 @@ body {
     background-size: cover;
     background-position: 50% 30%;
     background-attachment: fixed;
-    back
+
+}
+
+@font-face {
+    font-family: raleway;
+    src: url("./../../fonts/raleway/static/Raleway-Regular.ttf");
 }
 
 html {
@@ -15,7 +20,7 @@ html {
   body {
     min-height: 90%;
     background-color: #fbfbfd;
-    font-family: verdana;
+    font-family: raleway;
   }
 .app-container {
     /* margin: 3vh; */
@@ -367,4 +372,11 @@ html {
     /* text-align: right; */
     position: absolute;
     right: 1vw;
+    font-size: 1.3em;
+}
+
+.leftArrow {
+    font-size: 2rem;
+    /*margin: 1rem 0 0 1rem;*/
+    color: #8e7a67;
 }

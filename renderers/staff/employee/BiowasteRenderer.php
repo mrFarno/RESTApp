@@ -15,6 +15,7 @@ class BiowasteRenderer extends BaseRenderer
 //        $this->output .= '<img src="'.$GLOBALS['domain'].'/public/style/resources/biowaste.png"> ';
         $total = $biowaste['bw_production'] + $biowaste['bw_bread'] + $biowaste['bw_other'] + $biowaste['bw_carton'] + $biowaste['bw_package_other'] + $biowaste['bw_green'] + $biowaste['bw_valuation'];
         $this->output .= '<h1 style="text-align: center;">Déchets de la journée</h1>
+        <p style="text-align: center; font-style: italic">(en kg)</p>
         <form method="POST" action="?page=biowaste">
         <input type="hidden" name="date" value="'.$day.'">
         <div class="left" style="width: fit-content;">

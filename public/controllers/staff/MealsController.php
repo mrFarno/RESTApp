@@ -170,13 +170,9 @@ if (isset($POST['validform'])) {
             }
             break;
         case 'guests' :
-            $args['expected'] = FILTER_VALIDATE_INT;
-            $args['absences'] = FILTER_VALIDATE_INT;
             $args['real'] = FILTER_VALIDATE_INT;
             $POST = filter_input_array(INPUT_POST, $args, false);
-            $meal->setExpectedGuests($POST['expected'])
-                    ->setAbsencesGuests($POST['absences'])
-                    ->setRealGuests($POST['real']);
+            $meal->setRealGuests($POST['real']);
             break;
         default:
             break;
@@ -205,8 +201,25 @@ if (isset($POST['form'])) {
             $params = $small_equipment_dao->find(['se_restaurant_id' => $restaurant->getId()], true);
             break;
         case 'products' :
-//            $params = $product_dao->find(['p_meal_id' => $meal->getId()], true);
-            $params = $meal;
+            $params = $product_dao->find(['p_date' => $day], true);
+            $trads = [
+                'p_name' => 'Référence',
+                'p_provider' => 'Fournisseur',
+                'p_stock' => 'Stock',
+                'p_aspect' => 'Aspect',
+                'p_temperature' => 'Temperature',
+                'p_sent_back' => 'Renvoi',
+            ];
+            foreach ($params as $index => $param) {
+                foreach ($param as $key => $value) {
+                    if ($value === null && !isset($params[$index]['state'])) {
+                        $params[$index]['state'] = 'En cours ('.$trads[$key].')';
+                    }
+                }
+                if (!isset($params[$index]['state'])) {
+                    $params[$index]['state'] = 'Suivi terminé';
+                }
+            }
             break;
         case 'guests' :
             $params = $meal;

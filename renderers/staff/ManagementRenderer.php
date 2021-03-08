@@ -26,25 +26,25 @@ class ManagementRenderer extends BaseRenderer
 //        </div>';
         $this->output .= '<br><br><div class="row">';
         $this->link('meals', $day, $meal)
-                ->link('production', $day, $meal)
-                ->link('service', $day, $meal);
+                ->link('products', $day, $meal)
+                ->link('production', $day, $meal);
         $this->output .= '</div>';
         $this->output .= '<br><div class="row">';
-        $this->link('products', $day, $meal)
+        $this->link('service', $day, $meal)
                 ->link('cleaning', $day, $meal)
                 ->link('biowaste', $day, $meal);
         $this->output .= '</div>';
         $this->output .= '<br><div class="row">';
-        $this->link('nutrition', $day, $meal)
+        $this->link('nutrition', $day, $meal, false)
             ->link('events', $day, $meal)
-            ->link('extraction', $day, $meal);
+            ->link('extraction', $day, $meal, false);
         $this->output .= '</div>';
         return $this;
     }
 
-    private function link($page, $day, $meal) {
+    private function link($page, $day, $meal, $clickable = true) {
         $trads = [
-            'meals' => 'Repas',
+            'meals' => 'Vérifications pré-repas',
             'products' => 'Marchandises',
             'production' => 'Production',
             'cleaning' => 'Nettoyage et désinfection',
@@ -54,12 +54,17 @@ class ManagementRenderer extends BaseRenderer
             'events' => 'Animation/Évenementiel',
             'extraction' => 'Extraction'
         ];
-        $this->output .= '<div class="col-4">
-        <a href="?page='.$page.'&date='.$day.'&current-meal='.$meal.'">
-            <img class="icon-img" id="'.$page.'-page" src="'.$GLOBALS['domain'].'/public/style/resources/icons/'.$page.'.png"> 
-            <p style="text-align: center; color: black; font-size: large;" for="'.$page.'-page">'.$trads[$page].'</p>
-        </a>
-        </div>';
+        $this->output .= '<div class="col-4">';
+        $img = '<img class="icon-img" id="'.$page.'-page" src="'.$GLOBALS['domain'].'/public/style/resources/icons/'.$page.'.png"> 
+            <p style="text-align: center; color: black; font-size: large;" for="'.$page.'-page">'.$trads[$page].'</p>';
+        if ($clickable === true) {
+            $this->output .= '<a href="?page='.$page.'&date='.$day.'&current-meal='.$meal.'">
+            '.$img.'
+            </a>';
+        } else {
+            $this->output .= $img;
+        }
+        $this->output .= '</div>';
 
         return $this;
     }

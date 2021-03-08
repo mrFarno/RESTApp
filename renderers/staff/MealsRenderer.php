@@ -111,7 +111,7 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function team_equipment_form($equipments) {
-        $this->output .= '<h2 style="text-align: center;">Equipement des employés</h2><br>';
+        $this->output .= '<h2 style="text-align: center;">Equipement des agents</h2><br>';
         if (count($equipments) === 0) {
             $this->output .= 'Pas d\'epi renseigné';
         } else {
@@ -190,13 +190,26 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function products_form(Meal $meal) {
-        $checked = $meal->getCheck_products() == 1 ? 'checked' : '';
-        $this->output .= '<h2 style="text-align: center;">Marchandises</h2><br>';
-        $this->output .= '<div class="">
-        <label for="m_check_products">Toutes les marchandises ont bien été réceptionnées</label>
-        <input type="checkbox" '.$checked.' name="m_check_products" id="m_check_products">
-        </div>';
+    public function products_form($products) {
+        $this->output .= '<h2 style="text-align: center;">Marchandises d\'aujourd\'hui</h2><br>';
+        if (count($products) === 0) {
+            $this->output .= 'Pas de marchandises réceptionnées';
+        } else {
+            $this->output .= '<div class="">
+            <table class="table table-hover">
+            <th>Nom/référence</th>
+            <th>Suivi (étape)</th>';
+            foreach ($products as $product) {
+                $this->output .= '<tr>
+                    <td>
+                        '.$product['p_name'].'
+                    </td>
+                    <td>
+                        '.$product['state'].'
+                    </td>
+                </tr>';
+            }
+        }
 
         $this->next_btn('products','guests');
         $this->home('products');

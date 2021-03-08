@@ -25,7 +25,7 @@ class ProductionRenderer extends BaseRenderer
                     <th>Terminé</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
-                $checked = $task['t_done'] == 1 ? 'checked' : '';
+                $checked = $task['ta_done'] == 1 ? 'checked' : '';
                 $this->output .= '<tr>
                 <td>'.$task['rs_name'].'</td>                 
                 <td>'.$task['meal'].'</td>                  

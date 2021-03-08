@@ -37,10 +37,12 @@ foreach ($rs_tasks as $index => $rs_task) {
             'e_user_id' => $USER->getId(),
             'e_restaurant_id' => $restaurant->getId(),
         ]);
-        $rs_tasks[$index]['number'] = $task_affectation_dao->find([
+        $t_aff = $task_affectation_dao->find([
             'ta_task_id' => $rs_tasks[$index]['t_id'],
             'ta_employement_id' => $e['e_id']
-        ])['ta_number'];
+        ]);
+        $rs_tasks[$index]['number'] = $t_aff['ta_number'];
+        $rs_tasks[$index]['ta_done'] = $t_aff['ta_done'];
     } else {
         unset($rs_tasks[$index]);
     }
