@@ -302,6 +302,9 @@ function save_comment() {
         dataType : 'json',
         success: function(data) {
             show_toast(data[0], data[1])
+            t_target = document.getElementById('t_target')
+            init_comment_modal()
+            comment.value = ''
         }
     })
 }
@@ -347,6 +350,22 @@ function delete_comment(c_id, date) {
     }
 }
 
+function delete_m_comment(c_id, date) {
+    if (confirm('Etes vous sur de vouloir supprimer ce commentaire ?')) {
+        $.ajax({
+            url : 'index.php?page=comments',
+            type : 'POST',
+            data : 'm_delete='+c_id,
+            dataType : 'json',
+            success: function(data) {
+                show_toast(data[0], data[1])
+                init_comment_modal()
+            }
+        })
+    }
+}
+
+
 function save_event_comment(ev_id) {
     comment = document.getElementById('ev_comment-'+ev_id)
     $.ajax({
@@ -363,9 +382,11 @@ function init_comment_modal() {
     data = {}
     step = document.getElementById('check-step')
     meal = document.getElementById('meal_id')
+    date = document.getElementById('current-date')
     data = {
         'prefill' : meal.value,
         'step' : step.value,
+        'date' : date.value
     }
     $.ajax({
         url : 'index.php?page=comments',
@@ -373,9 +394,14 @@ function init_comment_modal() {
         data : data,
         dataType : 'text',
         success: function(data) {
-            comment = document.getElementById('comment-content')
-            comment.value = data
-            comment.focus()
+            // comment = document.getElementById('comment-content')
+            // comment.value = data
+            // comment.focus()
+            target = document.getElementById('comments-list')
+            target.innerHTML = data
+            modal = $('#comment_modal')
+            console.log(modal)
+            modal.modal('show');
         }
     })
 }

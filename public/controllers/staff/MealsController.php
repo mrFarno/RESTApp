@@ -225,7 +225,20 @@ if (isset($POST['form'])) {
             $params = $meal;
             break;
         case 'comment' :
-            $params = $comment_dao->find(['mc_meal_id' => $meal->getId()]);
+            $comments = $comment_dao->find(['mc_meal_id' => $meal->getId()], true);
+            $params = [];
+            foreach ($comments as $index => $comment) {
+                $author = $user_dao->find([
+                    'u_id' => $comment['mc_author']
+                ]);
+                if ($author->getId() == $USER->getId()) {
+                    $author_name = 'Vous';
+                } else {
+                    $author_name = $author->getFirstname().' '.$author->getLastname();
+                }
+                $comment['mc_author_name'] = $author_name;
+                $params[$comment['mc_step']][] = $comment;
+            }
             break;
         default: $params = null;
             break;

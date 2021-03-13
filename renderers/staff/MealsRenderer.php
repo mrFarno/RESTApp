@@ -232,22 +232,49 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function comment_form($comment) {
-        $this->output .= '<h2 style="text-align: center;">Commentaires</h2>';
-        $this->output .= '<div class="comment-container">
-        <div class="comment-title">---Emargement---</div><br>
-        <div class="comment-content">'.$comment['mc_check_team_comment'].'</div>
-        <div class="comment-title">---EPI---</div><br>
-        <div class="comment-content">'.$comment['mc_check_team_equipment_comment'].'</div>
-        <div class="comment-title">---Matériel---</div><br>
-        <div class="comment-content">'.$comment['mc_check_equipment_comment'].'</div>
-        <div class="comment-title">---Petit matériel---</div><br>
-        <div class="comment-content">'.$comment['mc_check_cutlery_comment'].'</div>   
-        <div class="comment-title">---Marchandise---</div><br>
-        <div class="comment-content">'.$comment['mc_check_products_comment'].'</div>  
-        <div class="comment-title">---Convives---</div><br>
-        <div class="comment-content">'.$comment['mc_check_guests_comment'].'</div>                   
-        </div>';
+    public function comment_form($comments) {
+        $trads = [
+            'team' => 'Equipe',
+            'team_equipment' => 'EPI',
+            'equipment' => 'Matériel',
+            'cutlery' => 'Petit matériel',
+            'products' => 'Marchandises',
+            'guests' => 'Convives'
+        ];
+        $this->output .= '<h2 style="text-align: center;">Commentaires</h2>
+        <div class="comment-container">';
+        foreach ($trads as $step => $trad) {
+            $this->output .= '<div class="comment-title">---'.$trad.'---</div>';
+            if (isset($comments[$step]) && count($comments[$step]) > 0) {
+                $this->output .= '<table class="table table-hover">';
+                foreach ($comments[$step] as $comment) {
+                    $date = new \DateTime($comment['mc_date']);
+                    $date = $date->format('d/m Y');
+                    $time = new \DateTime($comment['mc_time']);
+                    $time = $time->format('G:i');
+                    $delete = '';
+//                    if ($comment['mc_author'] == $USER->getId()) {
+//                        $delete = '<button type="button" onclick="delete_m_comment('.$comment['mc_id'].')" name="delete" value="' . $comment['mc_id'] . '" class="fnt_aw-btn delete-btn">
+//                            <i class="fas fa-trash-alt"></i>
+//                        </button>';
+//                    }
+                    $this->output .= '<tr>
+                    <td style="font-style: italic">'.$comment['mc_author_name'].':</td>
+                    <td>'.$comment['mc_content'].'</td>
+                    <td style="font-style: italic">'.$date.' à '.$time.'</td>
+                    <td>
+                        '.$delete.'
+                    </td>
+                </tr>';
+                }
+                $this->output .= '</table>';
+            } else {
+                $this->output .= 'Pas de commentaires';
+            }
+            $this->output .= '<hr>';
+        }
+        $this->output .= '</div>';
+
         $this->home('comment', false);
         return $this;
     }
@@ -278,6 +305,7 @@ class MealsRenderer extends BaseRenderer
                         </button>
                     </div>
                     <div class="modal-body">  
+                        <div id="comments-list"></div>
                         <input type="hidden" id="check-step" value="team">             
                         <input type="hidden" id="meal_id" value="'.$meal_id.'">             
                         <textarea class="form-control" rows="5" id="comment-content"></textarea>     
@@ -368,6 +396,7 @@ class MealsRenderer extends BaseRenderer
         </div>';
         return $this;
     }
+
 
     private function next_btn($valid, $load) {
         $this->output .='<div class="row justify-content-center next-btn">

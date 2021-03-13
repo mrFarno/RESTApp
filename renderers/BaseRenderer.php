@@ -288,6 +288,38 @@ abstract class BaseRenderer
         return $this;
     }
 
+    public function meal_comments_list($comments, $USER)
+    {
+        if (count($comments) > 0) {
+            $this->output .= '<table class="table table-hover">';
+            foreach ($comments as $comment) {
+                $date = new \DateTime($comment['mc_date']);
+                $date = $date->format('d/m Y');
+                $time = new \DateTime($comment['mc_time']);
+                $time = $time->format('G:i');
+                $delete = '';
+                if ($comment['mc_author'] == $USER->getId()) {
+                    $delete = '<button type="button" onclick="delete_m_comment('.$comment['mc_id'].')" name="delete" value="' . $comment['mc_id'] . '" class="fnt_aw-btn delete-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>';
+                }
+                $this->output .= '<tr>
+                    <td style="font-style: italic">'.$comment['mc_author_name'].':</td>
+                    <td>'.$comment['mc_content'].'</td>
+                    <td style="font-style: italic">'.$date.' à '.$time.'</td>
+                    <td>
+                        '.$delete.'
+                    </td>
+                </tr>';
+            }
+            $this->output .= '</table>';
+        } else {
+            $this->output .= 'Pas de commentaires';
+        }
+
+        return $this;
+    }
+
     /**
      * Open body with optional params
      * @param array $tags : Optionnal tags - array([tag] => [value], [attribute] => [value], ...)

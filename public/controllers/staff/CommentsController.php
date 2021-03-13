@@ -9,7 +9,9 @@ $args = [
     'c_target' => FILTER_SANITIZE_STRING,
     't_target' => FILTER_VALIDATE_INT,
     't_date' => FILTER_SANITIZE_STRING,
+    'date' => FILTER_SANITIZE_STRING,
     'delete' => FILTER_VALIDATE_INT,
+    'm_delete' => FILTER_VALIDATE_INT,
 ];
 
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
@@ -17,16 +19,13 @@ $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 $POST = filter_input_array(INPUT_POST, $args, false);
 
 if (isset($POST['meal'])) {
-    $comment_id = $comment_dao->find(['mc_meal_id' => $POST['meal']]);
-    if ($comment_id !== false) {
-        $comment_id = $comment_id['mc_id'];
-    } else {
-        $comment_id = null;
-    }
     $comment_dao->persist([
-        'mc_id' => $comment_id,
         'mc_meal_id' => $POST['meal'],
-        'mc_check_'.$POST['step'].'_comment' => $POST['content']
+        'mc_step' => $POST['step'],
+        'mc_content' => $POST['content'],
+        'mc_author' => $USER->getId(),
+        'mc_date' => date('Y-m-d'),
+        'mc_time' => date('H:i'),
     ]);
     echo json_encode([
         'success',
@@ -99,9 +98,43 @@ if(isset($POST['delete'])) {
     die();
 }
 
+if(isset($POST['m_delete'])) {
+    $comment = $comment_dao->find([
+        'mc_id' => $POST['m_delete']
+    ]);
+    if ($comment['mc_author'] == $USER->getId()) {
+        $comment_dao->delete($POST['m_delete']);
+        echo json_encode([
+            'success',
+            'Commentaire supprimé'
+        ]);
+    }
+    die();
+}
+
 if (isset($POST['prefill'])) {
-    $content = $comment_dao->find(['mc_meal_id' => $POST['prefill']]);
-    $content = $content !== false ? $content['mc_check_'.$POST['step'].'_comment'] : '';
-    echo $content;
+//    $content = $comment_dao->find(['mc_meal_id' => $POST['prefill']]);
+//    $content = $content !== false ? $content['mc_check_'.$POST['step'].'_comment'] : '';
+//    echo $content;
+    $comments = $comment_dao->find([
+        'mc_meal_id' => $POST['prefill'],
+        'mc_step' => $POST['step'],
+        'mc_date' => $POST['date']
+    ], true);
+    if (count($comments) > 0) {
+        foreach ($comments as $index => $comment) {
+            $author = $user_dao->find([
+                'u_id' => $comment['mc_author']
+            ]);
+            if ($author->getId() == $USER->getId()) {
+                $author_name = 'Vous';
+            } else {
+                $author_name = $author->getFirstname().' '.$author->getLastname();
+            }
+            $comments[$index]['mc_author_name'] = $author_name;
+        }
+    }
+    $renderer->meal_comments_list(array_reverse($comments), $USER)
+                ->render();
     die();
 }
