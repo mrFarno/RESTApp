@@ -8,6 +8,7 @@ $args = [
     'validform' => FILTER_SANITIZE_STRING,
     'current-meal' => FILTER_VALIDATE_INT,
     'upload' => FILTER_VALIDATE_INT,
+    'replaced_id' => FILTER_VALIDATE_INT,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
@@ -23,7 +24,7 @@ $day = $POST['date'] ?? $GET['date'] ?? date('Y-m-d');
 $restaurant = $restaurant_dao->find(['r_id' => $_SESSION['current-rest']]);
 //$employees = $employement_dao->employees_by_restaurant($restaurant->getId());
 
-$current_meal = $GET['current-meal'] ?? $POST['current-meal'] ?? array_keys($meal_types)[0];
+$current_meal = $GET['current-meal'] ?? $POST['current-meal'];
 $meal_types = [];
 $meals = [];
 foreach ($restaurant->getMeals() as $meal) {
@@ -68,6 +69,20 @@ if ($meal === false) {
         'm_date' => $day
     ]);
     $meal_dao->persist($meal);
+}
+
+if (isset($POST['replaced_id'])) {
+    $replacement = $meal_dao->find_replacement_by_user($POST['replaced_id'], $current_meal, $day);
+    if (count($replacement) == 0) {
+        $renderer->replacement_form($r_employees, $day)
+                    ->render();
+    } else {
+        $replaced = $user_dao->find(['u_id' => $POST['replaced_id']])->getId();
+        $substitute = $user_dao->find(['u_id' => $replacement[0]['rp_substitute_id']]);
+        $renderer->replacement_summary($replaced, $substitute)
+                    ->render();
+    }
+    die();
 }
 
 if (isset($POST['validform'])) {
@@ -252,7 +267,7 @@ if (isset($POST['form'])) {
 $renderer->set_day($day)
     ->header('Repas')
     ->comment_modal($meal->getId())
-    ->absences_modal($r_employees, $day)
+    ->absences_modal()
     ->equipment_modal()
     ->open_body([
         [

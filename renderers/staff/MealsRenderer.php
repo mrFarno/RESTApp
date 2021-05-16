@@ -36,26 +36,41 @@ class MealsRenderer extends BaseRenderer
     public function checks_navigation() {
         $this->output .= '<nav class="navbar bg-light" id="nav-checks" style="bottom: 15vh">
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active" onclick="post_current(); load_form(\'team\', \'meals\')">Equipe</button>
+              <li class="nav-item pad-inline">
+                <button type="button" id="team-btn" class="nav-link fnt_aw-btn nav-btn btn-active nav-meal-txt" onclick="post_current(); load_form(\'team\', \'meals\')">
+                &nbsp;<input type="checkbox" id="team-check" disabled>
+                &nbsp;Equipe</button>
               </li>
-              <li class="nav-item">
-                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'team_equipment\', \'meals\')">EPI</button>
+              <li class="nav-item pad-inline">
+                <button type="button" id="team_equipment-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'team_equipment\', \'meals\')">
+                &nbsp;<input type="checkbox" id="team_equipment-check" disabled>
+                &nbsp;EPI</button>
               </li>
-              <li class="nav-item">
-                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'equipment\', \'meals\')">Matériels</button>
+              <li class="nav-item pad-inline">
+                <button type="button" id="equipment-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'equipment\', \'meals\')">
+                &nbsp;<input type="checkbox" id="equipment-check" disabled>
+                &nbsp;Matériels</button>
               </li>
-              <li class="nav-item">
-                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'cutlery\', \'meals\')">Petit matériel</button>
+              <li class="nav-item pad-inline">
+                <button type="button" id="cutlery-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'cutlery\', \'meals\')">
+                &nbsp;<input type="checkbox" id="cutlery-check" disabled>
+                &nbsp;Petit matériel</button>
               </li>
-              <li class="nav-item">
-                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'products\', \'meals\')">Marchandises</button>
-              </li>
-              <li class="nav-item">
-                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'guests\', \'meals\')">Convives</button>
+              <!--
+              <li class="nav-item pad-inline">
+                <button type="button" id="products-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'products\', \'meals\')">
+                &nbsp;<input type="checkbox" id="products-check" disabled>
+                &nbsp;Marchandises</button>
+              </li> -->
+              <li class="nav-item pad-inline">
+                <button type="button" id="guests-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'guests\', \'meals\')">
+                &nbsp;<input type="checkbox" id="guests-check" disabled>
+                &nbsp;Convives</button>
               </li>    
-              <li class="nav-item">
-                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn" onclick="post_current(); load_form(\'comment\', \'meals\')">Commentaires</button>
+              <li class="nav-item pad-inline">
+                <button type="button" id="comment-btn" class="nav-link fnt_aw-btn nav-btn nav-meal-txt" onclick="post_current(); load_form(\'comment\', \'meals\')">
+                &nbsp;<input type="checkbox" id="comment-check" disabled>
+                &nbsp;Commentaires</button>
               </li>            
             </ul>
         </nav>
@@ -97,7 +112,7 @@ class MealsRenderer extends BaseRenderer
                 <td>'.$employee->getEmail().'</td>
                 <td>
                     <input type="checkbox" '.$checkbox.' name="'.$employee->getId().'-present" id="'.$employee->getId().'-present" onclick="show_absence_button('.$employee->getId().')">
-                    <button onclick="update_user_id()" type="button" data-toggle="modal" data-target="#absences_modal" '.$hidden.' id="absence-'.$employee->getId().'">Remplacer</button>
+                    <button onclick="replacement_modal(\''.$employee->getId().'\')" type="button" data-toggle="modal" data-target="#absences_modal" '.$hidden.' id="absence-'.$employee->getId().'">Remplacer</button>
                 </td>
             </tr>';
             }
@@ -185,7 +200,8 @@ class MealsRenderer extends BaseRenderer
             </tr>';
             }
         }
-        $this->next_btn('cutlery','products');
+//        $this->next_btn('cutlery','products');
+        $this->next_btn('cutlery','guests');
         $this->home('cutlery');
         return $this;
     }
@@ -319,7 +335,7 @@ class MealsRenderer extends BaseRenderer
         return $this;
     }
 
-    public function absences_modal($employees, $day) {
+    public function absences_modal() {
         $this->output .= '<div class="modal fade" aria-labelledby="ModalLabel" id="absences_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
             <div  class="modal-dialog modal-lg" role="document" id="formManual">
                 <div class="modal-content" style="margin-top: 33%">
@@ -329,8 +345,17 @@ class MealsRenderer extends BaseRenderer
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>            
-                    <div class="modal-body">
-                    <form action="?page=absences" method="POST" id="absences-form">     
+                    <input type="hidden" id="current-meal" value="'.$this->current_meal.'">
+                    <div class="modal-body" id ="replacement_modal">                    
+                    </div>
+            </div>
+        </div>
+        </div>';
+        return $this;
+    }
+
+    public function replacement_form($employees, $day) {
+        $this->output .= '<form action="?page=absences" method="POST" id="absences-form">     
                     <input type="hidden" name="ab_user_id" id="ab_user_id">   
                     <input type="hidden" name="ab_mealtype_id" id="ab_mealtype_id" value="'.$this->current_meal.'">  
                     <input type="hidden" name="ab_date" id="ab_date" value="'.$day.'"> 
@@ -366,12 +391,17 @@ class MealsRenderer extends BaseRenderer
                     Remplacer
                     </button>   
                     </div>
-                </div>
-                </div>
-                </form>
-            </div>
-            </div>
-        </div>';
+                </div>                
+                </form>';
+
+        return $this;
+    }
+
+    public function replacement_summary($replaced, $substitute) {
+        $this->output .= 'Remplacé par '.$substitute->getFirstname().' '.$substitute->getLastname();
+        if (is_file(__DIR__.'/../../public/uploads/absences/user-'.$replaced.'.png')) {
+            $this->output .= '<br><a href="'.$GLOBALS['domain'].'/public/uploads/absences/user-'.$replaced.'.png" target="_blank">&nbsp;Justificatif d\'absence</a>';
+        }
         return $this;
     }
 

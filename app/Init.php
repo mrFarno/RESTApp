@@ -6,6 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 app\Autoloader::register();
 
 use app\Config;
+use app\DAO\AllergyDAO;
 use app\DAO\BiowastesDAO;
 use app\DAO\CommentsDAO;
 use app\DAO\EventsDAO;
@@ -104,3 +105,4 @@ $biowastes_dao = new BiowastesDAO($db_connector);
 $polls_dao = new SatisfactionPollDAO($db_connector);
 $poll_votes_dao = new SatisfactionPollVoteDAO($db_connector);
 $comments_dao = new CommentsDAO($db_connector);
+$allergies_dao = new AllergyDAO($db_connector);

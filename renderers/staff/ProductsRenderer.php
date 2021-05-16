@@ -96,7 +96,7 @@ overflow-y: scroll !important;">
                 <th>Photo de l\'étiquette</th>
                 <th>Suivi</th>';
         foreach ($products as $product) {
-            if (is_file(__DIR__.'/../public/uploads/products/product-'.$product['p_id'].'.png')) {
+            if (is_file(__DIR__.'/../../public/uploads/products/product-'.$product['p_id'].'.png')) {
                 $link = '<a target="_blank" href="'.$GLOBALS['domain'].'/public/uploads/products/product-'.$product['p_id'].'.png">
                           ->
                         </a>';

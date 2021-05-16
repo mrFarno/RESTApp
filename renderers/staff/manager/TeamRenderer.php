@@ -57,7 +57,7 @@ class TeamRenderer extends BaseRenderer
                                 <input type="email" class="form-control" id="u_email" name="u_email" required placeholder="Adresse email">
                             </div>                            
                             <div class="form-group">
-                                <input type="int" class="form-control" id="u_phone" name="u_phone" placeholder="Téléphone">
+                                <input type="number" class="form-control" id="u_phone" name="u_phone" placeholder="Téléphone">
                             </div>
                             <div class="row justify-content-center">
                             <button type="submit" class="btn btn-outline-success width100">
@@ -65,6 +65,7 @@ class TeamRenderer extends BaseRenderer
                             </button>
                             </div>
                         </div>
+                        <p>L\'agent recevra par mail un lien permettant de choisir son mot de passe</p>
                     </form>
                     </div>
                     </div>

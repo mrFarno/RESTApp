@@ -5,6 +5,7 @@ $args = [
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 
@@ -35,7 +36,7 @@ $renderer->header('Biodéchets')
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('home')
+    ->previous_page('management&date='.$day.'&meal='.$GET['current-meal'])
     ->biowaste_graph($biowastes)
     ->year_total($year_total, $year)
     ->close_body()

@@ -54,7 +54,7 @@ class ProductionRenderer extends BaseRenderer
     }
 
 
-    public function temperature_modal() {
+    public function temperature_modal($meal) {
         $this->output .= '<div class="modal fade" aria-labelledby="manualModalLabel" id="temperature_modal" style="margin-bottom: 1rem"  tabindex="-1" role="dialog" aria-hidden="true">
             <div  class="modal-dialog modal-lg" role="document" id="formManual">
                 <div class="modal-content" style="margin-top: 33%">
@@ -65,7 +65,7 @@ class ProductionRenderer extends BaseRenderer
                         </button>
                     </div>
                     <div class="modal-body" id="temperature-modal-content">  
-                    <form method="POST" action="?page=production" enctype="multipart/form-data" onsubmit="recipe_form(event)" id="step-form">
+                    <form method="POST" action="?page=production&current-meal='.$meal.'" enctype="multipart/form-data" onsubmit="recipe_form(event)" id="step-form">
                     <div class="justify-content-center" id="input-ctnr">
                         <label for="recipe-current-input" id="label"></label>
                         <input id="recipe-current-input" type="number">                          

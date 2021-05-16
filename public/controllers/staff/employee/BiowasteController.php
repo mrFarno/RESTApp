@@ -2,17 +2,18 @@
 
 $args = [
     'date' => FILTER_SANITIZE_STRING,
-    'bw_production' => FILTER_VALIDATE_INT,
-    'bw_bread' => FILTER_VALIDATE_INT,
-    'bw_other' => FILTER_VALIDATE_INT,
-    'bw_carton' => FILTER_VALIDATE_INT,
-    'bw_package_other' => FILTER_VALIDATE_INT,
-    'bw_green' => FILTER_VALIDATE_INT,
-    'bw_valuation' => FILTER_VALIDATE_INT,
+    'bw_production' => FILTER_VALIDATE_FLOAT,
+    'bw_bread' => FILTER_VALIDATE_FLOAT,
+    'bw_other' => FILTER_VALIDATE_FLOAT,
+    'bw_carton' => FILTER_VALIDATE_FLOAT,
+    'bw_package_other' => FILTER_VALIDATE_FLOAT,
+    'bw_green' => FILTER_VALIDATE_FLOAT,
+    'bw_valuation' => FILTER_VALIDATE_FLOAT,
     'bw_comment' => FILTER_SANITIZE_STRING,
 ];
 $argsGet = [
     'date' => FILTER_SANITIZE_STRING,
+    'current-meal' => FILTER_SANITIZE_STRING,
 ];
 
 $GET = filter_input_array(INPUT_GET, $argsGet, false);
@@ -77,7 +78,7 @@ $renderer->header('Biodéchets')
             'class' => 'content-center'
         ]
     ], $USER)
-    ->previous_page('home')
+    ->previous_page('management&date='.$day.'&meal='.$GET['current-meal'])
     ->summary($day)
     ->biowaste_form($biowaste, $day)
     ->close_body()

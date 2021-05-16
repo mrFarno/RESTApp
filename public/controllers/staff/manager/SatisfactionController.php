@@ -71,7 +71,7 @@ if(isset($POST['sp_field_1'])
 
 $poll = $polls_dao->by_type_day($current_meal, $day);
 if ($poll !== false) {
-    $votes = $poll_votes_dao->find(['spv_poll_id'=>$poll['sp_id']]);
+    $votes = $poll_votes_dao->find(['spv_poll_id'=>$poll['sp_id']], true);
 } else {
     $votes = [];
 }
@@ -91,7 +91,6 @@ foreach ($stats as $key => $value) {
             (int) $stats[$key]['sum'] += (int) $vote[$key];
         }
     }
-
 }
 
 $renderer->header('Satisfaction des convives')

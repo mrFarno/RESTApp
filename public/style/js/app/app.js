@@ -191,6 +191,10 @@ function post_current() {
 }
 
 function post_form(form, page) {
+    check = document.getElementById(form+'-check')
+    if (check !== null) {
+        check.checked = true
+    }
     data = {}
     data['validform'] = form
     current_meal = document.getElementById('current-meal')
@@ -219,6 +223,7 @@ function post_form(form, page) {
                 hidden.value = data.p_id
                 init_products_modal(hidden.value)
             }
+
         }
     })
 }
@@ -279,10 +284,21 @@ function submit_absences_form() {
     form.submit()
 }
 
-function update_user_id() {
-    id = event.target.id.replace('absence-', '')
-    hidden = document.getElementById('ab_user_id')
-    hidden.value = id
+function replacement_modal(id) {
+    //id = event.target.id.replace('absence-', '')
+    meal = document.getElementById('current-meal')
+    $.ajax({
+        url : 'index.php?page=meals',
+        type : 'POST',
+        data : 'replaced_id='+id+'&current-meal='+meal.value,
+        dataType : 'html',
+        success: function(data) {
+            modal_body = document.getElementById('replacement_modal')
+            modal_body.innerHTML = data
+            hidden = document.getElementById('ab_user_id')
+            hidden.value = id
+        }
+    })
 }
 
 function save_comment() {
@@ -603,6 +619,7 @@ function init_products_modal(p_id) {
             })
             if (Array.isArray(data)) {
                 input.type = data[0]
+                input.value = ''
                 input.name = data[2]
                 // if(data[0] == 'checkbox' || data[0] == 'file') {
                 //     btn = document.createElement('button');
@@ -627,6 +644,7 @@ function init_products_modal(p_id) {
                 label.innerHTML = data[1]+' : '
             } else {
                 input.style.display = 'none'
+                input.disabled = true
                 label.innerHTML = data
             }
         }
@@ -670,11 +688,16 @@ $('#products_modal').on('hide.bs.modal', function () {
 });
 
 function product_form(event) {
-    event.preventDefault()
-    post_form('products', 'products')
-    hidden = document.getElementById('p_id')
-    console.log(hidden.value)
-    init_products_modal(hidden.value)
+    current = document.getElementById('product-current-input')
+    console.log(current)
+
+    if (current.type !== 'file') {
+        event.preventDefault()
+        post_form('products', 'products')
+        hidden = document.getElementById('p_id')
+        console.log(hidden.value)
+        init_products_modal(hidden.value)
+    }
 }
 
 function recipe_form(event) {
@@ -693,6 +716,17 @@ function update_task_status(id) {
         url : 'index.php?page=cleaning',
         type : 'POST',
         data : 'status='+id,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    })
+}
+
+function update_event_status(id) {
+    $.ajax({
+        url : 'index.php?page=events',
+        type : 'POST',
+        data : 'id='+id,
         success: function() {
             show_toast('success', 'Mise à jour réussie')
         }
@@ -755,6 +789,44 @@ function init_comments_modal(t_target_id, date) {
     })
 }
 
+function empty_allergies_modal() {
+    firstname = document.getElementById('al_firstname')
+    lastname = document.getElementById('al_lastname')
+    age = document.getElementById('al_age')
+    id = document.getElementById('al_id')
+    firstname.value = ''
+    lastname.value = ''
+    age.value = ''
+    id.value = ''
+    for (i = 1; i < 15; i++) {
+        let input = document.getElementById('al_'+i)
+        input.checked = false
+    }
+}
+
+function init_allergies_modal(al_id) {
+    $.ajax({
+        url : 'index.php?page=allergy',
+        type : 'POST',
+        data : 'search='+al_id,
+        dataType : 'json',
+        success: function(data) {
+            firstname = document.getElementById('al_firstname')
+            lastname = document.getElementById('al_lastname')
+            age = document.getElementById('al_age')
+            id = document.getElementById('al_id')
+            firstname.value = data['firstname']
+            lastname.value = data['lastname']
+            age.value = data['age']
+            id.value = data['id']
+            for (var check in data['checked']) {
+                let input = document.getElementById('al_'+check)
+                input.checked = true
+            }
+        }
+    })
+}
+
 function save_task_comment() {
     hidden = document.getElementById('task_id')
     comment = document.getElementById('comment-content')
@@ -766,5 +838,16 @@ function save_task_comment() {
             show_toast('success', 'Mise à jour réussie')
         }
     })
+}
+
+function update_allergy(allergy, allergen) {
+    $.ajax({
+        url : 'index.php?page=allergy',
+        type : 'POST',
+        data : 'al_id='+allergy+'&allergen='+allergen,
+        success: function() {
+            show_toast('success', 'Mise à jour réussie')
+        }
+    }) 
 }
 

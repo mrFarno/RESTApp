@@ -86,7 +86,7 @@ if(isset($POST['search'])) {
             die();
         }
     }
-    if (!is_file(__DIR__.'/../uploads/products/product-'.$product['p_id'].'.png')) {
+    if (!is_file(__DIR__.'/../../uploads/products/product-'.$product['p_id'].'.png')) {
         echo json_encode($cols['p_photo']);
         die();
     }
@@ -162,8 +162,8 @@ foreach ($cols as $col => $value) {
 
 if(isset($_FILES['p_photo'])) {
     $file = $_FILES['p_photo'];
-    if(!is_file(__DIR__.'/../uploads/products/product-'.$POST['p_id'].'.png')) {
-        imagepng(imagecreatefromstring(file_get_contents($file['tmp_name'])), __DIR__.'/../uploads/products/product-'.$POST['p_id'].'.png');
+    if(!is_file(__DIR__.'/../../uploads/products/product-'.$POST['p_id'].'.png')) {
+        imagepng(imagecreatefromstring(file_get_contents($file['tmp_name'])), __DIR__.'/../../uploads/products/product-'.$POST['p_id'].'.png');
     }
 }
 

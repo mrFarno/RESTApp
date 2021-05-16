@@ -4,6 +4,7 @@ $args = [
     'date' => FILTER_SANITIZE_STRING,
     'search' => FILTER_VALIDATE_INT,
     'target' => FILTER_VALIDATE_INT,
+    'id' => FILTER_VALIDATE_INT,
     'ev_comment' => FILTER_SANITIZE_STRING,
     'current-meal' => FILTER_SANITIZE_STRING,
 ];
@@ -31,6 +32,15 @@ if(isset($POST['target'])) {
     $events_dao->persist([
         'ev_id' => $POST['target'],
         'ev_comment' => $POST['ev_comment']
+    ]);
+    die();
+}
+
+if(isset($POST['id'])) {
+    $event = $events_dao->find(['ev_id' => $POST['id']]);
+    $events_dao->persist([
+        'ev_id' => $POST['id'],
+        'ev_done' => $event['ev_done'] == 0 ? 1 : 0,
     ]);
     die();
 }

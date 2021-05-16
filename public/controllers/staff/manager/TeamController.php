@@ -12,7 +12,7 @@ $args = [
     'u_lastname' => FILTER_SANITIZE_STRING,
     'u_email' => FILTER_SANITIZE_STRING,
     'u_id' => FILTER_VALIDATE_INT,
-    'u_phone' => FILTER_VALIDATE_INT,
+    'u_phone' => FILTER_SANITIZE_STRING,
     'delete' => FILTER_VALIDATE_INT,
 ];
 

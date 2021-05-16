@@ -110,4 +110,21 @@ class MealDAO extends DAO
         }
         return true;
     }
+
+    public function find_replacement_by_user($id, $mt, $date) {
+        $request = 'SELECT * FROM replacements INNER JOIN meal_affectations ON rp_affectation_id = maf_id
+                                            INNER JOIN employements ON maf_employement_id = e_id
+                                            WHERE e_user_id = :e_id
+                                            AND maf_meal_type = :mt
+                                            AND (maf_timestart < :date AND (maf_timeend IS NULL OR maf_timeend > :date));';
+
+        $stmt = $this->getPDO()->prepare($request);
+        $stmt->execute([
+            ':e_id' => $id,
+            ':mt' => $mt,
+            ':date' => $date.' 12:00:00',
+        ]);
+
+        return $stmt->fetchAll();
+    }
 }

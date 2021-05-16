@@ -20,7 +20,8 @@ class DaylyRenderer extends BaseRenderer
             '3' => 'snack',
             '4' => 'dinner'
         ];
-        $this->output .= '<div style="display: flex;
+        $this->output .= '<div class="meal-choice">Veuillez choisir le repas que vous souhaitez gérer</div>
+        <div style="display: flex;
         justify-content: space-around;     height: 90%;
         align-items: center;">';
         foreach ($meal_types as $id => $name) {

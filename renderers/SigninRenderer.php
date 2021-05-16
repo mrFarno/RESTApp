@@ -36,6 +36,7 @@ class SigninRenderer extends BaseRenderer
                         <input type="password" placeholder="Mot de passe" class="form-control width100" name="password">
                     </div>
                 </div>
+                <p>Le mot de passe doit comporter au minimum 8 charactères</p>
                 <div class="mx-sm-3 mb-2">
                     <div class="mx-sm-3 mb-2">
                         <input type="password" placeholder="Confirmer le mot de passe" class="form-control width100" name="confirm">

@@ -76,7 +76,8 @@ class CleaningRenderer extends BaseRenderer
     }
 
     public function list_spaces($spaces, $tasks, $day) {
-        $this->output .= '<div class="">
+        $this->output .= '<input type="hidden" name="date" id="date-hidden" value="'.$day.'">
+            <div class="">
             <table class="table table-hover" style="">
                     <th>Désignation</th>
                     <th>Par</th>

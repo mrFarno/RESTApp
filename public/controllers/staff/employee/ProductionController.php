@@ -118,9 +118,10 @@ if(isset($_FILES['sample-pic'])) {
     upload($_FILES['sample-pic'], 'samples/rs-'.$POST['rs_id']);
 }
 
+
 $renderer->set_day($day)
     ->header('Production')
-    ->temperature_modal()
+    ->temperature_modal($current_meal)
     ->comments_modal($day)
     ->open_body([
         [

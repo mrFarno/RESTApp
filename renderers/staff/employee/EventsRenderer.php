@@ -22,11 +22,11 @@ class EventsRenderer extends BaseRenderer
                     <th>Commentaire</th>';
         if (count($tasks) !== 0) {
             foreach ($tasks as $task) {
-                $checked = $task['t_done'] == 1 ? 'checked' : '';
+                $checked = $task['ev_done'] == 1 ? 'checked' : '';
                 $this->output .= '<tr>
                 <td>'.$task['ev_name'].'</td>                                                
                 <td>
-                    <input type="checkbox" '.$checked.' onclick="update_task_status(\''.$task['t_id'].'\')">
+                    <input type="checkbox" '.$checked.' onclick="update_event_status(\''.$task['ev_id'].'\')">
                 </td>   
                 <td>
                     <button type="button" onclick="init_comments_modal(\''.$task['t_target_id'].'\', \''.$this->day.'\')" class="fnt_aw-btn" data-toggle="modal" data-target="#comment_modal">

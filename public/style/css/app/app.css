@@ -375,8 +375,33 @@ html {
     font-size: 1.3em;
 }
 
+.meal-choice {
+    font-style: italic;
+    text-align: center;
+    font-size: 1.3em;
+}
+
 .leftArrow {
     font-size: 2rem;
     /*margin: 1rem 0 0 1rem;*/
     color: #8e7a67;
+}
+
+.nav-meal-txt {
+    text-align: left;
+    font-size: 1.1em;
+    padding: 5%;
+}
+
+.btn-outline-success {
+    background-color: white;
+}
+
+.btn-outline-danger {
+    background-color: white;
+}
+
+.pad-inline {
+    padding-inline: 10%;
+    width: 10vw;
 }
