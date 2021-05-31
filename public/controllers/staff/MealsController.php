@@ -185,9 +185,9 @@ if (isset($POST['validform'])) {
             }
             break;
         case 'guests' :
-            $args['real'] = FILTER_VALIDATE_INT;
+            $args['declared'] = FILTER_VALIDATE_INT;
             $POST = filter_input_array(INPUT_POST, $args, false);
-            $meal->setRealGuests($POST['real']);
+            $meal->setAbsencesGuests($POST['declared']);
             break;
         default:
             break;

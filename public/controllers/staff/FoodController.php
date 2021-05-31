@@ -3,7 +3,7 @@ use app\BO\Meal;
 
 $args = [
     'date' => FILTER_SANITIZE_STRING,
-    'declared' => FILTER_VALIDATE_INT,
+    'real' => FILTER_VALIDATE_INT,
     'meal_id' => FILTER_VALIDATE_INT,
 ];
 $argsGet = [
@@ -35,8 +35,8 @@ if ($meal === false) {
     $meal_dao->persist($meal);
 }
 
-if(isset($POST['declared'])) {
-    $meal->setExpectedGuests($POST['declared']);
+if(isset($POST['real'])) {
+    $meal->setRealGuests($POST['real']);
     $meal_dao->persist($meal);
 }
 

@@ -233,16 +233,20 @@ class MealsRenderer extends BaseRenderer
     }
 
     public function guests_form(Meal $meal) {
-        $this->output .= '<h2 style="text-align: center;">Convives</h2><br>
-        <table class="table table-hover">
-                            <th>Convives prévus</th>
-                            <th>Convives déclarés</th>
-                            <th>Convives servis</th>
-                            <tr>    
-                                <td><input type="number" disabled min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>
-                                <td><input type="number" disabled min="0" name="absences" value="'.$meal->getAbsencesGuests().'"></td>
-                                <td><input type="number" min="0" name="real" value="'.$meal->getRealGuests().'"></td>
-                            </tr>';
+//        $this->output .= '<h2 style="text-align: center;">Convives</h2><br>
+//        <table class="table table-hover">
+//                            <th>Convives prévus</th>
+//                            <th>Convives déclarés</th>
+//                            <th>Convives servis</th>
+//                            <tr>
+//                                <td><input type="number" disabled min="0" name="expected" value="'.$meal->getExpectedGuests().'"></td>
+//                                <td><input type="number" disabled min="0" name="absences" value="'.$meal->getAbsencesGuests().'"></td>
+//                                <td><input type="number" min="0" name="real" value="'.$meal->getRealGuests().'"></td>
+//                            </tr>';
+        $this->output .= '<h2>Convives prévus aujourd\'hui :</h2>
+        <input type="number" min="0" class="form-control" name="declared" value="'.$meal->getAbsencesGuests().'">
+        <input type="hidden" name="current-meal" value="'.$meal->getType().'">';
+//        <button class="btn-success btn" type="submit">Enregistrer</button>';
         $this->next_btn('guests','comment');
         $this->home('guests');
         return $this;
